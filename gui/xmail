@@ -1,31 +1,45 @@
 #!/usr/bin/env python3
-from flet import app, Entry, Text, Column, Row, Page, ElevatedButton, colors
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 
 
-help(Entry)
-
-views = {
-    "/login": login_view,
-    "/home": logged_view
-}
 
 def logged_view(page):
     return view
 
 def login_view(page):
     view = Column()
-    controls = 
+    email = Column()
+    emaillabel = Text(value='Email')
+    emailInput = TextField(label='Email')
+    email.controls=[emaillabel,emailInput]
+    email.horizontal_alignment = "center"
+    pwd = Column()
+    pwdlabel = Text(value='pwd')
+    pwdInput = TextField(label='pwd',password=True)
+    pwd.controls=[pwdlabel,pwdInput]
+    pwd.horizontal_alignment = "center"
+    view.controls = [email,pwd]
     return view
+
+
+views = {
+    "/login": login_view,
+    "/home": logged_view
+}
+
 
 def  refresh_view(page):
     page.clean()
-    views[actual_view](page)
+    page.add(views[actual_view](page))
 
-def view_exists():
-    return actual_view in views
+def refresh_page(page):
+    page.update()
+
+def view_exists(view):
+    return view in views
 
 def update_actual_view(view):
-    if view_exists(view) actual_view = view
+    if view_exists(view) : actual_view = view
 
 
 
@@ -33,6 +47,7 @@ def update_actual_view(view):
 actual_view = '/login'
 
 def app_loop(page: Page):
+    page.vertical_alignment = "center"
     if view_exists(actual_view):
         refresh_view(page)
 
