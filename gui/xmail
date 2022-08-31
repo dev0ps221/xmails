@@ -1,2 +1,44 @@
 #!/usr/bin/env python3
-from flet import Column,Row,
+from flet import app, Text, Column, Row, Page, View, AppBar, ElevatedButton
+
+
+def view_pop(page, view):
+    page.views.pop()
+    top_view = page.views[-1]
+    page.go(top_view.route)
+
+
+def _app_bar(title):
+    title = title if title[0] == '/' else f"/{title}"
+
+    return AppBar(title=Text(title))
+
+def _view(page, title, hook, route):
+    return View(
+            _app_bar(title), [
+                ElevatedButton(hook, on_click=lambda _: page.go(route))
+            ])
+
+
+def logged_view(page):
+    view = _view(page,'logged_view', 'HOME', '/home')
+    print('we are the logged_view')
+    return view
+
+def login_view(page):
+    view = _view(page,'login_view', 'LOGIN', '/login')
+    print('we are the log')
+    return view
+
+views = {
+    "log": login_view,
+    "logged": logged_view
+}
+
+
+def app_loop(page: Page):
+    for view in views:
+        page.views.append(views[view](page))
+
+
+app(target=app_loop)
