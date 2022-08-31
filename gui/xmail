@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from flet import app, Text, Column, Row, Page, ElevatedButton, colors
+from flet import app, Entry, Text, Column, Row, Page, ElevatedButton, colors
 
 
+help(Entry)
 
 views = {
     "/login": login_view,
