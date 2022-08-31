@@ -4,24 +4,32 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 
 pagewidth  = 0
 pageheight = 0
-
+is_logged  = 0
+ 
 def logged_view(page):
     return view
 
 def login_view(page):
     view = Column()
+    view.width = pagewidth
     view.horizontal_alignment ='center'
-    view.alignment = alignment.center
-    view.width = int(pagewidth/2)
     email = Column()
+    email.horizontal_alignment ='center'
     emaillabel = Text(value='Email')
+    emaillabel.width = int(pagewidth/2)
+    emaillabel.alignment = alignment.center
     emailInput = TextField(label='Email')
+    emailInput.width = int(pagewidth/2)
+    emailInput.alignment = alignment.center
     email.controls=[emaillabel,emailInput]
     email.horizontal_alignment = "center"
     
+    
     pwd = Column()
     pwdlabel = Text(value='pwd')
+    pwdlabel.width = int(pagewidth/2)
     pwdInput = TextField(label='pwd',password=True)
+    pwdInput.width = int(pagewidth/2)
     pwd.controls=[pwdlabel,pwdInput]
     pwd.horizontal_alignment = "center"
     
@@ -45,6 +53,7 @@ def  refresh_view(page):
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
+    if view == '/login' and is_logged : update_actual_view('/home') 
     page.add(views[actual_view](page))
 
 def refresh_page(page):
