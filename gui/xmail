@@ -1,24 +1,35 @@
 #!/usr/bin/env python3
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment
 
 
+pagewidth  = 0
+pageheight = 0
 
 def logged_view(page):
     return view
 
 def login_view(page):
     view = Column()
+    view.horizontal_alignment ='center'
+    view.alignment = alignment.center
+    view.width = int(pagewidth/2)
     email = Column()
     emaillabel = Text(value='Email')
     emailInput = TextField(label='Email')
     email.controls=[emaillabel,emailInput]
     email.horizontal_alignment = "center"
+    
     pwd = Column()
     pwdlabel = Text(value='pwd')
     pwdInput = TextField(label='pwd',password=True)
     pwd.controls=[pwdlabel,pwdInput]
     pwd.horizontal_alignment = "center"
-    view.controls = [email,pwd]
+    
+    login = Column()
+    loginInput = ElevatedButton(text='login')
+    login.controls=[loginInput]
+    login.horizontal_alignment = "center"
+    view.controls = [email,pwd,login]
     return view
 
 
@@ -29,11 +40,19 @@ views = {
 
 
 def  refresh_view(page):
+    global pagewidth
+    global pageheight
+    pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
+    pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
     page.add(views[actual_view](page))
 
 def refresh_page(page):
     page.update()
+    global pagewidth
+    global pageheight
+    pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
+    pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
 
 def view_exists(view):
     return view in views
