@@ -1,24 +1,39 @@
 #!/usr/bin/env python3
-from flet import app, Text, Column, Row, Page, View, AppBar, ElevatedButton, colors
+from flet import app, Text, Column, Row, Page, ElevatedButton, colors
 
 
-def logged_view(page):
-    page.clean()
-    return view
-
-def login_view(page):
-    page.clean()
-    view = _view(page,'login_view', 'LOGIN')
-    return view
 
 views = {
     "/login": login_view,
     "/home": logged_view
 }
 
+def logged_view(page):
+    return view
+
+def login_view(page):
+    view = Column()
+    controls = 
+    return view
+
+def  refresh_view(page):
+    page.clean()
+    views[actual_view](page)
+
+def view_exists():
+    return actual_view in views
+
+def update_actual_view(view):
+    if view_exists(view) actual_view = view
+
+
+
+
 actual_view = '/login'
 
 def app_loop(page: Page):
-    
+    if view_exists(actual_view):
+        refresh_view(page)
+
 app(target=app_loop)
 
