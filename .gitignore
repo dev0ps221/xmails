@@ -1,5 +1,5 @@
 test.py
-krypt.py
+_saltfile
 __pycache__
 *.pyc
 *.swp
