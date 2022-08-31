@@ -1,40 +1,14 @@
 #!/usr/bin/env python3
-from flet import app, Text, Column, Row, Page, View, AppBar, ElevatedButton
+from flet import app, Text, Column, Row, Page, View, AppBar, ElevatedButton, colors
 
-
-def view_pop(page, view):
-    page.views.pop()
-    top_view = page.views[-1]
-    page.go(top_view.route)
-
-
-def _app_bar(title):
-    title = title if title[0] == '/' else f"/{title}"
-
-    return AppBar(title=Text(title),bgcolor=colors.SURFACE_VARIANT)
-
-def _view(page, title, hook):
-    bar = _app_bar(title)
-    barcontrols = [] 
-    for route in views:
-        barcontrols.append(
-            ElevatedButton(route, on_click=lambda _: page.go(route))
-        )
-    bar.controls = barcontrols
-    bar.visible = True
-    view = View(
-        bar        
-    )
-    return view
 
 def logged_view(page):
-    view = _view(page,'logged_view', 'HOME')
-    print('we are the logged_view')
+    page.clean()
     return view
 
 def login_view(page):
+    page.clean()
     view = _view(page,'login_view', 'LOGIN')
-    print('we are the log')
     return view
 
 views = {
@@ -42,10 +16,9 @@ views = {
     "/home": logged_view
 }
 
+actual_view = '/login'
 
 def app_loop(page: Page):
-    for view in views:
-        page.views.append(views[view](page))
-    page.update()
-
+    
 app(target=app_loop)
+
