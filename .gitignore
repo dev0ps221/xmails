@@ -1,2 +1,5 @@
 test.py
 krypt.py
+__pycache__
+*.pyc
+*.swp
