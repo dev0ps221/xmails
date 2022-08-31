@@ -11,34 +11,41 @@ def view_pop(page, view):
 def _app_bar(title):
     title = title if title[0] == '/' else f"/{title}"
 
-    return AppBar(title=Text(title))
+    return AppBar(title=Text(title),bgcolor=colors.SURFACE_VARIANT)
 
-def _view(page, title, hook, route):
-    return View(
-            _app_bar(title), [
-                ElevatedButton(hook, on_click=lambda _: page.go(route))
-            ])
-
+def _view(page, title, hook):
+    bar = _app_bar(title)
+    barcontrols = [] 
+    for route in views:
+        barcontrols.append(
+            ElevatedButton(route, on_click=lambda _: page.go(route))
+        )
+    bar.controls = barcontrols
+    bar.visible = True
+    view = View(
+        bar        
+    )
+    return view
 
 def logged_view(page):
-    view = _view(page,'logged_view', 'HOME', '/home')
+    view = _view(page,'logged_view', 'HOME')
     print('we are the logged_view')
     return view
 
 def login_view(page):
-    view = _view(page,'login_view', 'LOGIN', '/login')
+    view = _view(page,'login_view', 'LOGIN')
     print('we are the log')
     return view
 
 views = {
-    "log": login_view,
-    "logged": logged_view
+    "/login": login_view,
+    "/home": logged_view
 }
 
 
 def app_loop(page: Page):
     for view in views:
         page.views.append(views[view](page))
-
+    page.update()
 
 app(target=app_loop)
