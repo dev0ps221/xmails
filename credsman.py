@@ -51,7 +51,7 @@ def decode_creds_file(credsfile):
     print(dkode(usr),dkode(pwd))
 
 def generate_creds_file(filename=None,gui=False,page=None,usr=None,pwd=None):
-    if not usr and pwd:
+    if not usr and not pwd:
         if not gui:
             usr,pwd = ask_creds()
         else:

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
-import credsman as creds_stuff
+from credsman import *
+
+
 
 pagewidth  = 0
 pageheight = 0
@@ -21,6 +23,9 @@ def login_view(page):
     pwd = Column()
     login = Column()
     select_view = Row()
+    login_profiles = get_creds_profiles()
+
+    print(login_profiles)
 
 
     def switch_login_view(event):
