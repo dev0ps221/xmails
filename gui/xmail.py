@@ -3,7 +3,7 @@
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
 from gui.login_view import *
-from gui.logged_view import *
+from gui.home_view import *
 from imaplib import IMAP4_SSL
 
 imap_server = IMAP4_SSL(host='pop.gmail.com')
