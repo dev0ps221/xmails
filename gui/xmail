@@ -6,23 +6,34 @@ pagewidth  = 0
 pageheight = 0
 is_logged  = 0
 actual_view = '/login'
+
  
 def logged_view(page):
     view = Column()
     return view
 
-def switch_login_view(event):
-    print(event.__dir__())
-    print(event.data)
-    print(event.control)
-def do_login(event):
-    print('ok')
-
 def login_view(page):
+    if not hasattr(login_view,'actual_login_view'):
+        login_view.actual_login_view = 'Login'
     view = Column()
+    email = Column()
+    pwd = Column()
+    login = Column()
+    select_view = Row()
+
+
+    def switch_login_view(event):
+        login_view.actual_login_view = event.data
+        refresh_view(page)
+
+    def do_login(event):
+        print("lets proceed to login")
+        print(select_box.value)
+
+
     view.width = pagewidth
     view.horizontal_alignment ='center'
-    email = Column()
+    
     email.horizontal_alignment ='center'
     emaillabel = Text(value='Email')
     emaillabel.width = int(pagewidth/2)
@@ -34,7 +45,6 @@ def login_view(page):
     email.horizontal_alignment = "center"
     
     
-    pwd = Column()
     pwdlabel = Text(value='pwd')
     pwdlabel.width = int(pagewidth/2)
     pwdInput = TextField(label='pwd',password=True)
@@ -42,16 +52,15 @@ def login_view(page):
     pwd.controls=[pwdlabel,pwdInput]
     pwd.horizontal_alignment = "center"
     
-    login = Column()
     loginInput = ElevatedButton(text='login',on_click=do_login)
     login.controls=[loginInput]
     login.horizontal_alignment = "center"
 
-    select_view = Row()
     select_box  = Dropdown(
         label="LOGIN MODE",
         on_change=switch_login_view,
         hint_text="Choose the way you want to log in",
+        value=login_view.actual_login_view,
         options=[
             dropdown.Option("Login"),
             dropdown.Option("Profiles")
@@ -69,8 +78,15 @@ def login_view(page):
     loginview = Column()
     loginview.width = pagewidth
     loginview.horizontal_alignment ='center'
-    loginview.controls = [email,pwd,login] 
-    view.controls = [select_view,loginview]
+    loginview.controls = [email,pwd]
+
+    if select_box.value == 'Login':
+        actual_login_view = loginview
+    else :
+        actual_login_view = Column()
+
+
+    view.controls = [select_view,actual_login_view,login]
     
     return view
 
