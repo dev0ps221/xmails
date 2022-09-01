@@ -3,7 +3,7 @@ from credsman import *
 
 
 
-def login_view(page,refresh_page,refresh_view):
+def login_view(page,imap_server,refresh_page,refresh_view):
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
@@ -27,7 +27,7 @@ def login_view(page,refresh_page,refresh_view):
     
     def switch_login_view(event):
         login_view.actual_login_view = event.data
-        refresh_view(page)
+        refresh_view(page,imap_server)
 
     def do_login(event):
 
@@ -43,6 +43,7 @@ def login_view(page,refresh_page,refresh_view):
         if usrval and passval:
             print('we are ready to login!!!')
             print(usrval,passval)
+            imap_server.login(usrval, passval)
         
 
 
