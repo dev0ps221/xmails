@@ -11,8 +11,12 @@ def logged_view(page):
     view = Column()
     return view
 
-def switch_login_view(*args):
-    print(args)
+def switch_login_view(event):
+    print(event.__dir__())
+    print(event.data)
+    print(event.control)
+def do_login(event):
+    print('ok')
 
 def login_view(page):
     view = Column()
@@ -39,13 +43,13 @@ def login_view(page):
     pwd.horizontal_alignment = "center"
     
     login = Column()
-    loginInput = ElevatedButton(text='login')
+    loginInput = ElevatedButton(text='login',on_click=do_login)
     login.controls=[loginInput]
     login.horizontal_alignment = "center"
 
     select_view = Row()
     select_box  = Dropdown(
-        label="Color",
+        label="LOGIN MODE",
         on_change=switch_login_view,
         hint_text="Choose the way you want to log in",
         options=[
@@ -54,10 +58,19 @@ def login_view(page):
         ],
         autofocus=True
     )
+    select_box.width = pagewidth/2
+    select_box.alignment =alignment.center
+
     select_view.controls = [select_box]
+    select_view.width = pagewidth/2
+    select_box.alignment =alignment.center
+
+
     loginview = Column()
+    loginview.width = pagewidth
+    loginview.horizontal_alignment ='center'
     loginview.controls = [email,pwd,login] 
-    view.controls = [select_view,login_view]
+    view.controls = [select_view,loginview]
     
     return view
 
@@ -77,7 +90,7 @@ def  refresh_view(page):
     page.clean()
     if actual_view == '/login' and is_logged : update_actual_view('/home') 
     page.add(views[actual_view](page))
-    refresh_page()
+    refresh_page(page)
 
 def refresh_page(page):
     page.update()
