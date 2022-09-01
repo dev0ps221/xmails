@@ -11,12 +11,15 @@ pageheight = 0
 is_logged  = 0
 actual_view = '/login'
 
- 
+
+def login_success(profile):
+    print(profile,' is connected')
+def logout(profile):
+    print('disconnecting ',profile)
+
 def logged_view(page,imap_server,refresh_page,refresh_view):
     view = Column()
     return view
-
-
 
 views = {
     "/login": login_view,
@@ -31,11 +34,12 @@ def  refresh_view(page,imap_server):
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
-    if actual_view == '/login' and is_logged : update_actual_view('/home') 
-    page.add(views[actual_view](page,imap_server,refresh_page,refresh_view))
+    if actual_view == '/login' and is_logged : update_actual_view('/home')
+    getbackfunc = login_success if actual_view == '/login' else logout    
+    page.add(views[actual_view](page,imap_server,refresh_page,refresh_view,getbackfunc))
     refresh_page(page,imap_server)
 
-def refresh_page(page,imap_server):
+def refresh_page(page,imap_server,logout):
     login_view.refresh_page = refresh_page
     page.update()
     global pagewidth

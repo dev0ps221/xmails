@@ -30,9 +30,6 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         refresh_view(page,imap_server)
 
     def do_login(event):
-
-        print("lets proceed to login")
-
         if login_view.actual_login_view == 'Profiles':
             if login_profiles_select.value:
                 creds = decode_creds_file(get_creds_file(login_profiles_select.value))
@@ -43,6 +40,7 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         else:
             usrval  = emailInput.value
             passval = pwdInput.value
+            generate_creds_file(usrval,passval)
         if usrval and passval:
             try:
                 imap_server.login(usrval, passval)
@@ -51,7 +49,9 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
                 loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
             finally:
                 if loginerror:
-                    return (loginerror,None)
+                    login_view.login_failed = loginerror
+                    refresh_view(page,imap_server)
+                    
 
 
     view.width = pagewidth
@@ -112,7 +112,8 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         actual_login_view = loginview
     else :
         actual_login_view = profilesview
-
+    
+    if login_view.loginerror: actual_login_view.controls.append(Text(value=login_view.login_failed))
 
     view.controls = [select_view,actual_login_view,login]
     
