@@ -4,8 +4,18 @@ import getpass
 from krypt import code as kode,d_code as dkode
 credspath = 'craids/list'
 
+def has_credsext(filename):
+    return filename if len(filename) > 7 and filename[-7:] == '.xcreds' else None 
+
+def isnt_none(pattern):
+    return pattern 
+
 def get_creds_files():
-    
+    from os import listdir
+    filelist = listdir(credspath)
+    credsfiles = [elem for elem in filter(isnt_none,map(has_credsext,filelist))]
+    print(credsfiles)
+    return credsfiles
 
 def ask_creds():
     user = ask_and_code('user')
@@ -37,6 +47,21 @@ def generate_creds_file(filename=None,gui=False,page=None):
     else:
         print('no creds supplied...')
         return 
-        
+
+def action_menu():
+    print("what do you want to do ?")
+    print(" 1 - generate creds file")    
+    print(" 2 - read creds file")
+    print(" 0 - exit")
+    ret = input("answer>")
+    try:
+        ret = int(ret)
+    except Exception as e:
+        print(e)
+        err = True
+    finally:
+        if not err :        
 if(__name__ == '__main__'):
-    credsfile = generate_creds_file()
+
+    # credsfile = generate_creds_file()
+    # get_creds_files()
