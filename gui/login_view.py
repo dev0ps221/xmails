@@ -1,7 +1,11 @@
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
 from credsman import *
 
-def login_view(page):
+
+
+def login_view(page,refresh_page,refresh_view):
+    pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
+    pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
     if not hasattr(login_view,'actual_login_view'):
         login_view.actual_login_view = 'Login'

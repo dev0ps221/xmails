@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
 from gui.login_view import *
@@ -10,7 +11,7 @@ is_logged  = 0
 actual_view = '/login'
 
  
-def logged_view(page):
+def logged_view(page,refresh_page,refresh_view):
     view = Column()
     return view
 
@@ -26,14 +27,16 @@ def  refresh_view(page):
     global pagewidth
     global pageheight
     global actual_view
+    login_view.refresh_view = refresh_view
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
     if actual_view == '/login' and is_logged : update_actual_view('/home') 
-    page.add(views[actual_view](page))
+    page.add(views[actual_view](page,refresh_page,refresh_view))
     refresh_page(page)
 
 def refresh_page(page):
+    login_view.refresh_page = refresh_page
     page.update()
     global pagewidth
     global pageheight
