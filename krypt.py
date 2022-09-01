@@ -1,14 +1,16 @@
 from base64 import b64encode as b_encode,b64decode as b_decode
 
-sfile_ = open('_sfile','r')
+credspath = 'craids'
+sfile_ = open(f"{credspath}/_sfile",'r')
 
 _s = int(sfile_.read())
 sfile_.close()
+
 def _Ccode(ncDPattern):
     CcdPattern = ""
     for char in ncDPattern: 
         char = ord(f"{char}")+_s
-        CcdPattern = f"{CcdPattern}h4ck{char}"
+        CcdPattern = f"{CcdPattern}{b_encode('h4ck'.encode()).decode()}{char}"
     return CcdPattern
 
 def _Ncode(pattern):
@@ -22,7 +24,7 @@ def _NDcode(Ccdpattern):
 
 def _CDcode(ncdPattern):
     pattern = ""
-    for char in ncdPattern.split('h4ck'):
+    for char in ncdPattern.split(b_encode('h4ck'.encode()).decode()):
         if(char):
             pattern = f"{pattern}{chr(int(char)-_s)}"
     return pattern
