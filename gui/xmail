@@ -96,6 +96,7 @@ def update_actual_view(view):
 
 
 def app_loop(page: Page):
+    global actual_view
     page.vertical_alignment = "center"
     if view_exists(actual_view):
         refresh_view(page)
