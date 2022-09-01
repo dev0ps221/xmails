@@ -8,8 +8,11 @@ is_logged  = 0
 actual_view = '/login'
  
 def logged_view(page):
+    view = Column()
     return view
 
+def switch_login_view(*args):
+    print(args)
 
 def login_view(page):
     view = Column()
@@ -43,15 +46,15 @@ def login_view(page):
     select_view = Row()
     select_box  = Dropdown(
         label="Color",
+        on_change=switch_login_view,
         hint_text="Choose the way you want to log in",
         options=[
             dropdown.Option("Login"),
             dropdown.Option("Profiles")
         ],
-        autofocus=True,
+        autofocus=True
     )
     select_view.controls = [select_box]
-
     loginview = Column()
     loginview.controls = [email,pwd,login] 
     view.controls = [select_view,login_view]
@@ -74,6 +77,7 @@ def  refresh_view(page):
     page.clean()
     if actual_view == '/login' and is_logged : update_actual_view('/home') 
     page.add(views[actual_view](page))
+    refresh_page()
 
 def refresh_page(page):
     page.update()
