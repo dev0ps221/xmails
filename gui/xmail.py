@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
-from credsman import *
 from gui.login_view import *
 
 
