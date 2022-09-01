@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
-
+from os import getcwd
+import credsman as creds_stuff
 
 pagewidth  = 0
 pageheight = 0
@@ -28,7 +29,7 @@ def login_view(page):
 
     def do_login(event):
         print("lets proceed to login")
-        print(select_box.value)
+        print(login)
 
 
     view.width = pagewidth
@@ -129,6 +130,4 @@ def app_loop(page: Page):
     page.vertical_alignment = "center"
     if view_exists(actual_view):
         refresh_view(page)
-
-app(target=app_loop)
 

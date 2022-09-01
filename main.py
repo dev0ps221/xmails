@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
 
-print('this is the main entry point for the app')
+from flet import app
+from gui.xmail import app_loop
 
+
+
+
+app(target=app_loop)
