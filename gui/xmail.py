@@ -17,7 +17,7 @@ def login_success(profile):
 def logout(profile):
     print('disconnecting ',profile)
 
-def logged_view(page,imap_server,refresh_page,refresh_view):
+def logged_view(page,imap_server,refresh_page,refresh_view,logout):
     view = Column()
     return view
 
@@ -39,7 +39,7 @@ def  refresh_view(page,imap_server):
     page.add(views[actual_view](page,imap_server,refresh_page,refresh_view,getbackfunc))
     refresh_page(page,imap_server)
 
-def refresh_page(page,imap_server,logout):
+def refresh_page(page,imap_server):
     login_view.refresh_page = refresh_page
     page.update()
     global pagewidth

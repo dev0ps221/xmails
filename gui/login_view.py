@@ -15,7 +15,6 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
     login = Column()
     profiles = Column()
     select_view = Row()
-    
     login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
     login_profiles_select = Dropdown(
         label="PROFILES",
@@ -30,11 +29,12 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         refresh_view(page,imap_server)
 
     def do_login(event):
+        loginerror = None
         if login_view.actual_login_view == 'Profiles':
             if login_profiles_select.value:
-                creds = decode_creds_file(get_creds_file(login_profiles_select.value))
+                creds = get_creds(login_profiles_select.value)
                 if creds:
-                    usrval,passval = decode_creds_file(get_creds_file(login_profiles_select.value))
+                    usrval,passval = creds
                 else:
                     usrval,passval = (None,None)
         else:
@@ -44,13 +44,15 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         if usrval and passval:
             try:
                 imap_server.login(usrval, passval)
-                login_success(usrval)
             except Exception as e:
                 loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
             finally:
                 if loginerror:
                     login_view.login_failed = loginerror
                     refresh_view(page,imap_server)
+                else:
+                    print('jaalleu na deh pourtant')
+                    login_success(usrval)
                     
 
 
@@ -113,7 +115,9 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
     else :
         actual_login_view = profilesview
     
-    if login_view.loginerror: actual_login_view.controls.append(Text(value=login_view.login_failed))
+    if hasattr(login_view,'login_failed'): 
+        print(login_view.login_failed)
+        actual_login_view.controls.append(Text(value=login_view.login_failed))
 
     view.controls = [select_view,actual_login_view,login]
     

@@ -48,7 +48,7 @@ def ask_and_code(val='pwd'):
 def decode_creds_file(credsfile):
     file_ = open(credsfile,'r')
     usr,pwd = file_.read().split('<=>')
-    print(dkode(usr),dkode(pwd))
+    return dkode(usr),dkode(pwd)
 
 def generate_creds_file(filename=None,gui=False,page=None,usr=None,pwd=None):
     if not usr and not pwd:
