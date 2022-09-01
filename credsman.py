@@ -2,7 +2,7 @@
 import getpass
 
 from krypt import code as kode,d_code as dkode
-
+credspath = 'craids'
 def ask_creds():
     user = ask_and_code('user')
     pwd =  ask_and_code()
@@ -20,14 +20,14 @@ def decode_creds_file(credsfile):
     usr,pwd = file_.read().split('<=>')
     print(dkode(usr),dkode(pwd))
 
-def generate_creds_file(filename,gui=False,page=None):
+def generate_creds_file(gui=False,page=None):
     if not gui:
         usr,pwd = ask_creds()
+        filename = f"{credspath}/{usr}.xcreds"
         file_ = open(filename,'w')
         file_.write(f"{usr}<=>{pwd}")
         file_.close()
+        return filename
 if(__name__ == '__main__'):
-    print('generate a new credsfile')
-    credsfile = input("output filename:")
-    generate_creds_file(credsfile)
+    credsfile = generate_creds_file()
     decode_creds_file(credsfile)        
