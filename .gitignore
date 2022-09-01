@@ -3,3 +3,4 @@ _saltfile
 __pycache__
 *.pyc
 *.swp
+*.gitignore
