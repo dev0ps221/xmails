@@ -22,19 +22,37 @@ def login_view(page):
     email = Column()
     pwd = Column()
     login = Column()
+    profiles = Column()
     select_view = Row()
-    login_profiles = get_creds_profiles()
-
-    print(login_profiles)
-
-
+    
+    login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
+    login_profiles_select = Dropdown(
+        label="PROFILES",
+        hint_text="Choose the profile you want to log in",
+        value=login_view.actual_login_view,
+        options=login_profiles,
+        autofocus=True
+    )
+    login_profiles_select.width = int(pagewidth/2)
     def switch_login_view(event):
         login_view.actual_login_view = event.data
         refresh_view(page)
 
     def do_login(event):
+        
         print("lets proceed to login")
-        print(login)
+
+        if login_view.actual_login_view == 'Profiles':
+            if login_profiles_select.value:
+                usrval,passval = decode_creds_file(get_creds_file(login_profiles_select.value))
+        else:
+            usrval  = emailInput
+            passval = pwdInput
+
+        if usrval and passval:
+            print('we are ready to login!!!')
+            print(usrval,passval)
+        
 
 
     view.width = pagewidth
@@ -85,11 +103,16 @@ def login_view(page):
     loginview.width = pagewidth
     loginview.horizontal_alignment ='center'
     loginview.controls = [email,pwd]
+    
+    profilesview = Column()
+    profilesview.width = pagewidth
+    profilesview.horizontal_alignment ='center'
+    profilesview.controls = [login_profiles_select]
 
     if select_box.value == 'Login':
         actual_login_view = loginview
     else :
-        actual_login_view = Column()
+        actual_login_view = profilesview
 
 
     view.controls = [select_view,actual_login_view,login]
