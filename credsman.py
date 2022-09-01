@@ -48,19 +48,33 @@ def generate_creds_file(filename=None,gui=False,page=None):
         print('no creds supplied...')
         return 
 
+def get_creds(profile=None):
+    if not profile:
+        print('to which is the username do want to get related creds')
+        profile = input('answer>')
+    if profile in get_creds_profiles():
+
+    
+
 def action_menu():
     print("what do you want to do ?")
     print(" 1 - generate creds file")    
     print(" 2 - read creds file")
     print(" 0 - exit")
-    ret = input("answer>")
+    actions = {
+        '0': exit,
+        '1': generate_creds_file,
+        '2': get_creds
+    }
+    choice = input("answer>")
     try:
-        ret = int(ret)
+        choice = int(choice)
     except Exception as e:
         print(e)
         err = True
     finally:
         if not err :        
+            if str(choice) in '012' 
 if(__name__ == '__main__'):
 
     # credsfile = generate_creds_file()
