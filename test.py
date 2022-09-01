@@ -1,11 +1,11 @@
 import imaplib
 # Connect to inbox
-imap_server = imaplib.IMAP4_SSL(host='pop.gmail.com')
 usr = 'tektechlofficiel@gmail.com'
 mp = 'cgmsnnhqpvraegpg'
 loginerror = None
 def dologin(u,p):
     try:
+        imap_server = imaplib.IMAP4_SSL(host='pop.gmail.com')
         imap_server.login(u, p)
         return (None,imap_server)
     except Exception as e:
