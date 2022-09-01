@@ -1,13 +1,13 @@
 from base64 import b64encode as b_encode,b64decode as b_decode
 
-saltfile_ = open('_saltfile','r')
+sfile_ = open('_sfile','r')
 
-salt = int(select.read().trim())
-saltfile_.close()
+_s = int(sfile_.read())
+sfile_.close()
 def _Ccode(ncDPattern):
     CcdPattern = ""
-    for char in ncDPattern:
-        char = ord(f"{char}")
+    for char in ncDPattern: 
+        char = ord(f"{char}")+_s
         CcdPattern = f"{CcdPattern}h4ck{char}"
     return CcdPattern
 
@@ -24,7 +24,7 @@ def _CDcode(ncdPattern):
     pattern = ""
     for char in ncdPattern.split('h4ck'):
         if(char):
-            pattern = f"{pattern}{chr(int(char))}"
+            pattern = f"{pattern}{chr(int(char)-_s)}"
     return pattern
     
 def code(pattern):
