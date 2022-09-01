@@ -5,9 +5,11 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 pagewidth  = 0
 pageheight = 0
 is_logged  = 0
+actual_view = '/login'
  
 def logged_view(page):
     return view
+
 
 def login_view(page):
     view = Column()
@@ -37,7 +39,23 @@ def login_view(page):
     loginInput = ElevatedButton(text='login')
     login.controls=[loginInput]
     login.horizontal_alignment = "center"
-    view.controls = [email,pwd,login]
+
+    select_view = Row()
+    select_box  = Dropdown(
+        label="Color",
+        hint_text="Choose the way you want to log in",
+        options=[
+            dropdown.Option("Login"),
+            dropdown.Option("Profiles")
+        ],
+        autofocus=True,
+    )
+    select_view.controls = [select_box]
+
+    loginview = Column()
+    loginview.controls = [email,pwd,login] 
+    view.controls = [select_view,login_view]
+    
     return view
 
 
@@ -50,10 +68,11 @@ views = {
 def  refresh_view(page):
     global pagewidth
     global pageheight
+    global actual_view
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
-    if view == '/login' and is_logged : update_actual_view('/home') 
+    if actual_view == '/login' and is_logged : update_actual_view('/home') 
     page.add(views[actual_view](page))
 
 def refresh_page(page):
@@ -71,8 +90,6 @@ def update_actual_view(view):
 
 
 
-
-actual_view = '/login'
 
 def app_loop(page: Page):
     page.vertical_alignment = "center"
