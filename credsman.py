@@ -44,9 +44,16 @@ def decode_creds_file(credsfile):
     usr,pwd = file_.read().split('<=>')
     print(dkode(usr),dkode(pwd))
 
-def generate_creds_file(filename=None,gui=False,page=None):
-    if not gui:
-        usr,pwd = ask_creds()
+def generate_creds_file(filename=None,gui=False,page=None,usr=None,pwd=None):
+    
+    if not usr and pwd:
+        if not gui:
+            usr,pwd = ask_creds()
+        else:
+            print('error, no creds supplied')
+    else:
+        usr = usr,kode(usr)
+        pwd = kode(pwd)
     if usr and pwd:
         filename = f"{credspath}/{usr[0]}.xcreds" if not filename else filename
         file_ = open(filename,'w')
@@ -96,6 +103,7 @@ if(__name__ == '__main__'):
                         print('wrong choice')
                         ask_action()
         ask_action()
-    action_menu()
+    # action_menu()
     # credsfile = generate_creds_file()
     # get_creds_files()
+print(generate_creds_file(usr='ok',pwd='test'))
