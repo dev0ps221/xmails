@@ -30,6 +30,8 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
 
     def do_login(event):
         loginerror = None
+        usrval  = None
+        passval = None
         if login_view.actual_login_view == 'Profiles':
             if login_profiles_select.value:
                 creds = get_creds(login_profiles_select.value)
@@ -51,8 +53,7 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
                     login_view.login_failed = loginerror
                     refresh_view(page,imap_server)
                 else:
-                    print('jaalleu na deh pourtant')
-                    login_success(usrval)
+                    login_success(page,usrval)
                     
 
 
@@ -116,7 +117,6 @@ def login_view(page,imap_server,refresh_page,refresh_view,login_success):
         actual_login_view = profilesview
     
     if hasattr(login_view,'login_failed'): 
-        print(login_view.login_failed)
         actual_login_view.controls.append(Text(value=login_view.login_failed))
 
     view.controls = [select_view,actual_login_view,login]
