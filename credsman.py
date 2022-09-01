@@ -2,7 +2,13 @@
 import getpass
 
 from krypt import code as kode,d_code as dkode
+from os import path
+
 credspath = 'craids/list'
+
+if not path.isdir(credspath):
+    from os import mkdir
+    mkdir(credspath)
 
 def has_credsext(filename):
     return filename if len(filename) > 7 and filename[-7:] == '.xcreds' else None 
@@ -45,7 +51,6 @@ def decode_creds_file(credsfile):
     print(dkode(usr),dkode(pwd))
 
 def generate_creds_file(filename=None,gui=False,page=None,usr=None,pwd=None):
-    
     if not usr and pwd:
         if not gui:
             usr,pwd = ask_creds()
