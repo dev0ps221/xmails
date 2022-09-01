@@ -3,7 +3,6 @@ import imaplib
 imap_server = imaplib.IMAP4_SSL(host='pop.gmail.com')
 usr = 'tektechlofficiel@gmail.com'
 mp = 'cgmsnnhqpvraegpg'
-mdp ='llllll'
 loginerror = None
 def dologin(u,p):
     try:

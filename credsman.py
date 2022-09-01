@@ -108,7 +108,4 @@ if(__name__ == '__main__'):
                         print('wrong choice')
                         ask_action()
         ask_action()
-    # action_menu()
-    # credsfile = generate_creds_file()
-    # get_creds_files()
-print(generate_creds_file(usr='ok',pwd='test'))
+    action_menu()
