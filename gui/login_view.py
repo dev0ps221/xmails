@@ -3,7 +3,7 @@ from credsman import *
 
 
 
-def login_view(page,imap_server,refresh_page,refresh_view):
+def login_view(page,imap_server,refresh_page,refresh_view,login_success):
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
     page.clean()
@@ -35,16 +35,23 @@ def login_view(page,imap_server,refresh_page,refresh_view):
 
         if login_view.actual_login_view == 'Profiles':
             if login_profiles_select.value:
-                print(login_profiles_select.value)
-                usrval,passval = decode_creds_file(get_creds_file(login_profiles_select.value))
+                creds = decode_creds_file(get_creds_file(login_profiles_select.value))
+                if creds:
+                    usrval,passval = decode_creds_file(get_creds_file(login_profiles_select.value))
+                else:
+                    usrval,passval = (None,None)
         else:
             usrval  = emailInput.value
             passval = pwdInput.value
         if usrval and passval:
-            print('we are ready to login!!!')
-            print(usrval,passval)
-            imap_server.login(usrval, passval)
-        
+            try:
+                imap_server.login(usrval, passval)
+                login_success(usrval)
+            except Exception as e:
+                loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
+            finally:
+                if loginerror:
+                    return (loginerror,None)
 
 
     view.width = pagewidth
