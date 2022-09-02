@@ -1,13 +1,54 @@
 from os import listdir
+from base64 import b64encode as b_encode,b64decode as b_decode
 
 class CredsManager:
+    _s
     credspath 
     credsfiles = []
     credsprofiles = []
 
+
+
     def __init__(self,credspath):
         self.credspath = credspath
-            
+        sfile_ = open(f"{credspath}/_sfile",'r')
+        self.set_s(int(sfile_.read()))
+
+    det get_s(self):
+        return self._s
+
+    def set_s(self,s):
+        _s = s
+
+    def _Ccode(self,ncDPattern):
+        CcdPattern = ""
+        for char in ncDPattern: 
+            char = ord(f"{char}")+self.get_s()
+            CcdPattern = f"{CcdPattern}{b_encode('h4ck'.encode()).decode()}{char}"
+        return CcdPattern
+
+    def _Ncode(self,pattern):
+        ncDPattern = b_encode(pattern.encode())
+        return self._Ccode(ncDPattern.decode())
+
+    def _NDcode(self,Ccdpattern):
+        ncDPattern = self._CDcode(Ccdpattern)
+        pattern = b_decode(ncDPattern.encode()).decode()
+        return pattern
+
+    def _CDcode(self,ncdPattern):
+        pattern = ""
+        for char in ncdPattern.split(b_encode('h4ck'.encode()).decode()):
+            if(char):
+                pattern = f"{pattern}{chr(int(char)-self.get_s())}"
+        return pattern
+        
+    def kode(self,pattern):
+        return self._Ncode(pattern)
+
+    def dkode(self,pattern):
+        return self._NDcode(pattern)
+
     def has_credsext(self,filename):
         return filename if len(filename) > 7 and filename[-7:] == '.xcreds' else None 
 
@@ -31,14 +72,14 @@ class CredsManager:
         return self.credsfiles
 
     def get_creds_file(self,profile):
-        credsfiles = get_creds_files()
+        credsfiles = self.get_creds_files()
         def matches(filename):
             return f"{profile}.xcreds" == filename
         match_ = [elem for elem in filter(matches,credsfiles)]
         return f"{credspath}/{match_[0]}" if len(match_) else None
 
     def set_creds_profiles(self):
-        for profile in get_creds_files():
+        for profile in self.get_creds_files():
             self.credsprofiles.append(profile.replace('.xcreds',''))
         return self.credsprofiles
 
@@ -69,7 +110,7 @@ class CredsManager:
     def generate_creds_file(self,filename=None,gui=False,page=None,usr=None,pwd=None):
         if not usr and not pwd:
             if not gui:
-                usr,pwd = ask_creds()
+                usr,pwd = self.ask_creds()
             else:
                 print('error, no creds supplied')
         else:
@@ -91,8 +132,8 @@ class CredsManager:
         self.set_creds_profiles()
 
     def get_creds(self,profile=None):
-        if profile and profile in get_creds_profiles():
-            return decode_creds_file(get_creds_file(profile)) 
+        if profile and profile in self.get_creds_profiles():
+            return self.decode_creds_file(self.get_creds_file(profile)) 
         else :
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
