@@ -8,6 +8,16 @@ class ConnectionManager:
     server       = None 
     loginerror   = None
     connecterror = None
+
+    def get_server(self):
+        return self.server
+
+    def get_login_error(self):
+        return self.loginerror
+
+    def get_connect_error(self):
+        return self.connecterror
+
     def is_connected(self):
         return self._is_connected
 

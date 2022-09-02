@@ -10,6 +10,9 @@ class MailBox:
     mail_count
     resp_code
 
+    def get_info(self,info):
+        return self[info] if hasattr(self,info) else None
+
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]
         self.name = selef.selector.replace('"','').split('/')[-1] 
