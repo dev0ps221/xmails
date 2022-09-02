@@ -4,12 +4,12 @@ from base64 import b64encode as b_encode,b64decode as b_decode
 class CredsInstance:
     creds = {}
     def __init__(self,credsfile,manager):
-        self.mananger = manager
+        self.manager = manager
         self.set_credsfile(credsfile)
         self.set_data()
 
     def set_data(self):
-        self.usr,self.pwd = manager.decode_creds_file(self.get_credsfile)
+        self.usr,self.pwd = self.manager.decode_creds_file(self.get_credsfile())
         self.set_creds()
     
     def set_creds(self):
@@ -20,14 +20,14 @@ class CredsInstance:
         self.credsfile = credsfile
 
     def get_credsfile(self):
-        return self.credfile
+        return self.credsfile
 
     def get_cred(self,cred):
-        return self[cred] if hasattr (self,cred) else None
+        return self.get_creds()[cred] if cred in self.get_creds()  else None
 
     def set_cred(self,cred,val):
-        return self.creds[cred] = val
-
+        self.creds[cred] = val
+        return self.creds[cred]
     def get_creds(self):
         return self.creds
 
@@ -173,4 +173,7 @@ class CredsManager:
         else :
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
-        
+
+man = CredsManager()
+creds = man.get_creds(man.get_creds_profiles()[0])
+print(creds.get_creds())
