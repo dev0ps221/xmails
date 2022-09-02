@@ -3,7 +3,7 @@ from os import listdir
 class CredsManager:
     credspath 
     credsfiles = []
-
+    credsprofiles = []
 
     def __init__(self,credspath):
         self.credspath = credspath
@@ -37,8 +37,13 @@ class CredsManager:
         match_ = [elem for elem in filter(matches,credsfiles)]
         return f"{credspath}/{match_[0]}" if len(match_) else None
 
+    def set_creds_profiles(self):
+        for profile in get_creds_files():
+            self.credsprofiles.append(profile.replace('.xcreds',''))
+        return self.credsprofiles
+
     def get_creds_profiles(self):
-        return [profile.replace('.xcreds','') for profile in get_creds_files()]
+        return self.credsprofiles
 
     def ask_creds(self):
         user = ask_and_code('user')
@@ -72,10 +77,15 @@ class CredsManager:
             file_ = open(filename,'w')
             file_.write(f"{usr[1]}<=>{pwd}")
             file_.close()
+            self.update_creds_stuff()
             return filename
         else:
             print('no creds supplied...')
             return 
+
+    def update_creds_stuff(self):
+        self.set_creds_files()
+        self.set_creds_profiles()
 
     def get_creds(self,profile=None):
         if not profile:
