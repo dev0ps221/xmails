@@ -1,24 +1,33 @@
-from os import listdir
+from os import listdir,getcwd
 from base64 import b64encode as b_encode,b64decode as b_decode
 
 class CredsManager:
-    _s
-    credspath 
+    _s = None
+    credspath = getcwd()+"/craids/list" 
     credsfiles = []
     credsprofiles = []
 
 
 
-    def __init__(self,credspath):
-        self.credspath = credspath
-        sfile_ = open(f"{credspath}/_sfile",'r')
+    def __init__(self):
+        sfile_ = open(f"{self.get_credspath()}/../_sfile",'r')
         self.set_s(int(sfile_.read()))
+        self.update_creds_stuff()
 
-    det get_s(self):
+    def set_credspath(self):
+        self.credspath = getcwd()+"/craids/list"
+        if not path.isdir(self.credspath):
+            from os import mkdir
+            mkdir(self.credspath)
+
+    def get_credspath(self):
+        return self.credspath
+
+    def get_s(self):
         return self._s
 
     def set_s(self,s):
-        _s = s
+        self._s = s
 
     def _Ccode(self,ncDPattern):
         CcdPattern = ""
@@ -52,19 +61,18 @@ class CredsManager:
     def has_credsext(self,filename):
         return filename if len(filename) > 7 and filename[-7:] == '.xcreds' else None 
 
-    def isnt_none(pattern):
+    def isnt_none(self,pattern):
         return pattern 
 
     def cred_file_at(self,idx):
         return self.credsfiles[idx] if len(self.credsfiles>idx) else None
-
 
     def set_cred_file(self,credfile):
         self.credsfiles.append(credfile)
         return self.credsfiles
 
     def set_creds_files(self):
-        filelist = listdir(credspath)
+        filelist = listdir(self.get_credspath())
         for credfile in filter(self.isnt_none,map(self.has_credsext,filelist)):
             self.set_cred_file(credfile)
 
@@ -105,7 +113,7 @@ class CredsManager:
     def decode_creds_file(self,credsfile):
         file_ = open(credsfile,'r')
         usr,pwd = file_.read().split('<=>')
-        return dkode(usr),dkode(pwd)
+        return self.dkode(usr),self.dkode(pwd)
 
     def generate_creds_file(self,filename=None,gui=False,page=None,usr=None,pwd=None):
         if not usr and not pwd:
@@ -114,10 +122,10 @@ class CredsManager:
             else:
                 print('error, no creds supplied')
         else:
-            usr = usr,kode(usr)
-            pwd = kode(pwd)
+            usr = usr,self.kode(usr)
+            pwd = self.kode(pwd)
         if usr and pwd:
-            filename = f"{credspath}/{usr[0]}.xcreds" if not filename else filename
+            filename = f"{self.get_credspath()}/{usr[0]}.xcreds" if not filename else filename
             file_ = open(filename,'w')
             file_.write(f"{usr[1]}<=>{pwd}")
             file_.close()
@@ -138,4 +146,6 @@ class CredsManager:
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
         
-    
+credsman = CredsManager()
+print(credsman.get_creds_file('tektechlofficiel@gmail.com'))
+print(credsman.get_creds_files())
