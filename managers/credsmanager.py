@@ -36,6 +36,7 @@ class CredsManager:
     credspath = getcwd()+"/craids/list" 
     credsfiles = []
     credsprofiles = []
+    credsinstances = {}
 
     def __init__(self):
         sfile_ = open(f"{self.get_credspath()}/../_sfile",'r')
@@ -122,6 +123,19 @@ class CredsManager:
     def get_creds_profiles(self):
         return self.credsprofiles
 
+    def set_creds_instances(self):
+        for profile in self.get_creds_profiles():
+            self.set_creds_instance(profile)
+
+    def get_creds_instances(self):
+        return self.credsinstances
+
+    def set_creds_instance(self,profile):    
+        self.credsinstances[profile] = CredsInstance(self.get_creds_file(profile),self)
+
+    def get_creds_instance(self,profile):
+        return self.get_creds_instances()[profile] if profile in self.get_creds_instances() else None 
+
     def ask_profile(self):
         return input("profile:")
 
@@ -166,6 +180,7 @@ class CredsManager:
     def update_creds_stuff(self):
         self.set_creds_files()
         self.set_creds_profiles()
+        self.set_creds_instances()
 
     def get_creds(self,profile=None):
         if profile and profile in self.get_creds_profiles():
@@ -173,7 +188,3 @@ class CredsManager:
         else :
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
-
-man = CredsManager()
-creds = man.get_creds(man.get_creds_profiles()[0])
-print(creds.get_creds())
