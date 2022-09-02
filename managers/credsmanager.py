@@ -88,10 +88,7 @@ class CredsManager:
         self.set_creds_profiles()
 
     def get_creds(self,profile=None):
-        if not profile:
-            print('to which is the username do want to get related creds')
-            profile = input('answer>')
-        if profile in get_creds_profiles():
+        if profile and profile in get_creds_profiles():
             return decode_creds_file(get_creds_file(profile)) 
         else :
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
