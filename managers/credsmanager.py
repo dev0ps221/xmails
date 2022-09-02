@@ -1,3 +1,5 @@
+from os import listdir
+
 class CredsManager:
     credspath 
     credsfiles = []
@@ -5,9 +7,6 @@ class CredsManager:
 
     def __init__(self,credspath):
         self.credspath = credspath
-
-
-
             
     def has_credsext(self,filename):
         return filename if len(filename) > 7 and filename[-7:] == '.xcreds' else None 
@@ -15,11 +14,21 @@ class CredsManager:
     def isnt_none(pattern):
         return pattern 
 
-    def get_creds_files(self):
-        from os import listdir
+    def cred_file_at(self,idx):
+        return self.credsfiles[idx] if len(self.credsfiles>idx) else None
+
+
+    def set_cred_file(self,credfile):
+        self.credsfiles.append(credfile)
+        return self.credsfiles
+
+    def set_creds_files(self):
         filelist = listdir(credspath)
-        credsfiles = [elem for elem in filter(isnt_none,map(has_credsext,filelist))]
-        return credsfiles
+        for credfile in filter(self.isnt_none,map(self.has_credsext,filelist)):
+            self.set_cred_file(credfile)
+
+    def get_creds_files(self):
+        return self.credsfiles
 
     def get_creds_file(self,profile):
         credsfiles = get_creds_files()
