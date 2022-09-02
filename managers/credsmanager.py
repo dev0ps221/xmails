@@ -1,7 +1,7 @@
 from os import listdir,getcwd
 from base64 import b64encode as b_encode,b64decode as b_decode
 
-class Creds:
+class CredsInstance:
     creds = {}
     def __init__(self,credsfile,manager):
         self.mananger = manager
@@ -169,7 +169,7 @@ class CredsManager:
 
     def get_creds(self,profile=None):
         if profile and profile in self.get_creds_profiles():
-            return self.decode_creds_file(self.get_creds_file(profile)) 
+            return CredsInstance(self.get_creds_file(profile),self) 
         else :
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
