@@ -6,13 +6,33 @@ class ConnectionManager:
     is_connected = False
     is_logged    = False 
     server       = None 
-
+    loginerror   = None
+    connecterror = None
     def is_connected(self):
-        return self.is_connected
+        return self._is_connected
 
     def is_logged(self):
-        return self.is_logged  
-    def connect(self):
-        imap_server = IMAP4_SSL(self.host)
+        return self._is_logged  
 
-    def __init__(self):
+    def login(self):
+        try:
+            imap_server.login(usrval, passval)
+            self._is_logged  =   True
+            self.loginerror =   None
+        except Exception as e:
+            self._is_logged  =   False
+            self.loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
+        return self.is_logged()
+
+    def connect(self):
+        try:
+            self.server = IMAP4_SSL(self.host)
+            self._is_connected  =   True
+            self.loginerror =   None
+        except Exception as e:
+            self._is_connected  =   False
+            self.connecterror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
+        
+    def __init__(self,host,creds):
+        self.host   = host if host else self.host
+        self.creds  = creds
