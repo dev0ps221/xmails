@@ -1,13 +1,41 @@
 from os import listdir,getcwd
 from base64 import b64encode as b_encode,b64decode as b_decode
 
+class Creds:
+    creds = {}
+    def __init__(self,credsfile,manager):
+        self.mananger = manager
+        self.set_credsfile(credsfile)
+        self.set_data()
+
+    def set_data(self):
+        self.usr,self.pwd = manager.decode_creds_file(self.get_credsfile)
+        self.set_creds()
+    
+    def set_creds(self):
+        self.set_cred('user',self.usr)
+        self.set_cred('pass',self.pwd)
+
+    def set_credsfile(self,credsfile):
+        self.credsfile = credsfile
+
+    def get_credsfile(self):
+        return self.credfile
+
+    def get_cred(self,cred):
+        return self[cred] if hasattr (self,cred) else None
+
+    def set_cred(self,cred,val):
+        return self.creds[cred] = val
+
+    def get_creds(self):
+        return self.creds
+
 class CredsManager:
     _s = None
     credspath = getcwd()+"/craids/list" 
     credsfiles = []
     credsprofiles = []
-
-
 
     def __init__(self):
         sfile_ = open(f"{self.get_credspath()}/../_sfile",'r')
