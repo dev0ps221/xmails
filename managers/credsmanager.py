@@ -45,6 +45,9 @@ class CredsManager:
     def get_creds_profiles(self):
         return self.credsprofiles
 
+    def ask_profile(self):
+        return input("profile:")
+
     def ask_creds(self):
         user = ask_and_code('user')
         pwd =  ask_and_code()
