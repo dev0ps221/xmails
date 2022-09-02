@@ -4,9 +4,13 @@ from managers.connectionmanager import ConnectionManager
 class Profile:
     rmailboxes = None
     mailboxes = {}
-
-
-    def login(self,login_success,login_failed):
+    
+    def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
+        if not self.connection.is_connected():
+            self.connection.connect()
+            if not self.connection.is_connected():
+                print(self.connection.connecterror)
+                return
         self.connection.login()
         if self.is_logged():
             login_success()
@@ -23,12 +27,28 @@ class Profile:
     def append_mailbox(self,name,box):
         self.mailboxes[name] = box
 
+    def get_mailbox(self,name):
+        return self.get_mailboxes()[name] if name in self.get_mailboxes() else None
+
+    def get_mailboxes(self):
+        return self.mailboxes
+
     def set_mailboxes(self):
-        self.rmailboxes = server.list()
+        if not self.connection.is_connected():
+            self.connection.connect()
+            if not self.connection.is_connected():
+                print(self.connection.connecterror)
+                return
+        if not self.connection.is_logged():
+            self.connection.login()
+            if not self.connection.is_logged():
+                print(self.connection.loginerror)
+                return
+        self.rmailboxes = self.connection.server.list()
         for elem in self.rmailboxes[1]:
             box = MailBox(elem)
             self.append_mailbox(box.getinfo('name'),box)
-        
+            
 
     def __init__(self,creds):
         self.creds      = creds
