@@ -84,7 +84,7 @@ class CredsManager:
         def matches(filename):
             return f"{profile}.xcreds" == filename
         match_ = [elem for elem in filter(matches,credsfiles)]
-        return f"{credspath}/{match_[0]}" if len(match_) else None
+        return f"{self.get_credspath()}/{match_[0]}" if len(match_) else None
 
     def set_creds_profiles(self):
         for profile in self.get_creds_files():
@@ -146,6 +146,3 @@ class CredsManager:
             print('sorry, but the requested profile {} doesnt exist'.format(profile))
             return None
         
-credsman = CredsManager()
-print(credsman.get_creds_file('tektechlofficiel@gmail.com'))
-print(credsman.get_creds_files())
