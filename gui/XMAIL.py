@@ -19,10 +19,20 @@ class XMAIL:
         print('disconnecting ',profile)
 
 
+    def isin_login_view(self):
+        return self.actual_view == '/login'
+
     def  refresh_view(self):
         page.clean()
-        if actual_view == '/login' and is_logged : update_actual_view('/home')
-        getbackfunc = login_success if actual_view == '/login' else logout
+        self.getbackfunc = logout
+        if self.isin_login_view():
+            self.getbackfunc = login_success
+            if self.is_logged : 
+                self.update_actual_view('/home')
+                self.getbackfunc = logout
+        
+          
+        self.getbackfunc = self.login_success if self.actual_view == '/login' else logout
         args = (page,credsprofiles,refresh_page,refresh_view,login_success) if actual_view == '/login' else (page,logged_profile,refresh_page,refresh_view,getbackfunc)
         view = views[actual_view](*args)
         page.add(view)
