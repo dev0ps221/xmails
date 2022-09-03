@@ -34,7 +34,6 @@ class MailBox:
         self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
         if self.server.state == 'SELECTED':
             self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
-            self.get_mails()
 
     def __init__(self,raw,server):
         self.b_raw = raw

@@ -1,4 +1,4 @@
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown
 
 
 class Home:
@@ -54,26 +54,40 @@ class Home:
         
 
     def build_view(self):    
+        self.view.width = self.pagewidth
         mailboxes = self.get_mailboxes()
-        self.boxlist.width = int(int(self.pagewidth*20)/100)
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
         self.mailbox_container.controls.append(self.boxlist)
-        if self.actual_view = 'box':
-            viewlist = Column()
-            viewlist.width = int(int(self.pagewidth*80)/100)
+        if self.actual_view == 'box':
+            viewlist = Column(scroll='adaptive')
+            viewlist.width = int(self.pagewidth*int(80/100))
+            viewlist.height = self.pageheight
             if  self.actual_mailbox:
+                self.actual_mailbox.get_mails()
                 idx = 0
                 for mail in self.actual_mailbox.mails:
+                    mail = self.actual_mailbox.mails[mail]
                     viewlist.controls.append(self.generate_mail_hook(mail,idx))
                     idx+=1
-
+            self.mailbox_container.controls.append(viewlist)
         self.view.controls.append(self.mailbox_container)
         return self.view
 
 
     def generate_mail_hook(self,mail,idx):
+        mailcontainer = Column()
+        mailtitle = Text(bgcolor=colors.BLUE_600,value=mail.get("From"))
+        mailhooktext = ""
+        for part in mail.walk():
+            if part.get_content_type() == "text/plain":
+                body_lines = part.as_string().split("\n")
+                mailhooktext += "\n".join(body_lines[4:8])
+        mailhook = Text(value=mailhooktext)
+        mailcontainer.controls.append(mailtitle)
+        mailcontainer.controls.append(mailhook)
+        return mailcontainer
 
 
 
