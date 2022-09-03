@@ -1,11 +1,6 @@
 
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
-from managers.credsmanager import CredsManager,CredsInstance
 from core.classes.Profile import Profile
-
-
-credsman = CredsManager()
-credsprofiles = credsman.get_creds_profiles()
 
 class Login:
 
@@ -29,12 +24,15 @@ class Login:
     )
         
 
-    def __init__(self,page,profiles,refresh_page,refresh_view,login_success):
-        self.page       = page
-        self.login_profiles   = profiles
-        self.refresh_page = lambda *a : refresh_page(*a)
-        self.refresh_view = lambda *a : refresh_view(*a)
-        self.login_success = lambda *a : login_success(*a)
+    def __init__(self,master):
+        self.master = master
+        self.page       = self.master.page
+        self.credsman = self.master.credsman
+        self.CredsInstance = self.master.CredsInstance
+        self.login_profiles   = self.master.credsprofiles
+        self.refresh_page = self.master.refresh_page
+        self.refresh_view = self.master.refresh_view
+        self.login_success = self.master.login_success
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         self.actual_login_view = 'Login'
@@ -86,7 +84,7 @@ class Login:
         self.actual_login_view = self.select_box.value
         self.build_components()
         self.build_view()
-        self.refresh_view(self.page,None)
+        self.refresh_view()
         
         
 
@@ -97,14 +95,14 @@ class Login:
         usrval  = None
         passval = None
         if self.actual_login_view == 'Profiles':
-            credsinstance = credsman.get_creds_instance(self.login_profiles_select.value)
+            credsinstance = self.credsman.get_creds_instance(self.login_profiles_select.value)
             if credsinstance :
                 usrval = credsinstance.get_cred('user')
                 passval = credsinstance.get_cred('pass')
         else:
             usrval  = self.emailInput.value
             passval = self.pwdInput.value
-            credsinstance = CredsInstance(credsman.generate_creds_file(None,None,None,usrval,passval),credsman)
+            credsinstance = self.CredsInstance(self.credsman.generate_creds_file(None,None,None,usrval,passval),self.credsman)
         if usrval and passval:
             profile = Profile(credsinstance)
             try:
@@ -115,9 +113,9 @@ class Login:
                 self.loginerr = earr[1 if len(earr) > 1 else 0].replace('\'','') 
             finally:
                 if profile.connection.is_logged():
-                    self.login_success(self.page,profile)
+                    self.login_success(profile)
                 else:
-                    self.refresh_view(self.page,None)
+                    self.refresh_view()
 
     def login_error(self,error):
         self.loginerr = error 

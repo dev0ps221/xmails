@@ -6,25 +6,37 @@ class Home:
     mailbox_container = Row()
     boxlist = Column()   
     mailboxes = []
-    def __init__(self,page,profile,refresh_page,refresh_view,logout):
-        self.page       = page
-        self.profile   = profile
-        self.refresh_page = lambda *a : refresh_page(*a)
-        self.refresh_view = lambda *a : refresh_view(*a)
-        self.logout = lambda *a : logout(*a)
+    gotmailboxes = False
+    def __init__(self,master):
+        self.master = master
+        self.page      = self.master.page
+        self.profile   = self.master.logged_profile
+        self.refresh_page = self.master.refresh_page
+        self.refresh_view = self.master.refresh_view
+        self.logout = self.master.logout
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
-        self.set_mailboxes()
+        if self.profile:
+            self.set_mailboxes()
+
+    def reset_profile(self):
+        self.profile = self.master.logged_profile
 
     def set_mailboxes(self):
         self.mailboxes = self.profile.set_mailboxes()
+        self.gotmailboxes = True
         return self.get_mailboxes()
     
     def get_mailboxes(self):
-        return self.mailboxes
+        if self.gotmailboxes:
+            return self.mailboxes
+        else:
+            return self.set_mailboxes()
 
     def show(self):
-        self.build_view()
+        self.reset_profile()
+        if self.profile:
+            self.build_view()
         return self.view
     
 
