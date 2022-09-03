@@ -64,14 +64,16 @@ class Home:
             viewlist = Column()
             viewlist.width = int(int(self.pagewidth*80)/100)
             if  self.actual_mailbox:
+                idx = 0
                 for mail in self.actual_mailbox.mails:
-                    viewlist.controls.append(self.generate_mail_hook(mail))
+                    viewlist.controls.append(self.generate_mail_hook(mail,idx))
+                    idx+=1
 
         self.view.controls.append(self.mailbox_container)
         return self.view
 
 
-    def generate_mail_hook(self,mail):
-        
+    def generate_mail_hook(self,mail,idx):
+
 
 
