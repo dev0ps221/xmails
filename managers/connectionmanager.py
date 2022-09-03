@@ -26,7 +26,7 @@ class ConnectionManager:
 
     def login(self):
         try:
-            imap_server.login(usrval, passval)
+            self.server.login(self.creds.get_cred('user'), self.creds.get_cred('pass'))
             self._is_logged  =   True
             self.loginerror =   None
         except Exception as e:
@@ -43,6 +43,6 @@ class ConnectionManager:
             self._is_connected  =   False
             self.connecterror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
         
-    def __init__(self,host,creds):
+    def __init__(self,creds,host):
         self.host   = host if host else self.host
         self.creds  = creds

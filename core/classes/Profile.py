@@ -50,6 +50,6 @@ class Profile:
             self.append_mailbox(box.getinfo('name'),box)
             
 
-    def __init__(self,creds):
+    def __init__(self,creds,host):
         self.creds      = creds
-        self.connection = ConnectionManager(self.creds)       
+        self.connection = ConnectionManager(self.creds,host)       
