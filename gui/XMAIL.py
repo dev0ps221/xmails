@@ -1,11 +1,18 @@
+from managers.credsmanager import CredsManager,CredsInstance
+
+
+credsman = CredsManager()
+credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
+    credsman
+    credsprofiles
     is_logged  = 0
     actual_view = '/login'
     views = None
     login_view = None
     logged_profile = None
-
+    view = None
     def login_success(page,profile):
         global imap_server
         global is_logged
@@ -24,34 +31,22 @@ class XMAIL:
 
     def  refresh_view(self):
         page.clean()
-        self.getbackfunc = logout
-        if self.isin_login_view():
-            self.getbackfunc = login_success
-            if self.is_logged : 
-                self.update_actual_view('/home')
-                self.getbackfunc = logout
-        
-          
-        self.getbackfunc = self.login_success if self.actual_view == '/login' else logout
-        args = (page,credsprofiles,refresh_page,refresh_view,login_success) if actual_view == '/login' else (page,logged_profile,refresh_page,refresh_view,getbackfunc)
-        view = views[actual_view](*args)
-        page.add(view)
+        self.view.show()
+        self.page.add(view)
 
-        refresh_page(page)
+        self.refresh_page()
 
-    def refresh_page(page):
-        page.update()
+    def refresh_page(self):
+        self.page.update()
 
-    def view_exists(view):
-        return view in views
+    def view_exists(self,view):
+        return view in self.views
 
-    def update_actual_view(view):
-        global actual_view
-        if view_exists(view) : actual_view = view
+    def update_actual_view(self,view):
+        if self.view_exists(view) : 
+            self.actual_view = view
+            self.view = self.views[self.actual_view]
 
-
-    def home_view(*args):
-        return Home(*args).show()
 
     def app_loop(page: Page):
         global actual_view
