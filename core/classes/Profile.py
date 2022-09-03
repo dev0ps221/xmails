@@ -46,7 +46,7 @@ class Profile:
                 return
         self.rmailboxes = self.connection.server.list()
         for elem in self.rmailboxes[1]:
-            box = MailBox(elem)
+            box = MailBox(elem,self.server())
             self.append_mailbox(box.getinfo('name'),box)
         return self.get_mailboxes()
             

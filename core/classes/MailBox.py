@@ -15,8 +15,8 @@ class MailBox:
 
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]
-        self.name = selef.selector.replace('"','').split('/')[-1] 
-        self.resp_code,self.mail_count = server.select(self.selector)
+        self.name = self.selector.replace('"','').split('/')[-1] 
+        self.resp_code,self.mail_count = self.server.select(self.selector)
 
     def __init__(self,raw,server):
         self.b_raw = raw
