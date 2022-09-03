@@ -2,9 +2,11 @@
 
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
-from gui.login_view import *
+# from gui.login_view import *
 from gui.home_view import *
+from gui.Login import Login
 from imaplib import IMAP4_SSL
+from coreman import *
 
 imap_server = IMAP4_SSL(host='pop.gmail.com')
 is_logged  = 0
@@ -21,10 +23,8 @@ def login_success(page,profile):
 def logout(page,profile):
     print('disconnecting ',profile)
 
-views = {
-    "/login": login_view,
-    "/home": home_view
-}
+
+
 
 def  refresh_view(page,imap_server):
     global actual_view
@@ -53,3 +53,10 @@ def app_loop(page: Page):
     if view_exists(actual_view):
         refresh_view(page,imap_server)
 
+login_view = Login(page,credsprofiles,refresh_page,refresh_view,login_success)
+
+
+views = {
+    "/login": login_view.show,
+    "/home": home_view
+}

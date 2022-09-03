@@ -1,6 +1,8 @@
+
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
 from managers.credsmanager import CredsManager,CredsInstance
 from core.classes.Profile import Profile
+
 
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
@@ -101,26 +103,27 @@ class Login:
             try:
                 profile.login(self.login_success,self.login_error)
             except Exception as e:
-                self.loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
+                self.loginerr = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
             finally:
-                if loginerror:
-                    login_view.login_failed = loginerror
-                    refresh_view(page,imap_server)
+                if self.loginerr:
+                    self.refresh_view(self.page,self.profile.server)
                 else:
-                    login_success(page,usrval)
+                    self.login_success(self.page,profile)
+
     def login_error(self,error):
         self.loginerr = error 
 
 
-    def build_view(self):
+    def show(self):
         self.page.clean()
+        self.build_view()
+        self.page.add(self.view)
+
+    def build_view(self):
         login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
-        login_profiles_select = None
-
-
-        
-        select_view.width = pagewidth/2
-        select_box  = Dropdown(
+                
+        self.select_view.width = pagewidth/2
+        self.select_box  = Dropdown(
             label="LOGIN MODE",
             on_change=switch_login_view,
             hint_text="Choose the way you want to log in",
@@ -131,29 +134,27 @@ class Login:
             ],
             autofocus=True
         )
-        select_box.width = pagewidth/2
-        select_box.alignment =alignment.center
+        self.select_box.width = pagewidth/2
+        self.select_box.alignment =alignment.center
 
-        select_view.controls = [select_box]
+        self.select_view.controls = [select_box]
 
-        view.width = pagewidth
-        view.horizontal_alignment ='center'
-        
-        
-        loginInput = ElevatedButton(text='login',on_click=do_login)
-        login.controls=[loginInput]
-        login.horizontal_alignment = "center"
+        self.view.width = pagewidth
+        self.view.horizontal_alignment ='center'
+        self.loginInput = ElevatedButton(text='login',on_click=do_login)
+        self.login.controls=[loginInput]
+        self.login.horizontal_alignment = "center"
 
 
 
-        if select_box.value == 'Login':
-            self.actual_login_view = loginview
+        if self.select_box.value == 'Login':
+            self.actual_login_view = self.loginview
         else :
-            self.actual_login_view = profilesview
+            self.actual_login_view = self.profilesview
 
         if self.loginerr: 
             self.actual_login_view.controls.append(Text(value=self.loginerr))
 
-        view.controls = [select_view,self.actual_login_view,login]
+        self.view.controls = [self.select_view,self.actual_login_view,self.login]
         
-        return view
+        return self.view
