@@ -134,7 +134,15 @@ class CredsManager:
         self.credsinstances[profile] = CredsInstance(self.get_creds_file(profile),self)
 
     def get_creds_instance(self,profile):
-        return self.get_creds_instances()[profile] if profile in self.get_creds_instances() else None 
+        ret = None
+        instances = self.get_creds_instances()
+        for instance in instances.keys():
+            if instances[instance].get_cred('user') == profile:
+                print(instances[instance].get_cred('user'),' is ',instance, ' instance name')
+                print(profile,' is profile')
+                ret = instances[instance]
+        print(ret,' is ret')
+        return ret
 
     def ask_profile(self):
         return input("profile:")

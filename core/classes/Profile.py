@@ -6,16 +6,20 @@ class Profile:
     mailboxes = {}
     
     def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
+        self.loginerr = None
         if not self.connection.is_connected():
             self.connection.connect()
             if not self.connection.is_connected():
+                self.loginerr = self.connection.get_connect_error() 
                 login_failed(self.connection.connecterror)
                 return
-        self.connection.login()
+        ret = self.connection.login()
         if self.connection.is_logged():
             login_success(self)
         else:
+            self.loginerr = self.connection.get_login_error() 
             login_failed(self.connection.get_login_error())
+        return ret
 
     def init_server_connection(self,connect_success,connect_failed):
         self.connection.connect()

@@ -25,6 +25,7 @@ class ConnectionManager:
         return self._is_logged  
 
     def login(self):
+        self.loginerr = None
         try:
             self.server.login(self.creds.get_cred('user'), self.creds.get_cred('pass'))
             self._is_logged  =   True

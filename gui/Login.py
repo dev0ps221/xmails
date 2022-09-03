@@ -82,8 +82,9 @@ class Login:
 
 
     def switch_login_view(self,*kwargs):
-        
+        self.view.clean()
         self.actual_login_view = self.select_box.value
+        self.build_components()
         self.build_view()
         self.refresh_view(self.page,None)
         
@@ -100,22 +101,25 @@ class Login:
             if credsinstance :
                 usrval = credsinstance.get_cred('user')
                 passval = credsinstance.get_cred('pass')
+                print(self.login_profiles_select.value)
+                print(usrval,passval)
         else:
             usrval  = self.emailInput.value
             passval = self.pwdInput.value
-            credsinstance = CredsInstance(credsman.generate_creds_file(usrval,passval),credsman)
+            credsinstance = CredsInstance(credsman.generate_creds_file(None,None,None,usrval,passval),credsman)
         if usrval and passval:
             profile = Profile(credsinstance)
             try:
-                profile.login(lambda prof:self.login_success(self.page,prof),self.login_error)
+                profile.login()
+                self.loginerr = profile.connection.get_login_error()
             except Exception as e:
                 earr = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')
                 self.loginerr = earr[1 if len(earr) > 1 else 0].replace('\'','') 
             finally:
-                if self.loginerr:
-                    self.refresh_view(self.page,None)
-                else:
+                if profile.connection.is_logged():
                     self.login_success(self.page,profile)
+                else:
+                    self.refresh_view(self.page,None)
 
     def login_error(self,error):
         self.loginerr = error 
