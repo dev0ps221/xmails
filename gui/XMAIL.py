@@ -67,5 +67,9 @@ class XMAIL:
     def __init__(self):
         self.LoginView = Login(self)
         self.HomeView = Home(self)
+        self.views = {
+            '/login':self.LoginView,
+            '/home':self.HomeView
+        }
 
     
