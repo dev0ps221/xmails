@@ -11,7 +11,7 @@ class MailBox:
     resp_code= None
 
     def get_info(self,info):
-        return self[info] if hasattr(self,info) else None
+        return getattr(self,info) if hasattr(self,info) else None
 
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]

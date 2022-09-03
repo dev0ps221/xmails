@@ -23,8 +23,9 @@ def home_view(page,profile,refresh_page,refresh_view,logout):
     mailbox_container = Row()
     boxlist = Column()
     boxlist.width = int(int(pagewidth*30)/100)
-    for box in mailboxes:
-        boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mailcount')})"))
+    for mailbox in mailboxes:
+        box = mailboxes[mailbox]
+        boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
 
     mailbox_container.controls.append(boxlist)
     view.controls.append(mailbox_container)

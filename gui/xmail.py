@@ -14,7 +14,6 @@ views = None
 login_view = None
 logged_profile = None
 def login_success(page,profile):
-    print(profile)
     global imap_server
     global is_logged
     global logged_profile
@@ -39,7 +38,6 @@ def  refresh_view(page,imap_server):
     view = views[actual_view](*args)
     page.add(view)
 
-    view.update()
     refresh_page(page)
 
 def refresh_page(page):
