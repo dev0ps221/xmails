@@ -3,8 +3,8 @@ from imaplib import IMAP4_SSL
 
 class ConnectionManager:
     host='pop.gmail.com'
-    is_connected = False
-    is_logged    = False 
+    _is_connected = False
+    _is_logged    = False 
     server       = None 
     loginerror   = None
     connecterror = None

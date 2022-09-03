@@ -107,12 +107,13 @@ class Login:
         if usrval and passval:
             profile = Profile(credsinstance)
             try:
-                profile.login(self.login_success,self.login_error)
+                profile.login(lambda prof:self.login_success(self.page,prof),self.login_error)
             except Exception as e:
-                self.loginerr = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
+                earr = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')
+                self.loginerr = earr[1 if len(earr) > 1 else 0].replace('\'','') 
             finally:
                 if self.loginerr:
-                    self.refresh_view(self.page,self.profile.server)
+                    self.refresh_view(self.page,None)
                 else:
                     self.login_success(self.page,profile)
 
