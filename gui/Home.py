@@ -8,6 +8,7 @@ class Home:
     mailboxes = []
     gotmailboxes = False
     actual_mailbox = None
+    actual_view = 'box'
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -49,16 +50,28 @@ class Home:
         self.reset_profile()
         if self.profile:
             self.build_view()
-            print(self.actual_mailbox.mails)
         self.page.add(self.view)
         
 
     def build_view(self):    
         mailboxes = self.get_mailboxes()
-        self.boxlist.width = int(int(self.pagewidth*30)/100)
+        self.boxlist.width = int(int(self.pagewidth*20)/100)
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
         self.mailbox_container.controls.append(self.boxlist)
+        if self.actual_view = 'box':
+            viewlist = Column()
+            viewlist.width = int(int(self.pagewidth*80)/100)
+            if  self.actual_mailbox:
+                for mail in self.actual_mailbox.mails:
+                    viewlist.controls.append(self.generate_mail_hook(mail))
+
         self.view.controls.append(self.mailbox_container)
         return self.view
+
+
+    def generate_mail_hook(self,mail):
+        
+
+
