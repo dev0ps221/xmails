@@ -13,8 +13,8 @@ def mail_folders(server):
         box.append(box[1].replace('"','').split('/')[-1])
         mailboxes.append(box)
     return mailboxes
-def home_view(page,imap_server,refresh_page,refresh_view,logout):    
-    mailboxes = mail_folders(imap_server)
+def home_view(page,profile,refresh_page,refresh_view,logout):    
+    mailboxes = mail_folders(profile.server)
     pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
     pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
 

@@ -20,7 +20,7 @@ def login_success(page,profile):
     is_logged = 1
     logged_profile = profile
     update_actual_view('/home')
-    refresh_view(page,logged_profile.server)
+    refresh_view(page,logged_profile)
 
 def logout(page,profile):
     print('disconnecting ',profile)
@@ -32,9 +32,9 @@ def  refresh_view(page,imap_server):
     global actual_view
     page.clean()
     if actual_view == '/login' and is_logged : update_actual_view('/home')
-    getbackfunc = login_success if actual_view == '/login' else logout    
-    view = views[actual_view](page,imap_server,refresh_page,refresh_view,getbackfunc)
-    print(view, ' leip fila insbii')
+    getbackfunc = login_success if actual_view == '/login' else logout
+    args = (page,credsprofiles,refresh_page,refresh_view,login_success) if actual_view == '/login' else (page,imap_server,refresh_page,refresh_view,getbackfunc)
+    view = views[actual_view](*args)
     page.add(view)
 
     view.update()

@@ -49,7 +49,9 @@ class Profile:
             box = MailBox(elem)
             self.append_mailbox(box.getinfo('name'),box)
             
+    def server(self):
+        return self.connection.server
 
-    def __init__(self,creds,host):
+    def __init__(self,creds,host=None):
         self.creds      = creds
-        self.connection = ConnectionManager(self.creds,host)       
+        self.connection = ConnectionManager(self.creds,host)   

@@ -11,7 +11,6 @@ class Login:
 
     email = Column()
     pwd = Column()
-    view = Column()
     login = Column()
     profiles = Column()
     select_view = Row()
@@ -33,13 +32,14 @@ class Login:
     def __init__(self,page,profiles,refresh_page,refresh_view,login_success):
         self.page       = page
         self.login_profiles   = profiles
-        self.refresh_page = lambda self,*a : refresh_page(*a)
-        self.refresh_view = lambda self,*a : refresh_view(*a)
-        self.login_success = lambda self,*a : login_success(*a)
+        self.refresh_page = lambda *a : refresh_page(*a)
+        self.refresh_view = lambda *a : refresh_view(*a)
+        self.login_success = lambda *a : login_success(*a)
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         self.actual_login_view = 'Login'
         self.build_components()
+        self.build_view()
 
     def build_components(self):
         self.loginview = self.loginbox()
@@ -67,7 +67,7 @@ class Login:
         return self.loginview
 
     def profilesbox(self):
-        profiles = [profile for profile in self.login_profiles]
+        profiles = [dropdown.Option(profile) for profile in self.login_profiles]
         
         self.login_profiles_select.options=profiles
         self.login_profiles_select.width = int(self.pagewidth/2)
@@ -84,7 +84,8 @@ class Login:
     def switch_login_view(self,*kwargs):
         
         self.actual_login_view = self.select_box.value
-        self.refresh_view(self,self.page,None)
+        self.build_view()
+        self.refresh_view(self.page,None)
         
         
 
@@ -94,14 +95,14 @@ class Login:
         loginerror = None
         usrval  = None
         passval = None
-        if login_view.actual_view == 'Profiles':
+        if self.actual_login_view == 'Profiles':
             credsinstance = credsman.get_creds_instance(self.login_profiles_select.value)
             if credsinstance :
                 usrval = credsinstance.get_cred('user')
                 passval = credsinstance.get_cred('pass')
         else:
-            usrval  = emailInput.value
-            passval = pwdInput.value
+            usrval  = self.emailInput.value
+            passval = self.pwdInput.value
             credsinstance = CredsInstance(credsman.generate_creds_file(usrval,passval),credsman)
         if usrval and passval:
             profile = Profile(credsinstance)
@@ -125,8 +126,8 @@ class Login:
         return self.view
 
     def build_view(self):
-        login_profiles = [elem for elem in map(dropdown.Option,self.login_profiles)]
-                
+
+        self.view = Column()
         self.select_view.width = self.pagewidth/2
         self.select_box  = Dropdown(
             label="LOGIN MODE",
