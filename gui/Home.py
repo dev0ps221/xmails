@@ -59,13 +59,16 @@ class Home:
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
-        self.boxlist.width = int(self.pagewidth*20/100)
+        self.boxlist.width = int(self.pagewidth*15/100)
         self.mailbox_container.controls.append(self.boxlist)
         if self.actual_view == 'box':
             viewlist = Column(scroll='adaptive')
-            viewlist.width = int(self.pagewidth*80/100)
+            viewlist.width = int(self.pagewidth*30/100)
             viewlist.height = self.pageheight
             if  self.actual_mailbox:
+                titlesusr = self.profile.creds.get_cred('user')
+                mailboxname = self.actual_mailbox.get_info('name')
+                self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
                 self.actual_mailbox.get_mails()
                 idx = 0
                 for mail in self.actual_mailbox.mails:
@@ -84,7 +87,7 @@ class Home:
         for part in mail.walk():
             if part.get_content_type() == "text/plain":
                 body_lines = part.as_string().split("\n")
-                mailhooktext += "\n".join(body_lines[4:8])
+                mailhooktext += "\n".join(body_lines[4:6])
         mailhook = Text(value=mailhooktext)
         mailcontainer.controls.append(mailtitle)
         mailcontainer.controls.append(mailhook)

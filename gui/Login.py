@@ -123,6 +123,7 @@ class Login:
 
     def show(self,*kwargs):
         self.page.clean()
+        self.page.title = 'XMAIL - TEK TECH 2022 - LOGIN'
         self.build_view()
         self.page.add(self.view)
         

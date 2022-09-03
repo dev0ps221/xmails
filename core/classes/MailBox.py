@@ -13,15 +13,16 @@ class MailBox:
     mailids_resp_code= None
     mails = {}
 
-    def get_mails(self,idx=1,count=50):
+    def get_mails(self,idx=0,count=50):
         self.mails = {}
         idarr = self.mail_ids[0].decode().split()
-        while idx < count and idx < len(idarr):
-            mail_id = idarr[int(len(idarr) if count > len(idarr) else count) - idx]
-            if mail_id:
-                resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
-                message = email.message_from_bytes(mail_data[0][1])
-                self.mails[idx] = message
+        while idx< count :
+            if idx >=0 and idx < len(idarr):
+                mail_id = idarr[idx]
+                if mail_id:
+                    resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
+                    message = email.message_from_bytes(mail_data[0][1])
+                    self.mails[-idx] = message
             idx+=1
         return self.mails
 
