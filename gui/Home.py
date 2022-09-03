@@ -59,11 +59,11 @@ class Home:
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
-        self.boxlist.width = int(self.pagewidth*30/100)
+        self.boxlist.width = int(self.pagewidth*20/100)
         self.mailbox_container.controls.append(self.boxlist)
         if self.actual_view == 'box':
             viewlist = Column(scroll='adaptive')
-            viewlist.width = int(self.pagewidth*60/100)
+            viewlist.width = int(self.pagewidth*80/100)
             viewlist.height = self.pageheight
             if  self.actual_mailbox:
                 self.actual_mailbox.get_mails()
