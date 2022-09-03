@@ -126,23 +126,17 @@ class CredsManager:
     def set_creds_instances(self):
         for profile in self.get_creds_profiles():
             self.set_creds_instance(profile)
+        return self.get_creds_instances()
 
     def get_creds_instances(self):
         return self.credsinstances
 
-    def set_creds_instance(self,profile):    
+    def set_creds_instance(self,profile):  
         self.credsinstances[profile] = CredsInstance(self.get_creds_file(profile),self)
 
     def get_creds_instance(self,profile):
-        ret = None
-        instances = self.get_creds_instances()
-        for instance in instances.keys():
-            if instances[instance].get_cred('user') == profile:
-                print(instances[instance].get_cred('user'),' is ',instance, ' instance name')
-                print(profile,' is profile')
-                ret = instances[instance]
-        print(ret,' is ret')
-        return ret
+        ret = self.set_creds_instances().get(profile)
+        return CredsInstance(self.get_creds_file(profile),self) if ret else ret
 
     def ask_profile(self):
         return input("profile:")
@@ -163,6 +157,7 @@ class CredsManager:
     def decode_creds_file(self,credsfile):
         file_ = open(credsfile,'r')
         usr,pwd = file_.read().split('<=>')
+        file_.close()
         return self.dkode(usr),self.dkode(pwd)
 
     def generate_creds_file(self,filename=None,gui=False,page=None,usr=None,pwd=None):

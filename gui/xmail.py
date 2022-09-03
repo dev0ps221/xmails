@@ -3,8 +3,9 @@
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
 from os import getcwd
 # from gui.login_view import *
-from gui.home_view import *
+# from gui.home_view import *
 from gui.Login import Login
+from gui.Home import Home
 from imaplib import IMAP4_SSL
 from coreman import *
 
@@ -51,11 +52,13 @@ def update_actual_view(view):
     if view_exists(view) : actual_view = view
 
 
+def home_view(*args):
+    return Home(*args).show()
 
 def app_loop(page: Page):
     global actual_view
     global views
-    login_view = Login(page,credsprofiles,refresh_page,refresh_view,login_success)
+    login_view=Login(page,credsprofiles,refresh_page,refresh_view,login_success)
     page.vertical_alignment = "center"
     views = {
         "/login": login_view.show,

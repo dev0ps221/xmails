@@ -101,8 +101,6 @@ class Login:
             if credsinstance :
                 usrval = credsinstance.get_cred('user')
                 passval = credsinstance.get_cred('pass')
-                print(self.login_profiles_select.value)
-                print(usrval,passval)
         else:
             usrval  = self.emailInput.value
             passval = self.pwdInput.value
