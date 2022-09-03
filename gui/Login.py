@@ -16,6 +16,7 @@ class Login:
     profiles = Column()
     select_view = Row()
     loginview = Column()
+    profilesview = Column()
     loginerr = None
     emaillabel = Text(value='Email')
     emailInput = TextField(label='Email')
@@ -47,22 +48,22 @@ class Login:
 
     def loginbox(self):
         self.email.horizontal_alignment ='center'
-        self.emaillabel.width = int(pagewidth/2)
+        self.emaillabel.width = int(self.pagewidth/2)
         self.emaillabel.alignment = alignment.center
-        self.emailInput.width = int(pagewidth/2)
+        self.emailInput.width = int(self.pagewidth/2)
         self.emailInput.alignment = alignment.center
         self.email.controls=[self.emaillabel,self.emailInput]
         self.email.horizontal_alignment = "center"
         
         
-        self.pwdlabel.width = int(pagewidth/2)
-        self.pwdInput.width = int(pagewidth/2)
+        self.pwdlabel.width = int(self.pagewidth/2)
+        self.pwdInput.width = int(self.pagewidth/2)
         self.pwd.controls=[self.pwdlabel,self.pwdInput]
         self.pwd.horizontal_alignment = "center"
 
-        self.loginview.width = pagewidth
+        self.loginview.width = self.pagewidth
         self.loginview.horizontal_alignment ='center'
-        self.loginview.controls = [email,pwd]
+        self.loginview.controls = [self.email,self.pwd]
         return self.loginview
 
     def profilesbox(self):
@@ -72,7 +73,7 @@ class Login:
         self.login_profiles_select.width = int(self.pagewidth/2)
         
         
-        self.profilesview.width = pagewidth
+        self.profilesview.width = self.pagewidth
         self.profilesview.horizontal_alignment ='center'
         self.profilesview.controls = [self.login_profiles_select]
 
@@ -114,15 +115,15 @@ class Login:
         self.loginerr = error 
 
 
-    def show(self):
+    def show(self,*kwargs):
         self.page.clean()
         self.build_view()
         self.page.add(self.view)
 
     def build_view(self):
-        login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
+        login_profiles = [elem for elem in map(dropdown.Option,self.login_profiles)]
                 
-        self.select_view.width = pagewidth/2
+        self.select_view.width = self.pagewidth/2
         self.select_box  = Dropdown(
             label="LOGIN MODE",
             on_change=switch_login_view,
@@ -134,12 +135,12 @@ class Login:
             ],
             autofocus=True
         )
-        self.select_box.width = pagewidth/2
+        self.select_box.width = self.pagewidth/2
         self.select_box.alignment =alignment.center
 
-        self.select_view.controls = [select_box]
+        self.select_view.controls = [self.select_box]
 
-        self.view.width = pagewidth
+        self.view.width = self.pagewidth
         self.view.horizontal_alignment ='center'
         self.loginInput = ElevatedButton(text='login',on_click=do_login)
         self.login.controls=[loginInput]

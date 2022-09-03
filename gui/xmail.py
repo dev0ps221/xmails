@@ -8,18 +8,19 @@ from gui.Login import Login
 from imaplib import IMAP4_SSL
 from coreman import *
 
-imap_server = IMAP4_SSL(host='pop.gmail.com')
 is_logged  = 0
 actual_view = '/login'
 views = None
 login_view = None
-
+logged_profile = None
 def login_success(page,profile):
     global imap_server
     global is_logged
+    global logged_profile
     is_logged = 1
+    logged_profile = profile
     update_actual_view('/home')
-    refresh_view(page,imap_server)
+    refresh_view(page,logged_profile.server)
 
 def logout(page,profile):
     print('disconnecting ',profile)
@@ -35,8 +36,7 @@ def  refresh_view(page,imap_server):
     page.add(views[actual_view](page,imap_server,refresh_page,refresh_view,getbackfunc))
     refresh_page(page,imap_server)
 
-def refresh_page(page,imap_server):
-    login_view.refresh_page = refresh_page
+def refresh_page(page):
     page.update()
 
 def view_exists(view):
@@ -58,7 +58,7 @@ def app_loop(page: Page):
         "/home": home_view
     }
     if view_exists(actual_view):
-        refresh_view(page,imap_server)
+        refresh_view(page,None)
 
 
 
