@@ -7,6 +7,8 @@ class Home:
     boxlist = Column()   
     mailboxes = []
     gotmailboxes = False
+    actual_mailbox = None
+    mailbox_idx = -1
     def __init__(self,master):
         self.master = master
         self.page      = self.master.page
@@ -25,8 +27,18 @@ class Home:
     def set_mailboxes(self):
         self.mailboxes = self.profile.set_mailboxes()
         self.gotmailboxes = True
+        self.set_actual_mailbox()
         return self.get_mailboxes()
-    
+
+    def set_actual_mailbox(self):
+        if len(self.mailboxes) == 0:
+            self.actual_mailbox = None
+            self.mailbox_idx = -1
+        else:
+            if self.mailbox_idx < 0 or self.mailbox_idx >= len(self.mailboxes): 
+                self.mailbox_idx = 0
+            self.actual_mailbox = self.mailboxes[list(self.mailboxes.keys())[self.mailbox_idx]]
+
     def get_mailboxes(self):
         if self.gotmailboxes:
             return self.mailboxes
@@ -37,6 +49,7 @@ class Home:
         self.reset_profile()
         if self.profile:
             self.build_view()
+            print(self.actual_mailbox.mails)
         self.page.add(self.view)
         
 

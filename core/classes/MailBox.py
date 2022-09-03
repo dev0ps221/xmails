@@ -13,11 +13,11 @@ class MailBox:
     mailids_resp_code= None
     mails = {}
 
-    def get_mails(self,idx=0,count=50):
+    def get_mails(self,idx=1,count=50):
         self.mails = {}
-        while idx < count:
-            idarr = self.mail_ids[idx].decode().split()
-            mail_id = idarr[-2:] if len(idarr)>2 else None
+        idarr = self.mail_ids[0].decode().split()
+        while idx < count and idx < len(idarr):
+            mail_id = idarr[int(len(idarr) if count > len(idarr) else count) - idx]
             if mail_id:
                 resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
                 message = email.message_from_bytes(mail_data[0][1])
@@ -31,9 +31,10 @@ class MailBox:
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]
         self.name = self.selector.replace('"','').split('/')[-1] 
-        self.mailcount_resp_code,self.mail_count = self.server.select(self.selector)
-        self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
-        self.get_mails()
+        self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
+        if self.server.state == 'SELECTED':
+            self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
+            self.get_mails()
 
     def __init__(self,raw,server):
         self.b_raw = raw
