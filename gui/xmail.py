@@ -67,23 +67,3 @@ def app_loop(page: Page):
     }
     if view_exists(actual_view):
         refresh_view(page,None)
-
-class XMAIL:
-    credsprofiles
-    page = None
-    actual_view = '/login'
-    views = {}
-    
-
-
-
-
-    
-    def loop(self,page:Page)
-        self.page = page
-
-    def __init__(self):
-        self.LoginView = Login(self)
-        self.HomeView = Home(self)
-
-    
