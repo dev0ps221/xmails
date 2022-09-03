@@ -1,6 +1,15 @@
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
 from credsman import *
 class Login:
+
+    email = Column()
+    pwd = Column()
+    view = Column()
+    login = Column()
+    profiles = Column()
+    select_view = Row()
+
+    
     def __init__(page,profiles,refresh_page,refresh_view):
         self.page       = page
         self.profiles   = profiles
@@ -10,9 +19,8 @@ class Login:
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         self.actual_login_view = 'Login'
 
+    def build_components(self):
     def loginbox():
-        email = Column()
-        pwd = Column()
         email.horizontal_alignment ='center'
         emaillabel = Text(value='Email')
         emaillabel.width = int(pagewidth/2)
@@ -66,10 +74,6 @@ class Login:
 
     def build_view(refresh_page,refresh_view,login_success):
         self.page.clean()
-        view = Column()
-        login = Column()
-        profiles = Column()
-        select_view = Row()
         login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
         login_profiles_select = None
 
