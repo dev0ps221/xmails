@@ -2,13 +2,13 @@
 
 
 class MailBox:
-    b_raw
-    raw 
-    name 
-    selector
-    parent
-    mail_count
-    resp_code
+    b_raw = None
+    raw   = None 
+    name  = None
+    selector= None
+    parent= None
+    mail_count= None
+    resp_code= None
 
     def get_info(self,info):
         return self[info] if hasattr(self,info) else None

@@ -41,8 +41,8 @@ class Login:
         self.build_components()
 
     def build_components(self):
-        self.loginview = loginbox(page)
-        self.profilesview = profilesbox(page)
+        self.loginview = self.loginbox()
+        self.profilesview = self.profilesbox()
         
 
     def loginbox(self):

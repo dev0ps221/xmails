@@ -11,7 +11,8 @@ from coreman import *
 imap_server = IMAP4_SSL(host='pop.gmail.com')
 is_logged  = 0
 actual_view = '/login'
-
+views = None
+login_view = None
 
 def login_success(page,profile):
     global imap_server
@@ -49,14 +50,15 @@ def update_actual_view(view):
 
 def app_loop(page: Page):
     global actual_view
+    global views
+    login_view = Login(page,credsprofiles,refresh_page,refresh_view,login_success)
     page.vertical_alignment = "center"
+    views = {
+        "/login": login_view.show,
+        "/home": home_view
+    }
     if view_exists(actual_view):
         refresh_view(page,imap_server)
 
-login_view = Login(page,credsprofiles,refresh_page,refresh_view,login_success)
 
 
-views = {
-    "/login": login_view.show,
-    "/home": home_view
-}

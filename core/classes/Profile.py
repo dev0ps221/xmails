@@ -1,5 +1,5 @@
 #!/usr/bin/env/python3
-from .MailBox import MailBox
+from core.classes.MailBox import MailBox
 from managers.connectionmanager import ConnectionManager 
 class Profile:
     rmailboxes = None
