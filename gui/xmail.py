@@ -14,6 +14,7 @@ actual_view = '/login'
 views = None
 login_view = None
 logged_profile = None
+
 def login_success(page,profile):
     global imap_server
     global is_logged
@@ -67,5 +68,22 @@ def app_loop(page: Page):
     if view_exists(actual_view):
         refresh_view(page,None)
 
+class XMAIL:
+    credsprofiles
+    page = None
+    actual_view = '/login'
+    views = {}
+    
 
 
+
+
+    
+    def loop(self,page:Page)
+        self.page = page
+
+    def __init__(self):
+        self.LoginView = Login(self)
+        self.HomeView = Home(self)
+
+    
