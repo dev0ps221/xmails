@@ -82,8 +82,9 @@ class Login:
 
 
     def switch_login_view(self,event):
-        self.actual_login_view = event.data
-        self.refresh_view(self.page,self.server)
+        self.actual_login_view = self.selectbox.value
+        print(self.actual_login_view)
+        self.refresh_view(self.page,None)
 
 
     def do_login(self,event):
@@ -118,7 +119,7 @@ class Login:
     def show(self,*kwargs):
         self.page.clean()
         self.build_view()
-        self.page.add(self.view)
+        return self.view
 
     def build_view(self):
         login_profiles = [elem for elem in map(dropdown.Option,self.login_profiles)]
@@ -126,7 +127,7 @@ class Login:
         self.select_view.width = self.pagewidth/2
         self.select_box  = Dropdown(
             label="LOGIN MODE",
-            on_change=switch_login_view,
+            on_change=self.switch_login_view,
             hint_text="Choose the way you want to log in",
             value=self.actual_login_view,
             options=[
@@ -142,8 +143,8 @@ class Login:
 
         self.view.width = self.pagewidth
         self.view.horizontal_alignment ='center'
-        self.loginInput = ElevatedButton(text='login',on_click=do_login)
-        self.login.controls=[loginInput]
+        self.loginInput = ElevatedButton(text='login',on_click=self.do_login)
+        self.login.controls=[self.loginInput]
         self.login.horizontal_alignment = "center"
 
 

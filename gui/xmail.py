@@ -34,7 +34,7 @@ def  refresh_view(page,imap_server):
     if actual_view == '/login' and is_logged : update_actual_view('/home')
     getbackfunc = login_success if actual_view == '/login' else logout    
     page.add(views[actual_view](page,imap_server,refresh_page,refresh_view,getbackfunc))
-    refresh_page(page,imap_server)
+    refresh_page(page)
 
 def refresh_page(page):
     page.update()
