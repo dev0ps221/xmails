@@ -33,9 +33,9 @@ class Login:
     def __init__(self,page,profiles,refresh_page,refresh_view,login_success):
         self.page       = page
         self.login_profiles   = profiles
-        self.refresh_page = lambda *a : refresh_page(*a)
-        self.refresh_view = lambda *a : refresh_view(*a)
-        self.login_success = lambda *a : login_success(*a)
+        self.refresh_page = lambda self,*a : refresh_page(*a)
+        self.refresh_view = lambda self,*a : refresh_view(*a)
+        self.login_success = lambda self,*a : login_success(*a)
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         self.actual_login_view = 'Login'
@@ -81,17 +81,20 @@ class Login:
 
 
 
-    def switch_login_view(self,event):
-        self.actual_login_view = self.selectbox.value
-        print(self.actual_login_view)
-        self.refresh_view(self.page,None)
+    def switch_login_view(self,*kwargs):
+        
+        self.actual_login_view = self.select_box.value
+        self.refresh_view(self,self.page,None)
+        
+        
+
 
 
     def do_login(self,event):
         loginerror = None
         usrval  = None
         passval = None
-        if login_view.actual_login_view == 'Profiles':
+        if login_view.actual_view == 'Profiles':
             credsinstance = credsman.get_creds_instance(self.login_profiles_select.value)
             if credsinstance :
                 usrval = credsinstance.get_cred('user')
@@ -147,16 +150,14 @@ class Login:
         self.login.controls=[self.loginInput]
         self.login.horizontal_alignment = "center"
 
-
-
         if self.select_box.value == 'Login':
-            self.actual_login_view = self.loginview
+            self.actual_view = self.loginview
         else :
-            self.actual_login_view = self.profilesview
+            self.actual_view = self.profilesview
 
         if self.loginerr: 
-            self.actual_login_view.controls.append(Text(value=self.loginerr))
+            self.actual_view.controls.append(Text(value=f"{self.loginerr}"))
 
-        self.view.controls = [self.select_view,self.actual_login_view,self.login]
-        
+        self.view.controls = [self.select_view,self.actual_view,self.login]
+
         return self.view
