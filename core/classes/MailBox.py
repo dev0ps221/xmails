@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import email
 
 class MailBox:
     b_raw = None
@@ -8,7 +8,22 @@ class MailBox:
     selector= None
     parent= None
     mail_count= None
-    resp_code= None
+    mailcount_resp_code= None
+    mail_ids= None
+    mailids_resp_code= None
+    mails = {}
+
+    def get_mails(self,idx=0,count=50):
+        self.mails = {}
+        while idx < count:
+            idarr = self.mail_ids[idx].decode().split()
+            mail_id = idarr[-2:] if len(idarr)>2 else None
+            if mail_id:
+                resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
+                message = email.message_from_bytes(mail_data[0][1])
+                self.mails[idx] = message
+            idx+=1
+        return self.mails
 
     def get_info(self,info):
         return getattr(self,info) if hasattr(self,info) else None
@@ -16,7 +31,9 @@ class MailBox:
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]
         self.name = self.selector.replace('"','').split('/')[-1] 
-        self.resp_code,self.mail_count = self.server.select(self.selector)
+        self.mailcount_resp_code,self.mail_count = self.server.select(self.selector)
+        self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
+        self.get_mails()
 
     def __init__(self,raw,server):
         self.b_raw = raw
