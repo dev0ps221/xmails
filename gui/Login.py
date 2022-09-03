@@ -1,14 +1,16 @@
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
 from credsman import *
 class Login:
-    def __init__(page,profiles):
+    def __init__(page,profiles,refresh_page,refresh_view):
         self.page       = page
         self.profiles   = profiles
+        self.refresh_page = lambda *a : refresh_page(*a)
+        self.refresh_view = lambda *a : refresh_view(*a)
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
-        
+        self.actual_login_view = 'Login'
 
-    def loginbox(page):
+    def loginbox():
         email = Column()
         pwd = Column()
         email.horizontal_alignment ='center'
@@ -35,7 +37,8 @@ class Login:
         loginview.controls = [email,pwd]
         return loginview
 
-    def profilesbox(page,profiles):
+    def profilesbox():
+        profiles = [profile for profile in self.profiles]
         pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         login_profiles_select = Dropdown(
@@ -54,22 +57,21 @@ class Login:
 
         return profilesview,login_profiles_select
 
-        
-    def login_view(page,imap_server,refresh_page,refresh_view,login_success):
-        pagewidth = int(page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
-        pageheight = int(page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
-        page.clean()
-        if not hasattr(login_view,'actual_login_view'):
-            login_view.actual_login_view = 'Login'
+
+
+    def switch_login_view(event):
+        self.actual_login_view = event.data
+        self.refresh_view(page,imap_server)
+
+
+    def build_view(refresh_page,refresh_view,login_success):
+        self.page.clean()
         view = Column()
         login = Column()
         profiles = Column()
         select_view = Row()
         login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
         login_profiles_select = None
-        def switch_login_view(event):
-            login_view.actual_login_view = event.data
-            refresh_view(page,imap_server)
 
         def do_login(event):
             loginerror = None
@@ -105,7 +107,7 @@ class Login:
             label="LOGIN MODE",
             on_change=switch_login_view,
             hint_text="Choose the way you want to log in",
-            value=login_view.actual_login_view,
+            value=self.actual_login_view,
             options=[
                 dropdown.Option("Login"),
                 dropdown.Option("Profiles")
