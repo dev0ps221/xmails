@@ -8,7 +8,7 @@ class Home:
     mailboxes = []
     gotmailboxes = False
     actual_mailbox = None
-    actual_view = 'box'
+    actual_message = None
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -52,30 +52,52 @@ class Home:
             self.build_view()
         self.page.add(self.view)
         
+    def set_actual_message(self,idx):
+        if self.actual_mailbox and idx < len(self.actual_mailbox.mails):
+            self.actual_message = self.actual_mailbox.mails[idx]
 
     def build_view(self):    
         self.view.width = self.pagewidth
         mailboxes = self.get_mailboxes()
+        messagebox = None
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
         self.boxlist.width = int(self.pagewidth*15/100)
         self.mailbox_container.controls.append(self.boxlist)
-        if self.actual_view == 'box':
-            viewlist = Column(scroll='adaptive')
-            viewlist.width = int(self.pagewidth*30/100)
-            viewlist.height = self.pageheight
-            if  self.actual_mailbox:
-                titlesusr = self.profile.creds.get_cred('user')
-                mailboxname = self.actual_mailbox.get_info('name')
-                self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
-                self.actual_mailbox.get_mails()
-                idx = 0
-                for mail in self.actual_mailbox.mails:
-                    mail = self.actual_mailbox.mails[mail]
-                    viewlist.controls.append(self.generate_mail_hook(mail,idx))
-                    idx+=1
-            self.mailbox_container.controls.append(viewlist)
+        viewlist = Column(scroll='adaptive')
+        viewlist.width = int(self.pagewidth*30/100)
+        viewlist.height = self.pageheight
+
+        messagebox = Column(scroll='adaptive')
+        if  self.actual_mailbox:
+            titlesusr = self.profile.creds.get_cred('user')
+            mailboxname = self.actual_mailbox.get_info('name')
+            self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
+            self.actual_mailbox.get_mails()
+            if not self.actual_message : self.set_actual_message(0)
+            idx = 0
+            for mail in self.actual_mailbox.mails:
+                mail = self.actual_mailbox.mails[mail]
+                viewlist.controls.append(self.generate_mail_hook(mail,idx))
+                idx+=1
+            if self.actual_message:
+                messagebox.height = self.pageheight
+                messagebox.width = int(self.pagewidth*55/100)
+                messagebody = ""
+                for part in self.actual_message.walk():
+                    if part.get_content_type() == "text/plain":
+                        messagebody = part.as_string().split("\n")
+                        messagebody = "\n".join(messagebody)
+                frombox = Text(value="From       : {}".format(self.actual_message.get("From")))
+                tobox = Text(value="To       : {}".format(self.actual_message.get("To")))
+                bodybox = Text(value=messagebody)
+                messagebox.controls.append(frombox)
+                messagebox.controls.append(tobox)
+                messagebox.controls.append(bodybox)
+                print(self.actual_message)
+        self.mailbox_container.controls.append(viewlist)
+        self.mailbox_container.controls.append(messagebox)    
         self.view.controls.append(self.mailbox_container)
         return self.view
 
@@ -91,6 +113,12 @@ class Home:
         mailhook = Text(value=mailhooktext)
         mailcontainer.controls.append(mailtitle)
         mailcontainer.controls.append(mailhook)
+        def click():
+            global idx
+            self.set_actual_message(idx)
+            self.page.refresh_view()
+        viewbutton = ElevatedButton(on_click=click,text='CONSULTER',bgcolor=colors.BLUE_300)
+        mailcontainer.controls.append(viewbutton)
         return mailcontainer
 
 
