@@ -9,7 +9,7 @@ class Profile:
         if not self.connection.is_connected():
             self.connection.connect()
             if not self.connection.is_connected():
-                print(self.connection.connecterror)
+                login_failed(self.connection.connecterror)
                 return
         self.connection.login()
         if self.is_logged():

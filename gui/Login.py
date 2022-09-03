@@ -14,6 +14,7 @@ class Login:
     profiles = Column()
     select_view = Row()
     loginview = Column()
+    loginerr = None
     emaillabel = Text(value='Email')
     emailInput = TextField(label='Email')
     pwdlabel = Text(value='pwd')
@@ -26,11 +27,12 @@ class Login:
     )
         
 
-    def __init__(self,page,profiles,refresh_page,refresh_view):
+    def __init__(self,page,profiles,refresh_page,refresh_view,login_success):
         self.page       = page
         self.login_profiles   = profiles
         self.refresh_page = lambda *a : refresh_page(*a)
         self.refresh_view = lambda *a : refresh_view(*a)
+        self.login_success = lambda *a : login_success(*a)
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
         self.actual_login_view = 'Login'
@@ -94,11 +96,10 @@ class Login:
             usrval  = emailInput.value
             passval = pwdInput.value
             credsinstance = CredsInstance(credsman.generate_creds_file(usrval,passval),credsman)
-            
         if usrval and passval:
             profile = Profile(credsinstance)
             try:
-                imap_server.login(usrval, passval)
+                profile.login(self.login_success,self.login_error)
             except Exception as e:
                 self.loginerror = str(e).split('[AUTHENTICATIONFAILED]' if 'AUTHENTICATIONFAILED' in str(e) else ']')[1].replace('\'','') 
             finally:
@@ -107,9 +108,11 @@ class Login:
                     refresh_view(page,imap_server)
                 else:
                     login_success(page,usrval)
-                        
+    def login_error(self,error):
+        self.loginerr = error 
 
-    def build_view(self,refresh_page,refresh_view,login_success):
+
+    def build_view(self):
         self.page.clean()
         login_profiles = [elem for elem in map(dropdown.Option,get_creds_profiles())]
         login_profiles_select = None
@@ -147,9 +150,9 @@ class Login:
             self.actual_login_view = loginview
         else :
             self.actual_login_view = profilesview
-        
-        if hasattr(login_view,'login_failed'): 
-            self.actual_login_view.controls.append(Text(value=login_view.login_failed))
+
+        if self.loginerr: 
+            self.actual_login_view.controls.append(Text(value=self.loginerr))
 
         view.controls = [select_view,self.actual_login_view,login]
         
