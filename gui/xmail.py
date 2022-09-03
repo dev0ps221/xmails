@@ -33,7 +33,7 @@ class XMAIL:
 
     def  refresh_view(self):
         self.page.clean()
-        self.page.add(self.view.show())
+        self.view.show()
         self.refresh_page()
 
     def refresh_page(self):

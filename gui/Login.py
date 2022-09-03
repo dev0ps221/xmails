@@ -124,8 +124,8 @@ class Login:
     def show(self,*kwargs):
         self.page.clean()
         self.build_view()
-        return self.view
-
+        self.page.add(self.view)
+        
     def build_view(self):
 
         self.view = Column()

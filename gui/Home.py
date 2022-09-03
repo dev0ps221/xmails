@@ -37,8 +37,8 @@ class Home:
         self.reset_profile()
         if self.profile:
             self.build_view()
-        return self.view
-    
+        self.page.add(self.view)
+        
 
     def build_view(self):    
         mailboxes = self.get_mailboxes()
