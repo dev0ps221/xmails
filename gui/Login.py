@@ -1,5 +1,6 @@
 from flet import TextField, Text, Column, Row, ElevatedButton, colors, alignment, Dropdown, dropdown
 from managers.credsmanager import CredsManager
+from core.classes.Profile import Profile
 
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
@@ -94,6 +95,7 @@ class Login:
             passval = pwdInput.value
             generate_creds_file(usrval,passval)
         if usrval and passval:
+            profile = Profile()
             try:
                 imap_server.login(usrval, passval)
             except Exception as e:
