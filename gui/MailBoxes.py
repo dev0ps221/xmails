@@ -1,4 +1,5 @@
 import quopri
+from html2text import html2text
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
 
 class MailBoxes:
@@ -96,12 +97,27 @@ class MailBoxes:
             bodybox.height = int(self.mailbox_container.height*55/100)
             bodybox.width = int(self.mailbox_container.width*65/100)
             messagebodytext = ""
+            messagebodyhtml = None
             partidx = 0
-            for part in self.actual_message.walk():
-                if part.get_content_type() == "text/plain":
-                    messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-                    messagebodytext = "\n".join(messagebodytext)
-                partidx+=1
+            print(self.actual_message.get('Content'))
+            if msg.get_content_subtype() == "html":
+                messagebodytext = html2text(self.actual_message.get_content()) 
+            
+            if msg.get_content_subtype() == "text":
+                messagebodytext = html2text(self.actual_message.get_content()) 
+            
+            # for part in self.actual_message.walk():
+            #     print(part.get_content_type())
+            #     # print(part.as_string().split("\n"))
+            #     if 
+            #         messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+            #         messagebodyhtml = "\n".join(messagebodyhtml)
+            #     if part.get_content_type() == "text/plain":
+            #         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+            #         messagebodytext = "\n".join(messagebodytext)
+            #     partidx+=1
+            # if messagebodyhtml:
+            #     messagebodytext = messagebodyhtml
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
@@ -150,7 +166,7 @@ class MailBoxes:
         self.mailbox_container.controls.append(Divider())
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = int(self.mailbox_container*95/100)
+        viewlist.height = int(self.mailbox_container.height*90/100)
         messagebox = self.messagebox
         if  self.actual_mailbox:
             titlesusr = self.profile.creds.get_cred('user')
