@@ -18,22 +18,19 @@ class MailBox:
         self.mails = {}
         idarr = self.mail_ids[0].decode().split()[-count:]
         idarr.reverse()
-        made = 0
         while idx< count :
             if idx >=0 and idx < len(idarr):
                 mail_id = idarr[idx]
                 if mail_id:
                     if self.server.state == 'SELECTED':
                         try:
-                            resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
+                            resp_code, mail_data = self.server.fetch(mail_id, '(RFC822)')
                             if mail_data is not None and len(mail_data) and mail_data[0] is not None:
                                 message = email.message_from_bytes(mail_data[0][1])
-                                self.mails[made] = message
+                                self.mails[idx] = message
                         except Exception as e:
                             print(e)
                             mail_data = None
-            if mail_data:
-                made+=1
             idx+=1
         return self.mails
 
