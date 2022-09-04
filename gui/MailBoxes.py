@@ -96,11 +96,10 @@ class MailBoxes:
             messagebodytext = ""
             partidx = 0
             for part in self.actual_message.walk():
-                if partidx >= 2:
-                    if part.get_content_type() == "text/plain":
-                        messagebodytext = part.as_string().split("\n")
-                        messagebodytext = "\n".join(messagebodytext)
-                    partidx+=1
+                if part.get_content_type() == "text/plain":
+                    messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+                    messagebodytext = "\n".join(messagebodytext)
+                partidx+=1
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
@@ -163,10 +162,10 @@ class MailBoxes:
         partidx = 0
         for part in mail.walk():
 
-            if partidx >= 2:
-                if part.get_content_type() == "text/plain":
-                    body_lines = part.as_string().split("\n")
-                    mailhooktext += "\n".join(body_lines[4:6])
+            if part.get_content_type() == "text/plain":
+                body_lines = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+                mailhooktext += "\n".join(body_lines[4:6])
+            partidx+=1
         partidx = None
         mailhooktext=quopri.decodestring(mailhooktext).decode()
         mailhook = Text(value=mailhooktext)
