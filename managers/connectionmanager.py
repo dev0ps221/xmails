@@ -1,6 +1,7 @@
 
-from imaplib import IMAP4_SSL
-
+import imaplib
+imaplib.Untagged_status = imaplib.re.compile(br'\*[ ]{1,2}(?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?')
+IMAP4_SSL = imaplib.IMAP4_SSL
 class ConnectionManager:
     host='pop.gmail.com'
     _is_connected = False
