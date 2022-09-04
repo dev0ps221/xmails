@@ -1,5 +1,5 @@
 import quopri
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
 
 
 class Home:
@@ -11,9 +11,10 @@ class Home:
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
+    messagebody = Container(bgcolor=colors.BLUE_300)
     actual_message_frombox = Text()
     actual_message_tobox = Text()
-    actual_message_bodybox = Text()
+    actual_message_bodybox = Column()
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -71,6 +72,7 @@ class Home:
 
     def update_message_box(self):
         messagebox = self.messagebox
+        messagebody = self.messagebody
         
         if self.actual_message:
             frombox = self.actual_message_frombox
@@ -78,16 +80,20 @@ class Home:
             bodybox = self.actual_message_bodybox 
             messagebox.height = self.pageheight
             messagebox.width = int(self.pagewidth*55/100)
-            messagebody = ""
+            messagebodytext = ""
             for part in self.actual_message.walk():
                 if part.get_content_type() == "text/plain":
-                    messagebody = part.as_string().split("\n")
-                    messagebody = "\n".join(messagebody)
+                    messagebodytext = part.as_string().split("\n")
+                    messagebodytext = "\n".join(messagebodytext)
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
-            messagebody=quopri.decodestring(messagebody).decode()
-            bodybox.value=messagebody
+            messagebodytext=quopri.decodestring(messagebodytext).decode()
+            messagebody.width=int(self.pagewidth*55/100)
+            messagebody.content = Text(value=messagebodytext)
+            print(messagebody)
+            print(messagebodytext)
             self.messagebox.update() 
+            self.bodybox.update()
 
     def build_view(self):    
         self.view.width = self.pagewidth
@@ -113,6 +119,8 @@ class Home:
                 mail = self.actual_mailbox.mails[mail]
                 viewlist.controls.append(self.generate_mail_hook(mail,idx))
                 idx+=1
+
+            self.actual_message_bodybox.controls.append(self.messagebody)
             messagebox.controls = [self.actual_message_frombox,self.actual_message_tobox,self.actual_message_bodybox]
 
         self.mailbox_container.controls.append(viewlist)
