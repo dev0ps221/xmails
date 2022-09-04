@@ -125,7 +125,7 @@ class MailBoxes:
         self.boxlist.controls = []
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
-            self.boxlist.controls.append(ElevatedButton(text=f"{quopri.decodestring(box.get_info('name')).decode()} ({quopri.decodestring(box.get_info('mail_count')).decode()})"))
+            self.boxlist.controls.append(Button(text=f"{box.get_info('name')}{box.get_info('mail_count')}"))
         self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
         viewlist = Column(scroll='adaptive')
