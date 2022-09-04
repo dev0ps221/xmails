@@ -5,7 +5,7 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
-    panelbox_container = Container(bgcolor=colors.PURPLE)
+    panelbox_container = Container()
     message_stuff = Row(alignment='start')
     boxlist = Row(wrap=True)   
     messagebox = Column()
@@ -212,7 +212,7 @@ class MailBoxes:
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
-        self.view.controls = [self.panelbox_container,self.mailbox_container]
+        self.view.controls = [self.panelbox_container,Divider(),self.mailbox_container]
 
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
