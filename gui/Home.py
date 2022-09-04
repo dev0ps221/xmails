@@ -1,3 +1,4 @@
+import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown
 
 
@@ -84,7 +85,8 @@ class Home:
                     messagebody = "\n".join(messagebody)
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
-            bodybox.value=str(messagebody,'utf-8')
+            bodybox.value=messagebody
+            print(quopri.decodestring(messagebody))
             self.messagebox.update() 
 
     def build_view(self):    
