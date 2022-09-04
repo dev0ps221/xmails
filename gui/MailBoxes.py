@@ -107,7 +107,7 @@ class MailBoxes:
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
-            messagebody.width=int(self.pagewidth*65/100)
+            messagebody.width=int(self.pagewidth*45/100)
             messagebody.content = Text(value=messagebodytext,selectable=True,size=12,color=colors.BLACK)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
