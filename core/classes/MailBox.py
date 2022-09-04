@@ -12,9 +12,10 @@ class MailBox:
     mailcount_resp_code= None
     mail_ids= None
     mailids_resp_code= None
+    gotmails = False
     mails = {}
 
-    def get_mails(self,idx=0,count=50):
+    def update_mails(self,idx=0,count=50):
         self.mails = {}
         idarr = self.mail_ids[0].decode().split()[-count:]
         idarr.reverse()
@@ -36,7 +37,11 @@ class MailBox:
                         idx+=1
             made+=1 
             if made >= len(idarr) : break
+        self.gotmails = True
         return self.mails
+    
+    def get_mails(self,idx=0,count=50):
+        return self.mails if self.gotmails else self.update_mails()
 
     def get_info(self,info):
         return getattr(self,info) if hasattr(self,info) else None
@@ -47,7 +52,7 @@ class MailBox:
         self.name = quopri.decodestring(self.name).decode()
         try:
             self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
-            self.mail_count = self.mail_count[0]
+            self.mail_count = self.mail_count[0].decode()
         except Exception as e:
             print(e)
         if self.server.state == 'SELECTED':
