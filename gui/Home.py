@@ -85,8 +85,8 @@ class Home:
                     messagebody = "\n".join(messagebody)
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
+            messagebody=quopri.decodestring(messagebody).decode()
             bodybox.value=messagebody
-            print(quopri.decodestring(messagebody))
             self.messagebox.update() 
 
     def build_view(self):    
@@ -129,6 +129,7 @@ class Home:
             if part.get_content_type() == "text/plain":
                 body_lines = part.as_string().split("\n")
                 mailhooktext += "\n".join(body_lines[4:6])
+        mailhooktext=quopri.decodestring(mailhooktext).decode()
         mailhook = Text(value=mailhooktext)
         mailcontainer.controls.append(mailtitle)
         mailcontainer.controls.append(mailhook)
