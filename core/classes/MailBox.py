@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import email
+import quopri
 
 class MailBox:
     b_raw = None
@@ -33,7 +34,9 @@ class MailBox:
     def initdata(self):
         self.selector   = self.raw.split(' "/" ')[1]
         self.name = self.selector.replace('"','').split('/')[-1] 
-        self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
+        self.name = quopri.decodestring(self.name).decode()
+        print(self.name)
+        self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.name,readonly=True)
         if self.server.state == 'SELECTED':
             self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
 

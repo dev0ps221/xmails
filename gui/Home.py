@@ -11,9 +11,9 @@ class Home:
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.LIGHT_BLUE)
-    actual_message_frombox = Text()
-    actual_message_tobox = Text()
+    messagebody = Container()
+    actual_message_frombox = Text(color=colors.LIGHT_BLUE)
+    actual_message_tobox = Text(color=colors.LIGHT_BLUE)
     actual_message_bodybox = Column(scroll='adaptive')
     mailbox_idx = -1
     def __init__(self,master):
@@ -138,7 +138,7 @@ class Home:
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
         mailcontainer.width = int(self.pagewidth*30/100)
-        mailtitle = Text(color=colors.BLUE_600,value=mail.get("From"))
+        mailtitle = Text(color=colors.LIGHT_BLUE,value=mail.get("From"))
         mailtitle.width = int(self.pagewidth*30/100)
         maildate = Text(value=mail.get('Date'))
         maildate.width = int(self.pagewidth*30/100)
