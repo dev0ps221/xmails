@@ -108,7 +108,7 @@ class MailBoxes:
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
             messagebody.width=int(self.pagewidth*65/100)
-            messagebody.content = Text(value=messagebodytext,size=12,color=colors.BLACK)
+            messagebody.content = Text(value=messagebodytext,selectable=True,size=12,color=colors.BLACK)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
 
@@ -169,7 +169,7 @@ class MailBoxes:
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
         mailtitle = Text(value=mail.get("From"),size=12)
         mailtitle.width = int(self.mailbox_container.width*30/100)
-        maildate = Text(value=mail.get('Date'),size=12)
+        maildate = Text(value=mail.get('Date'),size=10)
         maildate.width = int(self.mailbox_container.width*30/100)
         mailhooktext = ""
         partidx = 0
@@ -184,7 +184,7 @@ class MailBoxes:
             mailhooktext=quopri.decodestring(mailhooktext).decode()
         except Exception as e:
             pass
-        mailhook = Text(value=mailhooktext,size=12)
+        mailhook = Text(value=mailhooktext,size=10)
         mailhook.padding = 5
         mailtitlecontainer.content=mailtitle
         mailcontainer.controls.append(mailtitlecontainer)
