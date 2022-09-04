@@ -5,9 +5,11 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
+    panelbox_container = Container(bgcolor=colors.PURPLE)
     message_stuff = Row(alignment='start')
     boxlist = Row(wrap=True)   
     messagebox = Column()
+    viewlist = Column(scroll='adaptive')
     mailboxes = []
     gotmailboxes = False
     panelbox = Column()
@@ -39,7 +41,7 @@ class MailBoxes:
         self.profile = self.master.logged_profile
 
     def set_mailboxes(self):
-        self.mailboxes = self.profile.set_mailboxes()
+        self.mailboxes = self.profile.get_mailboxes()
         self.gotmailboxes = True
         self.set_actual_mailbox()
         return self.get_mailboxes()
@@ -52,6 +54,13 @@ class MailBoxes:
             if self.mailbox_idx < 0 or self.mailbox_idx >= len(self.mailboxes): 
                 self.mailbox_idx = 0
             self.actual_mailbox = self.mailboxes[list(self.mailboxes.keys())[self.mailbox_idx]]
+        self.build_view()
+        try:
+            self.page.remove(self.view)
+            self.page.add(self.view)
+            self.page.update()
+        except Exception as e:
+            pass
 
     def get_mailboxes(self):
         if self.gotmailboxes:
@@ -133,8 +142,25 @@ class MailBoxes:
         self.mailbox_idx = idx
         self.set_actual_mailbox()
 
-    def build_view(self):    
-        self.panelbox_container = Container(bgcolor=colors.PURPLE)
+    def update_boxlist(self):
+        mailboxes = self.get_mailboxes()
+        self.boxlist.controls = []
+        ix = 0
+        for mailbox in mailboxes:
+            box = self.mailboxes[mailbox]
+            def switch_box(e):
+                self.set_actual_mailbox_idx(int(e.control.text.split(':')[0])-1)
+
+
+            button = ElevatedButton(text=f'{ix+1}:{box.get_info("name")}{box.get_info("mail_count")}',on_click=switch_box)
+            if self.actual_mailbox :
+                if self.actual_mailbox.get_info('name') == box.get_info('name'):
+                    button.color=colors.LIGHT_BLUE
+            self.boxlist.controls.append(button)
+            ix+=1
+
+    def build_view(self):
+        self.view.controls = []    
         self.panelbox_container.width = int(self.pagewidth*15/100)
         self.panelbox_container.height = int(self.pageheight)
         self.panelbox.width = int(self.pagewidth*15/100)
@@ -145,48 +171,34 @@ class MailBoxes:
         self.panelbox_container.content = self.panelbox
         self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
-        mailboxes = self.get_mailboxes()
-        self.boxlist.controls = []
-        ix = 0
-        for mailbox in mailboxes:
-            box = self.mailboxes[mailbox]
-            button = ElevatedButton(text=f'{box.get_info("name")}{box.get_info("mail_count")}')
-            if self.actual_mailbox :
-                if self.actual_mailbox.get_info('name') == box.get_info('name'):
-                    button.color=colors.LIGHT_BLUE
-            def switch_box(e):
-                self.set_actual_mailbox_idx(ix)
-                self.view.update()
-            button.on_click = switch_box
-            self.boxlist.controls.append(button)
-            ix+=1
+        self.update_boxlist()
         self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
         self.mailbox_container.controls.append(Divider())
-        viewlist = Column(scroll='adaptive')
+        viewlist = self.viewlist
         viewlist.width = int(self.mailbox_container.width*30/100)
         viewlist.height = int(self.message_stuff.height*100/100)
         messagebox = self.messagebox
         if  self.actual_mailbox:
+            self.actual_message_bodybox.controls = []
             titlesusr = self.profile.creds.get_cred('user')
             mailboxname = self.actual_mailbox.get_info('name')
             self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
             self.actual_mailbox.get_mails()
             if not self.actual_message : self.set_actual_message(0)
             idx = 0
+            viewcontrols = []
             for mail in self.actual_mailbox.mails:
                 mail = self.actual_mailbox.mails[mail]
-                viewlist.controls.append(self.generate_mail_hook(mail,idx))
+                viewcontrols.append(self.generate_mail_hook(mail,idx))
                 idx+=1
-
+            viewlist.controls = viewcontrols
             self.actual_message_bodybox.controls.append(self.messagebody)
             self.actual_message_tobox_container.content = self.actual_message_tobox
             self.actual_message_datebox_container.content = self.actual_message_datebox
             self.actual_message_frombox_container.content = self.actual_message_frombox
             messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_datebox_container,self.actual_message_bodybox]
-        self.message_stuff.controls.append(viewlist)
-        
-        self.message_stuff.controls.append(messagebox)
+        self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls.append(self.message_stuff)    
         self.view.controls.append(self.mailbox_container)
         return self.view

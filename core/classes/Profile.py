@@ -35,7 +35,7 @@ class Profile:
         return self.get_mailboxes()[name] if name in self.get_mailboxes() else None
 
     def get_mailboxes(self):
-        return self.mailboxes
+        return self.mailboxes if len(self.mailboxes) else self.set_mailboxes() 
 
     def set_mailboxes(self):
         if not self.connection.is_connected():
