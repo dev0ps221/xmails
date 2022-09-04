@@ -6,12 +6,12 @@ class Home:
     view = Column()
     mailbox_container = Row(alignment='start')
     boxlist = Column()   
-    messagebox = Column(scroll='adaptive')
+    messagebox = Column()
     mailboxes = []
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.BLUE_300)
+    messagebody = Container(bgcolor=colors.BLUE_300,scroll='adaptive')
     actual_message_frombox = Text()
     actual_message_tobox = Text()
     actual_message_bodybox = Column()
@@ -85,6 +85,8 @@ class Home:
                 if part.get_content_type() == "text/plain":
                     messagebodytext = part.as_string().split("\n")
                     messagebodytext = "\n".join(messagebodytext)
+            ndate = self.actual_message.get('Date')
+            messagebodytext=f"Date:{ndate} \n\n {messagebodytext}"
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
@@ -134,6 +136,8 @@ class Home:
         mailcontainer.width = int(self.pagewidth*30/100)
         mailtitle = Text(color=colors.BLUE_600,value=mail.get("From"))
         mailtitle.width = int(self.pagewidth*30/100)
+        maildate = Text(value=mail.get('Date'))
+        maildate.width = int(self.pagewidth*30/100)
         mailhooktext = ""
         for part in mail.walk():
             if part.get_content_type() == "text/plain":
@@ -143,6 +147,8 @@ class Home:
         mailhook = Text(value=mailhooktext)
         mailcontainer.controls.append(mailtitle)
         mailcontainer.controls.append(mailhook)
+        mailcontainer.controls.append(maildate)
+        
         def click(e):
             self.set_actual_message(idx)
             self.update_message_box()
