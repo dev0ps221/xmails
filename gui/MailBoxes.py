@@ -5,7 +5,6 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
-    panelbox_container = Container()
     message_stuff = Row(alignment='start')
     boxlist = Row(wrap=True)   
     messagebox = Column()
@@ -30,6 +29,7 @@ class MailBoxes:
         self.page      = self.master.page
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
+        self.panelbox_container = self.master.panelbox_container
         self.refresh_view = self.master.refresh_view
         self.logout = self.master.logout
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])

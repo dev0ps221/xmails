@@ -1,5 +1,5 @@
 
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container
 from managers.credsmanager import CredsManager,CredsInstance
 
 from gui.Login import Login
@@ -10,6 +10,7 @@ credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
+    panelbox_container = Container()
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
