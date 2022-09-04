@@ -11,10 +11,10 @@ class Home:
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.BLUE_300,scroll='adaptive')
+    messagebody = Container(bgcolor=colors.LIGHT_BLUE)
     actual_message_frombox = Text()
     actual_message_tobox = Text()
-    actual_message_bodybox = Column()
+    actual_message_bodybox = Column(scroll='adaptive')
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -80,6 +80,10 @@ class Home:
             bodybox = self.actual_message_bodybox 
             messagebox.height = self.pageheight
             messagebox.width = int(self.pagewidth*55/100)
+            frombox.height = int(self.pageheight*5/100)
+            tobox.height = int(self.pageheight*5/100)
+            bodybox.height = int(self.pageheight*90/100)
+            bodybox.width = int(self.pagewidth*55/100)
             messagebodytext = ""
             for part in self.actual_message.walk():
                 if part.get_content_type() == "text/plain":
@@ -95,7 +99,7 @@ class Home:
             print(messagebody)
             print(messagebodytext)
             self.messagebox.update() 
-            self.bodybox.update()
+            self.actual_message_bodybox.update()
 
     def build_view(self):    
         self.view.width = self.pagewidth
