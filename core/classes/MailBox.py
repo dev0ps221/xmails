@@ -22,9 +22,11 @@ class MailBox:
             if idx >=0 and idx < len(idarr):
                 mail_id = idarr[idx]
                 if mail_id:
-                    resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
-                    message = email.message_from_bytes(mail_data[0][1])
-                    self.mails[-idx] = message
+
+                    if self.server.state == 'SELECTED':
+                        resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
+                        message = email.message_from_bytes(mail_data[0][1])
+                        self.mails[-idx] = message
             idx+=1
         return self.mails
 
@@ -35,8 +37,10 @@ class MailBox:
         self.selector   = self.raw.split(' "/" ')[1]
         self.name = self.selector.replace('"','').split('/')[-1] 
         self.name = quopri.decodestring(self.name).decode()
-        print(self.name)
-        self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.name,readonly=True)
+        try:
+            self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
+        except Exception as e:
+            print(e)
         if self.server.state == 'SELECTED':
             self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
 

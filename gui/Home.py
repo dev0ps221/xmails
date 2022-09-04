@@ -1,7 +1,6 @@
 import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
 
-
 class Home:
     view = Column()
     mailbox_container = Row(alignment='start')
@@ -95,7 +94,7 @@ class Home:
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
             messagebody.width=int(self.pagewidth*55/100)
-            messagebody.content = Text(value=messagebodytext)
+            messagebody.content = Text(value=messagebodytext,bgcolor=colors.TEAL)
             print(messagebody)
             print(messagebodytext)
             self.messagebox.update() 
@@ -137,7 +136,11 @@ class Home:
 
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
+        mailhookcontainer = Container()
+        mailhookcontainer.width=int(self.pagewidth*30/100)
         mailcontainer.width = int(self.pagewidth*30/100)
+
+        mailtitlecontainer = Container(bgcolor=colors.TEAL)
         mailtitle = Text(color=colors.LIGHT_BLUE,value=mail.get("From"))
         mailtitle.width = int(self.pagewidth*30/100)
         maildate = Text(value=mail.get('Date'))
@@ -149,8 +152,10 @@ class Home:
                 mailhooktext += "\n".join(body_lines[4:6])
         mailhooktext=quopri.decodestring(mailhooktext).decode()
         mailhook = Text(value=mailhooktext)
-        mailcontainer.controls.append(mailtitle)
-        mailcontainer.controls.append(mailhook)
+        mailtitlecontainer.content=mailtitle
+        mailcontainer.controls.append(mailtitlecontainer)
+        mailhookcontainer.content=mailhook
+        mailcontainer.controls.append(mailhookcontainer)
         mailcontainer.controls.append(maildate)
         
         def click(e):
