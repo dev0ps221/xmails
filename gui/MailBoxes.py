@@ -2,9 +2,10 @@ import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
 
 class MailBoxes:
-    view = Column()
-    mailbox_container = Row(alignment='start')
-    boxlist = Column()   
+    view = Row()
+    mailbox_container = Column(alignment='start')
+    message_stuff = Row(alignment='start')
+    boxlist = Row()   
     messagebox = Column()
     mailboxes = []
     gotmailboxes = False
@@ -111,16 +112,24 @@ class MailBoxes:
             self.actual_message_bodybox.update()
 
     def build_view(self):    
+        self.panelbox_container = Container(bgcolor=colors.PURPLE)
+        self.panelbox_container.width = int(self.pagewidth*15/100)
+        self.panelbox_container.height = int(self.pageheight)
+        self.panelbox = Column()
+        self.panelbox.width = int(self.pagewidth*15/100)
+        self.mailbox_container.width  = int(self.pagewidth*85/100)
+        self.panelbox_container.content = self.panelbox
+        self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
         mailboxes = self.get_mailboxes()
         self.boxlist.controls = []
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
-            self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
-        self.boxlist.width = int(self.pagewidth*15/100)
+            self.boxlist.controls.append(Button(text=f"{quopri.decodestring(box.get_info('name')).decode()} ({quopri.decodestring(box.get_info('mail_count')).decode()})"))
+        self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
         viewlist = Column(scroll='adaptive')
-        viewlist.width = int(self.pagewidth*30/100)
+        viewlist.width = int(self.mailbox_container.width*30/100)
         viewlist.height = self.pageheight
         messagebox = self.messagebox
         if  self.actual_mailbox:
@@ -140,9 +149,10 @@ class MailBoxes:
             self.actual_message_datebox_container.content = self.actual_message_datebox
             self.actual_message_frombox_container.content = self.actual_message_frombox
             messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_datebox_container,self.actual_message_bodybox]
-
-        self.mailbox_container.controls.append(viewlist)
-        self.mailbox_container.controls.append(messagebox)    
+        self.message_stuff.controls.append(viewlist)
+        
+        self.message_stuff.controls.append(messagebox)
+        self.mailbox_container.controls.append(self.message_stuff)    
         self.view.controls.append(self.mailbox_container)
         return self.view
 
@@ -150,21 +160,21 @@ class MailBoxes:
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
         mailhookcontainer = Container()
-        mailhookcontainer.width=int(self.pagewidth*30/100)
-        mailcontainer.width = int(self.pagewidth*30/100)
+        mailhookcontainer.width=int(self.mailbox_container.width*30/100)
+        mailcontainer.width = int(self.mailbox_container.width*30/100)
 
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
         mailtitle = Text(value=mail.get("From"))
-        mailtitle.width = int(self.pagewidth*30/100)
+        mailtitle.width = int(self.mailbox_container.width*30/100)
         maildate = Text(value=mail.get('Date'))
-        maildate.width = int(self.pagewidth*30/100)
+        maildate.width = int(self.mailbox_container.width*30/100)
         mailhooktext = ""
         partidx = 0
         for part in mail.walk():
 
             if part.get_content_type() == "text/plain":
                 body_lines = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-                mailhooktext += "\n".join(body_lines[4:6])
+                mailhooktext += "\n".join(body_lines[4:5])
             partidx+=1
         partidx = None
         mailhooktext=quopri.decodestring(mailhooktext).decode()
