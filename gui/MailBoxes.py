@@ -98,26 +98,22 @@ class MailBoxes:
             bodybox.width = int(self.mailbox_container.width*65/100)
             messagebodytext = ""
             messagebodyhtml = None
-            partidx = 0
             if self.actual_message.is_multipart():
                 for part in self.actual_message.walk():
-                    print(part.get("Content-Transfer-Encoding"))
                     if part.get_content_subtype() == "html":
-                        messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-                        messagebodyhtml = "\n".join(messagebodyhtml) 
+                        messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.get_payload(decode=True).split("\n"))]
+                        messagebodyhtml = "\n".join(messagebodyhtml).encode() 
                     
                     if part.get_content_subtype() == "text":
                         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
                         messagebodytext = "\n".join(messagebodytext)
-
-                    partidx+=1
             else:
-                messagebodytext = self.actual_message.get_body()
+                messagebodytext = self.actual_message.get_payload(decode=True)
                 if self.actual_message.get_content_subtype() == "html":
-                    messagebodyhtml = messagebodytext
+                    messagebodyhtml = str(html2text(messagebodytext.decode('utf-8')))
 
             if messagebodyhtml:
-                messagebodytext = html2text(messagebodyhtml)
+                messagebodytext = messagebodyhtml
             else:
                 messagebodytext=quopri.decodestring(messagebodytext).decode()
             partidx = None
@@ -208,10 +204,8 @@ class MailBoxes:
         mailhooktext = ""
         partidx = 0
         for part in mail.walk():
-
-            if part.get_content_type() == "text/plain":
-                body_lines = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-                mailhooktext += "\n".join(body_lines[4:5])
+            body_lines = [elem for elem in filter(lambda line:'Content-' not in line,str(part.get_payload(decode=True)).split("\n"))]
+            mailhooktext += "\n".join(body_lines[2:4])
             partidx+=1
         partidx = None
         try :
