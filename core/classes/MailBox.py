@@ -27,7 +27,7 @@ class MailBox:
                         try:
                             resp_code, mail_data = self.server.fetch(mail_id[0], '(RFC822)')
                             if mail_data is not None and len(mail_data) and mail_data[0] is not None:
-                                message = email.message_from_bytes(mail_data[0][1])
+                                message = email.message_from_bytes(mail_data[0][1],policy=email.policy.default)
                                 self.mails[made] = message
                         except Exception as e:
                             print(e)

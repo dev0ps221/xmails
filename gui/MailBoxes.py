@@ -99,30 +99,31 @@ class MailBoxes:
             messagebodytext = ""
             messagebodyhtml = None
             partidx = 0
-            print(self.actual_message.get('Content'))
-            if msg.get_content_subtype() == "html":
-                messagebodytext = html2text(self.actual_message.get_content()) 
-            
-            if msg.get_content_subtype() == "text":
-                messagebodytext = html2text(self.actual_message.get_content()) 
-            
-            # for part in self.actual_message.walk():
-            #     print(part.get_content_type())
-            #     # print(part.as_string().split("\n"))
-            #     if 
-            #         messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-            #         messagebodyhtml = "\n".join(messagebodyhtml)
-            #     if part.get_content_type() == "text/plain":
-            #         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-            #         messagebodytext = "\n".join(messagebodytext)
-            #     partidx+=1
-            # if messagebodyhtml:
-            #     messagebodytext = messagebodyhtml
+            if self.actual_message.is_multipart():
+                for part in self.actual_message.walk():
+                    print(part.get("Content-Transfer-Encoding"))
+                    if part.get_content_subtype() == "html":
+                        messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+                        messagebodyhtml = "\n".join(messagebodyhtml) 
+                    
+                    if part.get_content_subtype() == "text":
+                        messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
+                        messagebodytext = "\n".join(messagebodytext)
+
+                    partidx+=1
+            else:
+                messagebodytext = self.actual_message.get_body()
+                if self.actual_message.get_content_subtype() == "html":
+                    messagebodyhtml = messagebodytext
+
+            if messagebodyhtml:
+                messagebodytext = html2text(messagebodyhtml)
+            else:
+                messagebodytext=quopri.decodestring(messagebodytext).decode()
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
-            messagebodytext=quopri.decodestring(messagebodytext).decode()
             messagebody.width=int(self.pagewidth*65/100)
             messagebody.content = Text(value=messagebodytext,selectable=True,size=12,color=colors.BLACK)
             self.messagebox.update() 
