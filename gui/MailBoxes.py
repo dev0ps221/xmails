@@ -107,7 +107,7 @@ class MailBoxes:
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
-            messagebody.width=int(self.pagewidth*45/100)
+            messagebody.width=int(self.pagewidth*65/100)
             messagebody.content = Text(value=messagebodytext,selectable=True,size=12,color=colors.BLACK)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
@@ -120,7 +120,7 @@ class MailBoxes:
         self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
-        self.message_stuff.height = int(self.mailbox_container.height*90/100)
+        self.message_stuff.height = int(self.mailbox_container.height*60/100)
         self.panelbox_container.content = self.panelbox
         self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
