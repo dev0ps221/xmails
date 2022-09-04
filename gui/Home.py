@@ -5,10 +5,14 @@ class Home:
     view = Column()
     mailbox_container = Row(alignment='start')
     boxlist = Column()   
+    messagebox = Column(scroll='adaptive')
     mailboxes = []
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
+    actual_message_frombox = Text()
+    actual_message_tobox = Text()
+    actual_message_bodybox = Text()
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -54,12 +58,39 @@ class Home:
         
     def set_actual_message(self,idx):
         if self.actual_mailbox and idx < len(self.actual_mailbox.mails):
-            self.actual_message = self.actual_mailbox.mails[idx]
+            match_ = None
+            i = 0
+            for mail in self.actual_mailbox.mails:
+                mail = self.actual_mailbox.mails[mail]
+                if i == idx:
+                    match_ = mail
+                i+=1
+            if match_:
+                self.actual_message = match_
+
+    def update_message_box(self):
+        messagebox = self.messagebox
+        
+        if self.actual_message:
+            frombox = self.actual_message_frombox
+            tobox = self.actual_message_tobox
+            bodybox = self.actual_message_bodybox 
+            messagebox.height = self.pageheight
+            messagebox.width = int(self.pagewidth*55/100)
+            messagebody = ""
+            for part in self.actual_message.walk():
+                if part.get_content_type() == "text/plain":
+                    messagebody = part.as_string().split("\n")
+                    messagebody = "\n".join(messagebody)
+            frombox.value="From       : {}".format(self.actual_message.get("From"))
+            tobox.value="To       : {}".format(self.actual_message.get("To"))
+            bodybox.value=str(messagebody,'utf-8')
+            self.messagebox.update() 
 
     def build_view(self):    
         self.view.width = self.pagewidth
         mailboxes = self.get_mailboxes()
-        messagebox = None
+        self.boxlist.controls = []
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             self.boxlist.controls.append(Text(value=f"{box.get_info('name')} ({box.get_info('mail_count')})"))
@@ -68,8 +99,7 @@ class Home:
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.pagewidth*30/100)
         viewlist.height = self.pageheight
-
-        messagebox = Column(scroll='adaptive')
+        messagebox = self.messagebox
         if  self.actual_mailbox:
             titlesusr = self.profile.creds.get_cred('user')
             mailboxname = self.actual_mailbox.get_info('name')
@@ -81,21 +111,8 @@ class Home:
                 mail = self.actual_mailbox.mails[mail]
                 viewlist.controls.append(self.generate_mail_hook(mail,idx))
                 idx+=1
-            if self.actual_message:
-                messagebox.height = self.pageheight
-                messagebox.width = int(self.pagewidth*55/100)
-                messagebody = ""
-                for part in self.actual_message.walk():
-                    if part.get_content_type() == "text/plain":
-                        messagebody = part.as_string().split("\n")
-                        messagebody = "\n".join(messagebody)
-                frombox = Text(value="From       : {}".format(self.actual_message.get("From")))
-                tobox = Text(value="To       : {}".format(self.actual_message.get("To")))
-                bodybox = Text(value=messagebody)
-                messagebox.controls.append(frombox)
-                messagebox.controls.append(tobox)
-                messagebox.controls.append(bodybox)
-                print(self.actual_message)
+            messagebox.controls = [self.actual_message_frombox,self.actual_message_tobox,self.actual_message_bodybox]
+
         self.mailbox_container.controls.append(viewlist)
         self.mailbox_container.controls.append(messagebox)    
         self.view.controls.append(self.mailbox_container)
@@ -113,10 +130,9 @@ class Home:
         mailhook = Text(value=mailhooktext)
         mailcontainer.controls.append(mailtitle)
         mailcontainer.controls.append(mailhook)
-        def click():
-            global idx
+        def click(e):
             self.set_actual_message(idx)
-            self.page.refresh_view()
+            self.update_message_box()
         viewbutton = ElevatedButton(on_click=click,text='CONSULTER',bgcolor=colors.BLUE_300)
         mailcontainer.controls.append(viewbutton)
         return mailcontainer
