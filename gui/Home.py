@@ -1,5 +1,5 @@
 import quopri
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider
 
 
 class Home:
@@ -123,7 +123,9 @@ class Home:
 
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
-        mailtitle = Text(bgcolor=colors.BLUE_600,value=mail.get("From"))
+        mailcontainer.width = int(self.pagewidth*30/100)
+        mailtitle = Text(color=colors.BLUE_600,value=mail.get("From"))
+        mailtitle.width = int(self.pagewidth*30/100)
         mailhooktext = ""
         for part in mail.walk():
             if part.get_content_type() == "text/plain":
@@ -136,8 +138,9 @@ class Home:
         def click(e):
             self.set_actual_message(idx)
             self.update_message_box()
-        viewbutton = ElevatedButton(on_click=click,text='CONSULTER',bgcolor=colors.BLUE_300)
+        viewbutton = ElevatedButton(on_click=click,text='CONSULTER')
         mailcontainer.controls.append(viewbutton)
+        mailcontainer.controls.append(Divider())
         return mailcontainer
 
 
