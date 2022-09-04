@@ -16,7 +16,7 @@ class MailBox:
 
     def get_mails(self,idx=0,count=50):
         self.mails = {}
-        idarr = self.mail_ids[0].decode().split()
+        idarr = self.mail_ids[0].decode().split()[-count:]
         idarr.reverse()
         while idx< count :
             if idx >=0 and idx < len(idarr):

@@ -112,6 +112,12 @@ class MailBoxes:
             self.messagebox.update() 
             self.actual_message_bodybox.update()
 
+
+
+    def set_actual_mailbox_idx(self,idx):
+        self.mailbox_idx = idx
+        self.set_actual_mailbox()
+
     def build_view(self):    
         self.panelbox_container = Container(bgcolor=colors.PURPLE)
         self.panelbox_container.width = int(self.pagewidth*15/100)
@@ -126,16 +132,22 @@ class MailBoxes:
         self.view.width = self.pagewidth
         mailboxes = self.get_mailboxes()
         self.boxlist.controls = []
+        ix = 0
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
             button = ElevatedButton(text=f'{box.get_info("name")}{box.get_info("mail_count")}')
             if self.actual_mailbox :
-                if self.actual_mailbox.get_info('name') == mailbox:
-                    button.color=colors.WHITE
-                    button.bgcolor=colors.LIGHT_BLUE
+                if self.actual_mailbox.get_info('name') == box.get_info('name'):
+                    button.color=colors.LIGHT_BLUE
+            def switch_box(e):
+                self.set_actual_mailbox_idx(ix)
+                self.view.update()
+            button.on_click = switch_box
             self.boxlist.controls.append(button)
+            ix+=1
         self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
+        self.mailbox_container.controls.append(Divider())
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.mailbox_container.width*30/100)
         viewlist.height = int(self.pageheight*95/100)
