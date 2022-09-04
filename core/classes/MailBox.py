@@ -39,6 +39,7 @@ class MailBox:
         self.name = quopri.decodestring(self.name).decode()
         try:
             self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
+            self.mail_count = self.mail_count[0]
         except Exception as e:
             print(e)
         if self.server.state == 'SELECTED':

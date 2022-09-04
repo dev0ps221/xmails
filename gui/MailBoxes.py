@@ -5,20 +5,21 @@ class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
     message_stuff = Row(alignment='start')
-    boxlist = Row()   
+    boxlist = Row(wrap=True)   
     messagebox = Column()
     mailboxes = []
     gotmailboxes = False
+    panelbox = Column()
     actual_mailbox = None
     actual_message = None
     messagebody = Container(bgcolor=colors.BLUE_GREY,padding=10)
 
     actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
-    actual_message_frombox = Text()
+    actual_message_frombox = Text(size=12)
     actual_message_tobox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
-    actual_message_tobox = Text()
+    actual_message_tobox = Text(size=12)
     actual_message_datebox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
-    actual_message_datebox = Text()
+    actual_message_datebox = Text(size=12)
     actual_message_bodybox = Column(scroll='always')
     mailbox_idx = -1
     def __init__(self,master):
@@ -85,15 +86,15 @@ class MailBoxes:
             datebox = self.actual_message_datebox
             bodybox = self.actual_message_bodybox 
             messagebox.height = self.pageheight
-            messagebox.width = int(self.pagewidth*55/100)
-            frombox.width = int(self.pagewidth*55/100)
-            frombox.height = int(self.pageheight*5/100)
-            datebox.width = int(self.pagewidth*55/100)
-            datebox.height = int(self.pageheight*5/100)
-            tobox.width = int(self.pagewidth*55/100)
-            tobox.height = int(self.pageheight*5/100)
-            bodybox.height = int(self.pageheight*80/100)
-            bodybox.width = int(self.pagewidth*55/100)
+            messagebox.width = int(self.mailbox_container.width*65/100)
+            frombox.width = int(self.mailbox_container.width*65/100)
+            frombox.height = int(self.mailbox_container.height*5/100)
+            datebox.width = int(self.mailbox_container.width*65/100)
+            datebox.height = int(self.mailbox_container.height*5/100)
+            tobox.width = int(self.mailbox_container.width*65/100)
+            tobox.height = int(self.mailbox_container.height*5/100)
+            bodybox.height = int(self.mailbox_container.height*75/100)
+            bodybox.width = int(self.mailbox_container.width*65/100)
             messagebodytext = ""
             partidx = 0
             for part in self.actual_message.walk():
@@ -106,8 +107,8 @@ class MailBoxes:
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
-            messagebody.width=int(self.pagewidth*55/100)
-            messagebody.content = Text(value=messagebodytext,color=colors.BLACK)
+            messagebody.width=int(self.pagewidth*65/100)
+            messagebody.content = Text(value=messagebodytext,size=12,color=colors.BLACK)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
 
@@ -115,9 +116,11 @@ class MailBoxes:
         self.panelbox_container = Container(bgcolor=colors.PURPLE)
         self.panelbox_container.width = int(self.pagewidth*15/100)
         self.panelbox_container.height = int(self.pageheight)
-        self.panelbox = Column()
         self.panelbox.width = int(self.pagewidth*15/100)
+        self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
+        self.mailbox_container.height = int(self.pageheight*100/100)
+        self.message_stuff.height = int(self.mailbox_container.height*90/100)
         self.panelbox_container.content = self.panelbox
         self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
@@ -125,12 +128,12 @@ class MailBoxes:
         self.boxlist.controls = []
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
-            self.boxlist.controls.append(Button(text=f"{box.get_info('name')}{box.get_info('mail_count')}"))
+            self.boxlist.controls.append(ElevatedButton(text=f'{box.get_info("name")}{box.get_info("mail_count")}'))
         self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = self.pageheight
+        viewlist.height = int(self.pageheight*95/100)
         messagebox = self.messagebox
         if  self.actual_mailbox:
             titlesusr = self.profile.creds.get_cred('user')
@@ -164,9 +167,9 @@ class MailBoxes:
         mailcontainer.width = int(self.mailbox_container.width*30/100)
 
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
-        mailtitle = Text(value=mail.get("From"))
+        mailtitle = Text(value=mail.get("From"),size=12)
         mailtitle.width = int(self.mailbox_container.width*30/100)
-        maildate = Text(value=mail.get('Date'))
+        maildate = Text(value=mail.get('Date'),size=12)
         maildate.width = int(self.mailbox_container.width*30/100)
         mailhooktext = ""
         partidx = 0
@@ -177,8 +180,11 @@ class MailBoxes:
                 mailhooktext += "\n".join(body_lines[4:5])
             partidx+=1
         partidx = None
-        mailhooktext=quopri.decodestring(mailhooktext).decode()
-        mailhook = Text(value=mailhooktext)
+        try :
+            mailhooktext=quopri.decodestring(mailhooktext).decode()
+        except Exception as e:
+            pass
+        mailhook = Text(value=mailhooktext,size=12)
         mailhook.padding = 5
         mailtitlecontainer.content=mailtitle
         mailcontainer.controls.append(mailtitlecontainer)
