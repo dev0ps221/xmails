@@ -34,7 +34,7 @@ class MailBox:
                             mail_data = None
 
                         idx+=1
-            made+=1
+            made+=1 
             if made >= len(idarr) : break
         return self.mails
 
