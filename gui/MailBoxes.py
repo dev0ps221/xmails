@@ -82,7 +82,9 @@ class MailBoxes:
             bodybox = self.actual_message_bodybox 
             messagebox.height = self.pageheight
             messagebox.width = int(self.pagewidth*55/100)
+            frombox.width = int(self.pagewidth*55/100)
             frombox.height = int(self.pageheight*5/100)
+            tobox.width = int(self.pagewidth*55/100)
             tobox.height = int(self.pageheight*5/100)
             bodybox.height = int(self.pageheight*90/100)
             bodybox.width = int(self.pagewidth*55/100)
@@ -98,8 +100,6 @@ class MailBoxes:
             messagebodytext=quopri.decodestring(messagebodytext).decode()
             messagebody.width=int(self.pagewidth*55/100)
             messagebody.content = Text(value=messagebodytext)
-            print(messagebody)
-            print(messagebodytext)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
 
