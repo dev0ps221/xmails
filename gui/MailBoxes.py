@@ -10,13 +10,15 @@ class MailBoxes:
     gotmailboxes = False
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
+    messagebody = Container(bgcolor=colors.BLUE_GREY,padding=10)
 
     actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
-    actual_message_frombox = Text(color=colors.BLACK)
+    actual_message_frombox = Text()
     actual_message_tobox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
-    actual_message_tobox = Text(color=colors.BLACK)
-    actual_message_bodybox = Column(scroll='adaptive')
+    actual_message_tobox = Text()
+    actual_message_datebox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
+    actual_message_datebox = Text()
+    actual_message_bodybox = Column(scroll='always')
     mailbox_idx = -1
     def __init__(self,master):
         self.master = master
@@ -79,27 +81,33 @@ class MailBoxes:
         if self.actual_message:
             frombox = self.actual_message_frombox
             tobox = self.actual_message_tobox
+            datebox = self.actual_message_datebox
             bodybox = self.actual_message_bodybox 
             messagebox.height = self.pageheight
             messagebox.width = int(self.pagewidth*55/100)
             frombox.width = int(self.pagewidth*55/100)
             frombox.height = int(self.pageheight*5/100)
+            datebox.width = int(self.pagewidth*55/100)
+            datebox.height = int(self.pageheight*5/100)
             tobox.width = int(self.pagewidth*55/100)
             tobox.height = int(self.pageheight*5/100)
-            bodybox.height = int(self.pageheight*90/100)
+            bodybox.height = int(self.pageheight*80/100)
             bodybox.width = int(self.pagewidth*55/100)
             messagebodytext = ""
+            partidx = 0
             for part in self.actual_message.walk():
-                if part.get_content_type() == "text/plain":
-                    messagebodytext = part.as_string().split("\n")
-                    messagebodytext = "\n".join(messagebodytext)
-            ndate = self.actual_message.get('Date')
-            messagebodytext=f"Date:{ndate} \n\n {messagebodytext}"
+                if partidx >= 2:
+                    if part.get_content_type() == "text/plain":
+                        messagebodytext = part.as_string().split("\n")
+                        messagebodytext = "\n".join(messagebodytext)
+                    partidx+=1
+            partidx = None
+            datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
             tobox.value="To       : {}".format(self.actual_message.get("To"))
             messagebodytext=quopri.decodestring(messagebodytext).decode()
             messagebody.width=int(self.pagewidth*55/100)
-            messagebody.content = Text(value=messagebodytext)
+            messagebody.content = Text(value=messagebodytext,color=colors.BLACK)
             self.messagebox.update() 
             self.actual_message_bodybox.update()
 
@@ -130,8 +138,9 @@ class MailBoxes:
 
             self.actual_message_bodybox.controls.append(self.messagebody)
             self.actual_message_tobox_container.content = self.actual_message_tobox
+            self.actual_message_datebox_container.content = self.actual_message_datebox
             self.actual_message_frombox_container.content = self.actual_message_frombox
-            messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_bodybox]
+            messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_datebox_container,self.actual_message_bodybox]
 
         self.mailbox_container.controls.append(viewlist)
         self.mailbox_container.controls.append(messagebox)    
@@ -146,15 +155,19 @@ class MailBoxes:
         mailcontainer.width = int(self.pagewidth*30/100)
 
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
-        mailtitle = Text(color=colors.BLACK,value=mail.get("From"))
+        mailtitle = Text(value=mail.get("From"))
         mailtitle.width = int(self.pagewidth*30/100)
         maildate = Text(value=mail.get('Date'))
         maildate.width = int(self.pagewidth*30/100)
         mailhooktext = ""
+        partidx = 0
         for part in mail.walk():
-            if part.get_content_type() == "text/plain":
-                body_lines = part.as_string().split("\n")
-                mailhooktext += "\n".join(body_lines[4:6])
+
+            if partidx >= 2:
+                if part.get_content_type() == "text/plain":
+                    body_lines = part.as_string().split("\n")
+                    mailhooktext += "\n".join(body_lines[4:6])
+        partidx = None
         mailhooktext=quopri.decodestring(mailhooktext).decode()
         mailhook = Text(value=mailhooktext)
         mailhook.padding = 5
