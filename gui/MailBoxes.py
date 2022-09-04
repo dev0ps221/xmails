@@ -101,17 +101,19 @@ class MailBoxes:
             if self.actual_message.is_multipart():
                 for part in self.actual_message.walk():
                     if part.get_content_subtype() == "html":
-                        messagebodyhtml= [elem for elem in filter(lambda line:'Content-' not in line,part.get_payload(decode=True).split("\n"))]
-                        messagebodyhtml = "\n".join(messagebodyhtml).encode() 
+                        messagebodyhtml= [elem for elem in str(html2text(part.get_payload(decode=True).decode('utf-8'))).split("\n")]
+                        messagebodyhtml = "\n".join(messagebodyhtml) 
                     
                     if part.get_content_subtype() == "text":
                         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
                         messagebodytext = "\n".join(messagebodytext)
             else:
-                messagebodytext = self.actual_message.get_payload(decode=True)
                 if self.actual_message.get_content_subtype() == "html":
+                    messagebodytext = self.actual_message.get_payload(decode=True)
                     messagebodyhtml = str(html2text(messagebodytext.decode('utf-8')))
-
+                else:
+                    messagebodytext = self.actual_message.as_string().split("\n")
+                    messagebodytext = "\n".join(messagebodytext)
             if messagebodyhtml:
                 messagebodytext = messagebodyhtml
             else:
@@ -139,7 +141,7 @@ class MailBoxes:
         self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
-        self.message_stuff.height = int(self.mailbox_container.height*90/100)
+        self.message_stuff.height = int(self.mailbox_container.height*85/100)
         self.panelbox_container.content = self.panelbox
         self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
@@ -163,7 +165,7 @@ class MailBoxes:
         self.mailbox_container.controls.append(Divider())
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = int(self.mailbox_container.height*90/100)
+        viewlist.height = int(self.message_stuff.height*100/100)
         messagebox = self.messagebox
         if  self.actual_mailbox:
             titlesusr = self.profile.creds.get_cred('user')
@@ -201,17 +203,13 @@ class MailBoxes:
         mailtitle.width = int(self.mailbox_container.width*30/100)
         maildate = Text(value=mail.get('Date'),size=10)
         maildate.width = int(self.mailbox_container.width*30/100)
-        mailhooktext = ""
-        partidx = 0
-        for part in mail.walk():
-            body_lines = [elem for elem in filter(lambda line:'Content-' not in line,str(part.get_payload(decode=True)).split("\n"))]
-            mailhooktext += "\n".join(body_lines[2:4])
-            partidx+=1
-        partidx = None
-        try :
-            mailhooktext=quopri.decodestring(mailhooktext).decode()
+        
+        mailhooktext  = mail.get('Subject')
+        try:
+            mailhooktext = quopri.decodestring(mailhooktext).decode()
         except Exception as e:
-            pass
+            print(e)
+            mailhook =  mail.get('Subject')
         mailhook = Text(value=mailhooktext,size=10)
         mailhook.padding = 5
         mailtitlecontainer.content=mailtitle
