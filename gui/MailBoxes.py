@@ -150,7 +150,7 @@ class MailBoxes:
         self.mailbox_container.controls.append(Divider())
         viewlist = Column(scroll='adaptive')
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = int(self.pageheight*95/100)
+        viewlist.height = int(self.mailbox_container*95/100)
         messagebox = self.messagebox
         if  self.actual_mailbox:
             titlesusr = self.profile.creds.get_cred('user')
