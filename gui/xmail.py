@@ -4,6 +4,7 @@ from managers.credsmanager import CredsManager,CredsInstance
 
 from gui.Login import Login
 from gui.Home import Home
+from gui.MailBoxes import MailBoxes
 
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
@@ -21,7 +22,7 @@ class XMAIL:
     def login_success(self,profile):
         self.is_logged = 1
         self.logged_profile = profile
-        self.update_actual_view('/home')
+        self.update_actual_view('/mailboxes')
         self.refresh_view()
 
     def logout(self):
@@ -53,9 +54,11 @@ class XMAIL:
         self.page.vertical_alignment = "center"
         self.LoginView = Login(self)
         self.HomeView = Home(self)
+        self.MailBoxesView = MailBoxes(self)
         self.views = {
             '/login':self.LoginView,
-            '/home':self.HomeView
+            '/home':self.HomeView,
+            '/mailboxes':self.MailBoxesView
         }
         if self.view_exists(self.actual_view) :
             self.view = self.views[self.actual_view]

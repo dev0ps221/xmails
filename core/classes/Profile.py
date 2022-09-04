@@ -51,7 +51,7 @@ class Profile:
         self.rmailboxes = self.connection.server.list()
         for elem in self.rmailboxes[1]:
             box = MailBox(elem,self.server())
-            if "GMAIL" not in box.get_info('name'):
+            if "Gmail" not in box.get_info('name'):
                 self.append_mailbox(box.get_info('name'),box)
         return self.get_mailboxes()
             

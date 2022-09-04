@@ -116,6 +116,7 @@ class Login:
                     self.login_success(profile)
                 else:
                     self.refresh_view()
+                    self.loginerr = profile.connection.get_login_error()
 
     def login_error(self,error):
         self.loginerr = error 
