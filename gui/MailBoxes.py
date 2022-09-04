@@ -14,11 +14,11 @@ class MailBoxes:
     actual_message = None
     messagebody = Container(bgcolor=colors.BLUE_GREY,padding=10)
 
-    actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
+    actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=2.5)
     actual_message_frombox = Text(size=12)
-    actual_message_tobox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
+    actual_message_tobox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=2.5)
     actual_message_tobox = Text(size=12)
-    actual_message_datebox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=10)
+    actual_message_datebox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=2.5)
     actual_message_datebox = Text(size=12)
     actual_message_bodybox = Column(scroll='always')
     mailbox_idx = -1
@@ -93,7 +93,7 @@ class MailBoxes:
             datebox.height = int(self.mailbox_container.height*5/100)
             tobox.width = int(self.mailbox_container.width*65/100)
             tobox.height = int(self.mailbox_container.height*5/100)
-            bodybox.height = int(self.mailbox_container.height*75/100)
+            bodybox.height = int(self.mailbox_container.height*55/100)
             bodybox.width = int(self.mailbox_container.width*65/100)
             messagebodytext = ""
             partidx = 0
@@ -120,7 +120,7 @@ class MailBoxes:
         self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
-        self.message_stuff.height = int(self.mailbox_container.height*60/100)
+        self.message_stuff.height = int(self.mailbox_container.height*90/100)
         self.panelbox_container.content = self.panelbox
         self.view.controls.append(self.panelbox_container)
         self.view.width = self.pagewidth
@@ -128,7 +128,12 @@ class MailBoxes:
         self.boxlist.controls = []
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
-            self.boxlist.controls.append(ElevatedButton(text=f'{box.get_info("name")}{box.get_info("mail_count")}'))
+            button = ElevatedButton(text=f'{box.get_info("name")}{box.get_info("mail_count")}')
+            if self.actual_mailbox :
+                if self.actual_mailbox.get_info('name') == mailbox:
+                    button.color=colors.WHITE
+                    button.bgcolor=colors.LIGHT_BLUE
+            self.boxlist.controls.append(button)
         self.boxlist.width = int(self.mailbox_container.width)
         self.mailbox_container.controls.append(self.boxlist)
         viewlist = Column(scroll='adaptive')
