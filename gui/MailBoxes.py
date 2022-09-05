@@ -1,6 +1,6 @@
 import quopri
 from html2text import html2text
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container
 
 class MailBoxes:
     view = Row()
@@ -215,7 +215,7 @@ class MailBoxes:
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
-        self.view.controls = [self.panelbox_container,Divider(),self.mailbox_container]
+        self.view.controls = [self.panelbox_container,VerticalDivider(),self.mailbox_container]
 
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()

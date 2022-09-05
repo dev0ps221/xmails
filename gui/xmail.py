@@ -1,5 +1,5 @@
 
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image,border_radius
 from managers.credsmanager import CredsManager,CredsInstance
 
 from gui.Login import Login
@@ -11,6 +11,7 @@ credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
     panelbox_container = Container()
+    panelbox = Column()
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
@@ -71,14 +72,21 @@ class XMAIL:
 
     def build_panelbox(self):
         self.panelbox_container.controls = []
+        self.logobox = Container()
+        self.logo = Image(
+            src=f"/logo.png",fit='contain',width = int(self.view.pagewidth*15/100),height = int(self.view.pageheight*25/100),bgcolor=colors.LIGHT_BLUE,border_radius=border_radius.all(10)
+        )
+        self.logoboxtext = Text(color=colors.LIGHT_BLUE,value='TEK TECH \'s xmail')
+        self.logobox.content = Column(controls=[self.logo,self.logoboxtext])
         self.panelbox_container.width = int(self.view.view.width*15/100)
         self.panelbox_container.height = int(self.view.view.height)
-        gotohome = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Home',on_click=self.switch_to)
-        gotomailboxes = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Mailbox',on_click=self.switch_to)
-        logout = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
+        gotohome = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Home',on_click=self.switch_to)
+        gotomailboxes = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Mailbox',on_click=self.switch_to)
+        logout = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
         paneloptions.controls = [gotohome,gotomailboxes,logout]
-        self.panelbox_container.content = paneloptions
+        self.panelbox.controls = [self.logobox,paneloptions]
+        self.panelbox_container.content = self.panelbox
     
     def update_panelbox(self):
         self.panelbox_container.update()

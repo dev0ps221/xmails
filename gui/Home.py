@@ -1,5 +1,5 @@
 import quopri
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container
 
 class Home:
     view = Column()
@@ -31,7 +31,7 @@ class Home:
         self.viewbox.height= self.view.height
         self.viewbox.content = self.view
         self.viewcontent.width= (self.view.width*80/100)
-        
+
         self.view.height   = self.pageheight
 
     def show(self):
@@ -45,6 +45,6 @@ class Home:
         self.view.width = self.pagewidth
         self.update_controls()
         self.master.build_panelbox()
-        self.view.controls = [self.panelbox_container,Divider(),self.viewcontent]
+        self.view.controls = [self.panelbox_container,VerticalDivider(),self.viewcontent]
         return self.view
 
