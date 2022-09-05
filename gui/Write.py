@@ -21,11 +21,17 @@ class Write:
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.viewcontent = Column()
+        self.do_send = ElevatedButton(value='Envoyer',on_click=self.send_mail)
+
+    def send_mail(self,e):
+        if self.profile:
+            sendres = self.profile.send_mail(self.mail_target.value,self.mail_subject.value,self.mail_message.value)
 
     def build_write_field(self):
-        self.sendmail.controls = [self.mail_target,self.mail_subject,self.mail_message]
+        self.sendmail.controls = [self.mail_target,self.mail_subject,self.mail_message,self.do_send]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*60/100)
+    
     def reset_profile(self):
         self.profile = self.master.logged_profile
 
@@ -35,11 +41,13 @@ class Write:
         self.viewbox.update()
 
     def update_controls(self):
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.view.height   = self.pageheight
         self.viewbox.height= self.view.height
         self.viewbox.content = self.view
-        self.viewcontent.width= (self.view.width*80/100)
-        self.viewcontent.height= (self.view.height)
+        self.viewcontent.width= int(self.view.width*80/100)
+        self.viewcontent.height= self.view.height
         self.build_write_field()
         self.viewcontent.controls = [self.sendmail_container]
 
