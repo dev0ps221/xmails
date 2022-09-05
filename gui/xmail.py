@@ -49,9 +49,16 @@ class XMAIL:
             self.actual_view = view
             self.view = self.views[self.actual_view]
 
-    def update_panelbox(self):
+    def build_panelbox(self):
         self.panelbox_container.controls = []
-        
+        gotohome = ElevatedButton(text='Home')
+        gotomailboxes = ElevatedButton(text='Mailbox')
+        logout = ElevatedButton(text='Déconnexion')
+        paneloptions = Column()
+        paneloptions.controls = [gotohome,gotomailboxes,logout]
+        self.panelbox_container.controls = [paneloptions]
+    
+    def update_panelbox(self):
         self.panelbox_container.update()
 
     def app_loop(self,page: Page):

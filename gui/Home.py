@@ -32,13 +32,15 @@ class Home:
 
     def show(self):
         self.reset_profile()
-        if self.profile:
-            self.build_view()
+        # if self.profile:
+        self.build_view()
+        # print(self.view.controls)
         self.page.add(self.view)        
 
     def build_view(self):    
         self.view.width = self.pagewidth
-        self.update_view()
+        self.update_controls()
+        self.master.build_panelbox()
         self.view.controls = [self.panelbox_container,Divider(),self.view]
         return self.view
 
