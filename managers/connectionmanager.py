@@ -21,9 +21,9 @@ class ConnectionManager:
         port = 587  
 
         context = ssl.create_default_context()
-
+        res = None,None
         try:
-            server = smtplib.SMTP_SSL(self.send_host,port)
+            server = smtplib.SMTP(self.send_host,port)
             server.ehlo() # Can be omitted
             server.starttls(context=context) # Secure the connection
             server.ehlo() # Can be omitted
@@ -34,17 +34,16 @@ class ConnectionManager:
             message["From"] = self.creds.get_cred('user')
             message["To"] = maildata['to']
 
-            message.attach(MIMEText(maildata['message','text']))
-            server.sendmail(
+            message.attach(MIMEText(maildata['message'],'text'))
+            res = None,server.sendmail(
                 self.creds.get_cred('user'), maildata['to'], message.as_string()
             )
-
         except Exception as e:
-            
             print(e)
-        
+            res = e,None
         finally:
             server.quit() 
+        return res
 
     def get_server(self):
         return self.server

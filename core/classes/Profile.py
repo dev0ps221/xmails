@@ -13,7 +13,7 @@ class Profile:
         }
         results = self.connection.send_mail(maildata)
         print(results)
-        print(mail_data)
+        
     def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
         self.loginerr = None
         if not self.connection.is_connected():
