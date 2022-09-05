@@ -7,7 +7,7 @@ class Write:
     sendmail = Column()
     mail_target = TextField(label='Destinataire')
     mail_subject = TextField(label='Sujet')
-    mail_message = TextField(label='Message')
+    mail_message = TextField(label='Message',multiline=True,min_lines=15)
     def __init__(self,master):
         self.view = Row()
         self.viewbox = Container()
@@ -30,8 +30,8 @@ class Write:
     def build_write_field(self):
         self.sendmail.controls = [self.mail_target,self.mail_subject,self.mail_message,self.do_send]
         self.sendmail_container.content = self.sendmail
-        self.mail_message.height = int(self.viewcontent.height*60/100)
-    
+        self.mail_message.height = int(self.viewcontent.height*40/100)
+        self.mail_message.vertical_alignment = "top"
     def reset_profile(self):
         self.profile = self.master.logged_profile
 
