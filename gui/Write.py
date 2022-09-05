@@ -32,6 +32,7 @@ class Write:
         self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,self.do_send]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*40/100)
+        self.mail_label.width = self.mail_message.width 
         self.mail_message.vertical_alignment = "top"
     def reset_profile(self):
         self.profile = self.master.logged_profile
