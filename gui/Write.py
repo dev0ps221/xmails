@@ -70,7 +70,7 @@ class Write:
         self.viewcontent.width= int(self.view.width*80/100)
         self.viewcontent.height= self.view.height
         self.build_write_field()
-        build_objets_field()
+        self.build_objets_field()
         self.viewcontent.controls = [self.sendmail_container,self.objets_container]
 
     def show(self):
