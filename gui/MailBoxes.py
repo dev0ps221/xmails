@@ -96,23 +96,13 @@ class MailBoxes:
             frombox = self.actual_message_frombox
             tobox = self.actual_message_tobox
             datebox = self.actual_message_datebox
-            bodybox = self.actual_message_bodybox 
-            messagebox.height =  int(self.mailbox_container.height*85/100)
-            messagebox.width = int(self.message_stuff.width*65/100)
-            frombox.width = int(self.mailbox_container.width*65/100)
-            frombox.height = int(self.mailbox_container.height*5/100)
-            datebox.width = int(self.mailbox_container.width*65/100)
-            datebox.height = int(self.mailbox_container.height*5/100)
-            tobox.width = int(self.mailbox_container.width*65/100)
-            tobox.height = int(self.mailbox_container.height*5/100)
-            bodybox.height = int(self.mailbox_container.height*55/100)
-            bodybox.width = int(self.mailbox_container.width*65/100)
+            bodybox = self.actual_message_bodybox
             messagebodytext = ""
             messagebodyhtml = None
             if self.actual_message.is_multipart():
                 for part in self.actual_message.walk():
                     if part.get_content_subtype() == "html":
-                        messagebodyhtml= [elem for elem in str(html2text(part.get_payload(decode=True).decode('utf-8'))).split("\n")]
+                        messagebodyhtml= [elem for elem in str(html2text(part.get_payload(decode=True).decode())).split("\n")]
                         messagebodyhtml = "\n".join(messagebodyhtml) 
                     
                     if part.get_content_subtype() == "text":
@@ -206,6 +196,23 @@ class MailBoxes:
         self.boxlist.width = int(self.mailbox_container.width)
         self.view.width = self.pagewidth
         self.view.height = self.pageheight
+
+        messagebox = self.messagebox
+        messagebody = self.messagebody
+        frombox = self.actual_message_frombox
+        tobox = self.actual_message_tobox
+        datebox = self.actual_message_datebox
+        bodybox = self.actual_message_bodybox 
+        messagebox.height =  int(self.mailbox_container.height*85/100)
+        messagebox.width = int(self.message_stuff.width*65/100)
+        frombox.width = int(self.mailbox_container.width*65/100)
+        frombox.height = int(self.mailbox_container.height*5/100)
+        datebox.width = int(self.mailbox_container.width*65/100)
+        datebox.height = int(self.mailbox_container.height*5/100)
+        tobox.width = int(self.mailbox_container.width*65/100)
+        tobox.height = int(self.mailbox_container.height*5/100)
+        bodybox.height = int(self.mailbox_container.height*55/100)
+        bodybox.width = int(self.mailbox_container.width*65/100)
         self.master.build_panelbox()
         self.append_controls()
         return self.view
@@ -249,9 +256,9 @@ class MailBoxes:
             self.set_actual_message(idx)
             self.update_message_box()
         viewbutton = ElevatedButton(on_click=click,text='CONSULTER')
-        mailcontainer.controls.append(viewbutton)
-        mailcontainer.controls.append(Divider())
         mailcontainer.controls.append(maildate)
+        mailcontainer.controls.append(Divider())
+        mailcontainer.controls.append(viewbutton)
         mailcontainerbox.content = mailcontainer
         return mailcontainerbox
 
