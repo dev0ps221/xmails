@@ -10,7 +10,7 @@ credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
-    panelbox_container = Container(bgcolor=colors.LIGHT_BLUE)
+    panelbox_container = Container()
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
@@ -71,11 +71,11 @@ class XMAIL:
 
     def build_panelbox(self):
         self.panelbox_container.controls = []
-        self.panelbox_container.width = int(self.view.view.width*20/100)
-        self.panelbox_container.width = int(self.view.view.height*20/100)
-        gotohome = ElevatedButton(text='Home',on_click=self.switch_to)
-        gotomailboxes = ElevatedButton(text='Mailbox',on_click=self.switch_to)
-        logout = ElevatedButton(text='Déconnexion',on_click=self.switch_to)
+        self.panelbox_container.width = int(self.view.view.width*15/100)
+        self.panelbox_container.height = int(self.view.view.height)
+        gotohome = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Home',on_click=self.switch_to)
+        gotomailboxes = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Mailbox',on_click=self.switch_to)
+        logout = ElevatedButton(bgcolor=colors.LIGHT_BLUE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
         paneloptions.controls = [gotohome,gotomailboxes,logout]
         self.panelbox_container.content = paneloptions
