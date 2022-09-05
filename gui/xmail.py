@@ -25,13 +25,15 @@ class XMAIL:
         self.is_logged = 1
         self.logged_profile = profile
         self.update_actual_view('/mailboxes')
+        print(profile)
+        self.actual_view.profile = profile
         self.refresh_view()
 
     def logout(self):
         if self.logged_profile:
             if self.logged_profile.connection.server.state == 'SELECTED':
                 self.logged_profile.connection.server.close()
-            self.logged_profile = None
+        self.logged_profile = None
         self.is_logged = 0
         self.update_actual_view('/login')
         self.refresh_view()

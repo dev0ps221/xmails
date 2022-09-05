@@ -46,7 +46,7 @@ class MailBoxes:
             self.mailboxes = self.profile.get_mailboxes()
             self.gotmailboxes = True
             self.set_actual_mailbox()
-            return self.get_mailboxes()
+            return self.mailboxes
         else : return []
 
     def set_actual_mailbox(self):
@@ -61,10 +61,7 @@ class MailBoxes:
         
 
     def get_mailboxes(self):
-        if self.gotmailboxes:
-            return self.mailboxes
-        else:
-            return self.set_mailboxes()
+        return self.set_mailboxes()
 
     def show(self):
         self.view.controls = []
