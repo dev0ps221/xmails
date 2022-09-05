@@ -23,8 +23,7 @@ class Write:
         self.viewcontent = Column()
 
     def build_write_field(self):
-        self.mail_message = self.viewcontent
-        self.sendmail.controls [self.mail_target,self.mail_subject,self.mail_message]
+        self.sendmail.controls = [self.mail_target,self.mail_subject,self.mail_message]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*60/100)
     def reset_profile(self):

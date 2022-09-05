@@ -2,6 +2,7 @@ import pyautogui
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image, border_radius
 from managers.credsmanager import CredsManager,CredsInstance
 from gui.Login import Login
+from gui.Write import Write
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
 
@@ -116,7 +117,7 @@ class XMAIL:
         self.page.vertical_alignment = "center"
         self.LoginView = Login(self)
         self.HomeView = Home(self)
-        self.WriteView = Home(self)
+        self.WriteView = Write(self)
         self.MailBoxesView = MailBoxes(self)
         self.views = {
             '/login':self.LoginView,
