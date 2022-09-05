@@ -49,7 +49,7 @@ class Write:
         self.objets_list_container.width= int(self.viewcontent.width*55/100)
         self.objets_label.width = self.objets_list_container.width
         self.objets_label.content = self.objets_label_text
-        self.objets_list_container.content = objets_list
+        self.objets_list_container.content = self.objets_list
         self.objets.controls = [self.objets_label,self.objets_list_container]
         self.objets_container.content = self.objets
     
