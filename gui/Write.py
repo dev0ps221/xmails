@@ -29,7 +29,7 @@ class Write:
             sendres = self.profile.send_mail(self.mail_target.value,self.mail_subject.value,self.mail_message.value)
 
     def build_write_field(self):
-        self.sendmail.controls = [self.mail_target,self.mail_target,self.mail_subject,self.mail_message,self.do_send]
+        self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,self.do_send]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*40/100)
         self.mail_message.vertical_alignment = "top"
@@ -49,6 +49,7 @@ class Write:
         self.viewbox.content = self.view
         self.viewcontent.width= int(self.view.width*80/100)
         self.viewcontent.height= self.view.height
+        self.sendmail_container.width= int(self.viewcontent.width*45/100)
         self.build_write_field()
         self.viewcontent.controls = [self.sendmail_container]
 
