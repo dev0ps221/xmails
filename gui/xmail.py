@@ -16,7 +16,7 @@ class XMAIL:
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
     is_logged  = 0
-    actual_view = '/home'
+    actual_view = '/login'
     views = None
     login_view = None
     logged_profile = None

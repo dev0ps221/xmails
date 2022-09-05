@@ -34,13 +34,12 @@ class Home:
 
         self.view.height   = self.pageheight
 
-    def show(self):
-        # self.reset_profile()
-        # if self.profile:
-        self.build_view()
-        print(self.view.controls)
+    def show(self):        
+        self.reset_profile()
+        if self.profile:
+            self.build_view()
         self.page.add(self.viewbox)        
-
+        
     def build_view(self):    
         self.view.width = self.pagewidth
         self.update_controls()

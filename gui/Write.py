@@ -35,10 +35,9 @@ class Write:
         self.view.height   = self.pageheight
 
     def show(self):
-        # self.reset_profile()
-        # if self.profile:
-        self.build_view()
-        print(self.view.controls)
+        self.reset_profile()
+        if self.profile:
+            self.build_view()
         self.page.add(self.viewbox)        
 
     def build_view(self):    
