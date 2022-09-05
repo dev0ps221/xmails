@@ -86,7 +86,7 @@ class XMAIL:
         gotohome = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Home',on_click=self.switch_to)
         gowrite = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Écrire',on_click=self.switch_to)
         gotomailboxes = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Mailbox',on_click=self.switch_to)
-        logout = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
+        logout = ElevatedButton(bgcolor=colors.RED,color=colors.WHITE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
         paneloptions.controls = [gotohome,gowrite,gotomailboxes,logout]
         self.panelbox.controls = [self.logobox,paneloptions]
