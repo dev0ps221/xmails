@@ -1,11 +1,10 @@
 import quopri
 from html2text import html2text
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, Container
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, border_radius
 
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
-    panelbox_container = Container()
     message_stuff = Row(alignment='start')
     boxlist = Row(wrap=True)   
     messagebox = Column()
@@ -15,7 +14,7 @@ class MailBoxes:
     panelbox = Column()
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.BLUE_GREY,padding=10)
+    messagebody = Container(bgcolor=colors.BLUE_100,padding=10)
 
     actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=2.5)
     actual_message_frombox = Text(size=12)
@@ -30,10 +29,11 @@ class MailBoxes:
         self.page      = self.master.page
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
+        self.panelbox_container = self.master.panelbox_container
         self.refresh_view = self.master.refresh_view
         self.logout = self.master.logout
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         if self.profile:
             self.set_mailboxes()
 
@@ -42,10 +42,12 @@ class MailBoxes:
         self.get_mailboxes()
 
     def set_mailboxes(self):
-        self.mailboxes = self.profile.get_mailboxes()
-        self.gotmailboxes = True
-        self.set_actual_mailbox()
-        return self.get_mailboxes()
+        if self.profile:
+            self.mailboxes = self.profile.get_mailboxes()
+            self.gotmailboxes = True
+            self.set_actual_mailbox()
+            return self.mailboxes
+        else : return []
 
     def set_actual_mailbox(self):
         if len(self.mailboxes) == 0:
@@ -59,12 +61,16 @@ class MailBoxes:
         
 
     def get_mailboxes(self):
-        if self.gotmailboxes:
-            return self.mailboxes
-        else:
-            return self.set_mailboxes()
+        return self.set_mailboxes()
 
     def show(self):
+        self.view.controls = []
+        self.viewlist.controls = []
+        self.messagebox = Column()
+        self.page.update()
+        self.page.clean()
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.reset_profile()
         if self.profile:
             self.build_view()
@@ -91,8 +97,8 @@ class MailBoxes:
             tobox = self.actual_message_tobox
             datebox = self.actual_message_datebox
             bodybox = self.actual_message_bodybox 
-            messagebox.height = self.pageheight
-            messagebox.width = int(self.mailbox_container.width*65/100)
+            messagebox.height =  int(self.mailbox_container.height*85/100)
+            messagebox.width = int(self.message_stuff.width*65/100)
             frombox.width = int(self.mailbox_container.width*65/100)
             frombox.height = int(self.mailbox_container.height*5/100)
             datebox.width = int(self.mailbox_container.width*65/100)
@@ -141,6 +147,7 @@ class MailBoxes:
     def update_boxlist(self):
         mailboxes = self.get_mailboxes()
         self.boxlist.controls = []
+        self.boxlist.height = int(self.mailbox_container.height*10/100)
         ix = 0
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
@@ -162,7 +169,7 @@ class MailBoxes:
     def update_viewlist(self):
         viewlist = self.viewlist
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = int(self.message_stuff.height*100/100)
+        viewlist.height =  int(self.mailbox_container.height*85/100)
         if  self.actual_mailbox:
             self.actual_mailbox.get_mails()
             if not self.actual_message : self.set_actual_message(0)
@@ -187,20 +194,19 @@ class MailBoxes:
 
     def build_view(self):
         self.reset_profile()
-        titlesusr = self.profile.creds.get_cred('user')
-        mailboxname = self.actual_mailbox.get_info('name')
-        self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
+        if self.profile:
+            titlesusr = self.profile.creds.get_cred('user')
+            mailboxname = self.actual_mailbox.get_info('name')
+            self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
         self.view.controls = []    
-        self.panelbox_container.width = int(self.pagewidth*15/100)
-        self.panelbox_container.height = int(self.pageheight)
-        self.panelbox.width = int(self.pagewidth*15/100)
-        self.boxlist.height=int(self.pageheight*10/100)
-        self.mailbox_container.width  = int(self.pagewidth*85/100)
+        self.mailbox_container.width  = int(self.pagewidth*90/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
         self.message_stuff.height = int(self.mailbox_container.height*85/100)
-        self.panelbox_container.content = self.panelbox
-        self.view.width = self.pagewidth
+        self.message_stuff.width = int(self.mailbox_container.width)
         self.boxlist.width = int(self.mailbox_container.width)
+        self.view.width = self.pagewidth
+        self.view.height = self.pageheight
+        self.master.build_panelbox()
         self.append_controls()
         return self.view
 
@@ -212,13 +218,14 @@ class MailBoxes:
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
-        self.view.controls = [self.panelbox_container,Divider(),self.mailbox_container]
+        self.view.controls = [self.panelbox_container,VerticalDivider(),self.mailbox_container]
 
     def generate_mail_hook(self,mail,idx):
+        mailcontainerbox = Container(bgcolor=colors.BLUE_300,padding=5,border_radius=border_radius.all(10))
         mailcontainer = Column()
         mailhookcontainer = Container()
-        mailhookcontainer.width=int(self.mailbox_container.width*30/100)
-        mailcontainer.width = int(self.mailbox_container.width*30/100)
+        mailhookcontainer.width=int(self.message_stuff.width*30/100)
+        mailcontainer.width = int(self.message_stuff.width*30/100)
 
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
         mailtitle = Text(value=mail.get("From"),size=12)
@@ -232,7 +239,7 @@ class MailBoxes:
         except Exception as e:
             print(e)
             mailhook =  mail.get('Subject')
-        mailhook = Text(value=mailhooktext,size=10)
+        mailhook = Text(value=mailhooktext,color=colors.BLACK,size=10)
         mailhook.padding = 5
         mailtitlecontainer.content=mailtitle
         mailcontainer.controls.append(mailtitlecontainer)
@@ -246,7 +253,8 @@ class MailBoxes:
         viewbutton = ElevatedButton(on_click=click,text='CONSULTER')
         mailcontainer.controls.append(viewbutton)
         mailcontainer.controls.append(Divider())
-        return mailcontainer
+        mailcontainerbox.content = mailcontainer
+        return mailcontainerbox
 
 
 

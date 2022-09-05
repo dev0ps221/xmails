@@ -1,7 +1,7 @@
 import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container
 
-class Home:
+class Write:
     view = Column()
     def __init__(self,master):
         self.view = Row()
@@ -34,14 +34,14 @@ class Home:
 
         self.view.height   = self.pageheight
 
-    def show(self):       
+    def show(self):
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.reset_profile()
         if self.profile:
             self.build_view()
         self.page.add(self.viewbox)        
-        
+
     def build_view(self):    
         self.view.width = self.pagewidth
         self.update_controls()
