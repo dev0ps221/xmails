@@ -32,8 +32,8 @@ class MailBoxes:
         self.panelbox_container = self.master.panelbox_container
         self.refresh_view = self.master.refresh_view
         self.logout = self.master.logout
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         if self.profile:
             self.set_mailboxes()
 
@@ -221,6 +221,7 @@ class MailBoxes:
         self.view.controls = [self.panelbox_container,VerticalDivider(),self.mailbox_container]
 
     def generate_mail_hook(self,mail,idx):
+        mailcontainerbox = Container(bgcolor=colors.BLUE_300,padding=5)
         mailcontainer = Column()
         mailhookcontainer = Container()
         mailhookcontainer.width=int(self.message_stuff.width*30/100)
@@ -252,7 +253,8 @@ class MailBoxes:
         viewbutton = ElevatedButton(on_click=click,text='CONSULTER')
         mailcontainer.controls.append(viewbutton)
         mailcontainer.controls.append(Divider())
-        return mailcontainer
+        mailcontainerbox.content = mailcontainer
+        return mailcontainerbox
 
 
 
