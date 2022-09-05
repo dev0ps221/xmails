@@ -10,6 +10,9 @@ class Write:
     mail_target = TextField(label='Destinataire')
     mail_subject = TextField(label='Sujet')
     mail_message = TextField(label='Message',multiline=True,min_lines=15)
+
+    objets_container = Container()
+    objets = Column()
     def __init__(self,master):
         self.view = Row()
         self.viewbox = Container()
