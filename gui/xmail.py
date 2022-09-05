@@ -67,6 +67,9 @@ class XMAIL:
         if 'mailbox' in view:
             self.update_actual_view('/mailboxes')
 
+        if 'écrire' in view:
+            self.update_actual_view('/write')
+
         self.refresh_view()
         
 
@@ -74,17 +77,18 @@ class XMAIL:
         self.panelbox_container.controls = []
         self.logobox = Container()
         self.logo = Image(
-            src=f"/logo.png",fit='contain',width = int(self.view.pagewidth*15/100),height = int(self.view.pageheight*25/100),bgcolor=colors.LIGHT_BLUE,border_radius=border_radius.all(10)
+            src=f"/logo.png",fit='contain',width = int(self.view.pagewidth*15/100),height = int(self.view.pageheight*25/100),border_radius=border_radius.all(10)
         )
         self.logoboxtext = Text(color=colors.LIGHT_BLUE,value='TEK TECH \'s xmail')
-        self.logobox.content = Column(controls=[self.logo,self.logoboxtext])
+        self.logobox.content = Column(controls=[self.logo,Row(controls=[self.logoboxtext],alignment='center')],alignment='center')
         self.panelbox_container.width = int(self.view.view.width*15/100)
         self.panelbox_container.height = int(self.view.view.height)
         gotohome = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Home',on_click=self.switch_to)
+        gowrite = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Écrire',on_click=self.switch_to)
         gotomailboxes = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Mailbox',on_click=self.switch_to)
         logout = ElevatedButton(bgcolor=colors.LIGHT_BLUE,color=colors.WHITE,width=self.panelbox_container.width,text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
-        paneloptions.controls = [gotohome,gotomailboxes,logout]
+        paneloptions.controls = [gotohome,gowrite,gotomailboxes,logout]
         self.panelbox.controls = [self.logobox,paneloptions]
         self.panelbox_container.content = self.panelbox
     
@@ -96,10 +100,12 @@ class XMAIL:
         self.page.vertical_alignment = "center"
         self.LoginView = Login(self)
         self.HomeView = Home(self)
+        self.WriteView = Home(self)
         self.MailBoxesView = MailBoxes(self)
         self.views = {
             '/login':self.LoginView,
             '/home':self.HomeView,
+            '/write':self.WriteView,
             '/mailboxes':self.MailBoxesView
         }
         if self.view_exists(self.actual_view) :
