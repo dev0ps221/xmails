@@ -32,8 +32,8 @@ class MailBoxes:
         self.panelbox_container = self.master.panelbox_container
         self.refresh_view = self.master.refresh_view
         self.logout = self.master.logout
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
+        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
         if self.profile:
             self.set_mailboxes()
 
@@ -93,7 +93,7 @@ class MailBoxes:
             tobox = self.actual_message_tobox
             datebox = self.actual_message_datebox
             bodybox = self.actual_message_bodybox 
-            messagebox.height = self.pageheight
+            messagebox.height =  int(self.mailbox_container.height*85/100)
             messagebox.width = int(self.mailbox_container.width*65/100)
             frombox.width = int(self.mailbox_container.width*65/100)
             frombox.height = int(self.mailbox_container.height*5/100)
@@ -143,6 +143,7 @@ class MailBoxes:
     def update_boxlist(self):
         mailboxes = self.get_mailboxes()
         self.boxlist.controls = []
+        self.boxlist.height = int(self.mailbox_container.height*10/100)
         ix = 0
         for mailbox in mailboxes:
             box = self.mailboxes[mailbox]
@@ -164,7 +165,7 @@ class MailBoxes:
     def update_viewlist(self):
         viewlist = self.viewlist
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height = int(self.message_stuff.height*100/100)
+        viewlist.height =  int(self.mailbox_container.height*85/100)
         if  self.actual_mailbox:
             self.actual_mailbox.get_mails()
             if not self.actual_message : self.set_actual_message(0)
@@ -194,13 +195,12 @@ class MailBoxes:
             mailboxname = self.actual_mailbox.get_info('name')
             self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
         self.view.controls = []    
-        self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*90/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
         self.message_stuff.height = int(self.mailbox_container.height*85/100)
         self.boxlist.width = int(self.mailbox_container.width)
         self.view.width = self.pagewidth
-        self.view.height = self.pagewidth
+        self.view.height = self.pageheight
         self.master.build_panelbox()
         self.append_controls()
         return self.view

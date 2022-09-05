@@ -1,4 +1,4 @@
-
+import pyautogui
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image,border_radius
 from managers.credsmanager import CredsManager,CredsInstance
 
@@ -6,6 +6,7 @@ from gui.Login import Login
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
 
+winwidth, winheight = pyautogui.size()
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
 
@@ -29,7 +30,7 @@ class XMAIL:
 
     def logout(self):
         if self.logged_profile:
-            self.logged_profile.connection.server.close()
+            self.logged_profile = None
         self.is_logged = 0
         self.update_actual_view('/login')
         self.refresh_view()
@@ -97,7 +98,13 @@ class XMAIL:
 
     def app_loop(self,page: Page):
         self.page = page
+        self.page.window_width = winwidth
+        self.page.window_height = winheight
+        self.page.window_max_width = self.page.window_width
+        self.page.window_max_height = self.page.window_height
+        self.page.window_maximized = True
         self.page.vertical_alignment = "center"
+        self.page.on_resize : lambda _:self.page.update()
         self.LoginView = Login(self)
         self.HomeView = Home(self)
         self.WriteView = Home(self)

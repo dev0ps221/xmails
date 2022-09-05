@@ -33,8 +33,8 @@ class Login:
         self.refresh_page = self.master.refresh_page
         self.refresh_view = self.master.refresh_view
         self.login_success = self.master.login_success
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
+        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
         self.actual_login_view = 'Login'
         self.build_components()
         self.build_view()
