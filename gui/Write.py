@@ -1,5 +1,5 @@
 import quopri
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, FilePicker, FilePickerResultEvent
 
 class Write:
     view = Column()
@@ -11,14 +11,23 @@ class Write:
     mail_subject = TextField(label='Sujet')
     mail_message = TextField(label='Message',multiline=True,min_lines=15)
 
+    attachments = []
     objets_container = Container()
     objets = Column()
     objets_label = Container(bgcolor=colors.LIGHT_BLUE) 
     objets_label_text = Text(value='PIÈCES JOINTES')
     objets_list_container = Container()
     objets_list = Row()
+
+
+    def add_attachment(self,e: FilePickerResultEvent):
+        [self.attachments.append(f) for f in e.files]
+        print(self.attachments)
+        return self.attachments
+
     def __init__(self,master):
         self.view = Row()
+        self.add_attachment_input = FilePicker(on_result=self.add_attachment)
         self.viewbox = Container()
         self.viewcontent = Row()
         self.master = master
@@ -40,7 +49,7 @@ class Write:
         self.sendmail_container.width= int(self.viewcontent.width*45/100)
         self.mail_label.width = self.sendmail_container.width 
         self.mail_label.content = self.mail_label_text
-        self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,self.do_send]
+        self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,self.do_send,self.add_attachment_input]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*40/100)
         self.mail_message.vertical_alignment = "top"
