@@ -3,6 +3,8 @@ import imaplib2 as imaplib
 imaplib.Untagged_status = imaplib.re.compile(br'\*[ ]{1,2}(?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?')
 IMAP4_SSL = imaplib.IMAP4_SSL
 import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 class ConnectionManager:
@@ -15,17 +17,27 @@ class ConnectionManager:
     connecterror = None
 
     def send_mail(self,maildata):
-        
+
         port = 587  
 
         context = ssl.create_default_context()
 
         try:
-            server = smtplib.SMTP(smtp_server,port)
+            server = smtplib.SMTP_SSL(self.send_host,port)
             server.ehlo() # Can be omitted
             server.starttls(context=context) # Secure the connection
             server.ehlo() # Can be omitted
             server.login(self.creds.get_cred('user'), self.creds.get_cred('pass'))
+
+            message = MIMEMultipart("alternative")
+            message["Subject"] = maildata['subject']
+            message["From"] = self.creds.get_cred('user')
+            message["To"] = maildata['to']
+
+            message.attach(MIMEText(maildata['message','text']))
+            server.sendmail(
+                self.creds.get_cred('user'), maildata['to'], message.as_string()
+            )
 
         except Exception as e:
             

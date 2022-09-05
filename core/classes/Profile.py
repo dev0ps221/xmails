@@ -5,6 +5,13 @@ class Profile:
     rmailboxes = None
     mailboxes = {}
     
+    def send_mail(self,target,subject,data):
+        maildata = [
+            'to':target,
+            'subject':subject,
+            'message':data
+        ]
+        results = self.connection.send_mail(maildata)
     def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
         self.loginerr = None
         if not self.connection.is_connected():
