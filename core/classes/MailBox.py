@@ -16,8 +16,12 @@ class MailBox:
     mails = {}
 
     def update_mails(self,idx=0,count=50):
+
+        if "Gmail" not in self.name: 
+            self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector)
+            self.mail_count = self.mail_count[0].decode()
         if self.server.state == 'SELECTED':
-            self.mailids_resp_code,self.mail_ids = self.server.search(None,"ALL")
+            self.mailids_resp_code,self.mail_ids = self.server.search("utf-8","ALL")
         made = 0
         self.mails = {}
         idarr = self.mail_ids[0].split()
@@ -26,7 +30,6 @@ class MailBox:
             if idx >=0 and idx < len(idarr):
                 mail_id = idarr[idx].decode()
                 if mail_id:
-                    print(mail_id)
                     if self.server.state == 'SELECTED':
                         try:
                             resp_code, mail_data = self.server.fetch(mail_id,"(RFC822)")
@@ -54,9 +57,8 @@ class MailBox:
         self.name = quopri.decodestring(self.name).decode()
         try:
             if "Gmail" not in self.name: 
-                self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector,readonly=True)
+                self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector)
                 self.mail_count = self.mail_count[0].decode()
-                print('heyyyy')
             else :
                 self.mailcount_resp_code,self.mail_count = "",0
         except Exception as e:

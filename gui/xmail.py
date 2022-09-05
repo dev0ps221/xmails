@@ -24,6 +24,7 @@ class XMAIL:
     def login_success(self,profile):
         self.is_logged = 1
         self.logged_profile = profile
+        self.logged_profile.mailboxes = {}
         self.logged_profile.get_mailboxes()
         self.update_actual_view('/mailboxes')
         self.refresh_view()

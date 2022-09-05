@@ -233,11 +233,10 @@ class MailBoxes:
         maildate = Text(value=mail.get('Date'),size=10)
         maildate.width = int(self.mailbox_container.width*30/100)
         
-        mailhooktext  = ''.join([chr(ord(c))  for c in str(mail.get('Subject'))])
         try:
-            mailhooktext = quopri.decodestring(mailhooktext)
+            mailhooktext  = ''.join([chr(ord(c))  for c in mail.get('Subject').__str__()]).encode().decode('utf-8') 
         except Exception as e:
-            mailhooktext =  ''.join([chr(ord(c))  for c in str(mail.get('Subject'))])
+            mailhooktext =  ''.join([chr(ord(c))  for c in mail.get('Subject').__str__()])
             print(e)
         mailhook = Text(value=mailhooktext,color=colors.BLACK,size=10)
         mailhook.padding = 5
