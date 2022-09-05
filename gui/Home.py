@@ -5,7 +5,7 @@ class Home:
     view = Column()
     def __init__(self,master):
         self.view = Row()
-        self.viewbox = Container(bgcolor='red')
+        self.viewbox = Container()
         self.master = master
         self.page      = self.master.page
         self.profile   = self.master.logged_profile
@@ -15,6 +15,7 @@ class Home:
         self.logout = self.master.logout
         self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0].split('.')[0])
         self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0].split('.')[0])
+        self.viewcontent = Column()
 
 
     def reset_profile(self):
@@ -28,7 +29,10 @@ class Home:
     def update_controls(self):
         self.view.height   = self.pageheight
         self.viewbox.height= self.view.height
-        self.viewbox.controls = [self.view]
+        self.viewbox.content = self.view
+        self.viewcontent.width= (self.view.width*80/100)
+        
+        self.view.height   = self.pageheight
 
     def show(self):
         # self.reset_profile()
@@ -41,6 +45,6 @@ class Home:
         self.view.width = self.pagewidth
         self.update_controls()
         self.master.build_panelbox()
-        self.view.controls = [self.panelbox_container,Divider(),self.view]
+        self.view.controls = [self.panelbox_container,Divider(),self.viewcontent]
         return self.view
 

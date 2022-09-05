@@ -193,16 +193,13 @@ class MailBoxes:
         mailboxname = self.actual_mailbox.get_info('name')
         self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
         self.view.controls = []    
-        self.panelbox_container.width = int(self.pagewidth*15/100)
-        self.panelbox_container.height = int(self.pageheight)
-        self.panelbox.width = int(self.pagewidth*15/100)
         self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
         self.message_stuff.height = int(self.mailbox_container.height*85/100)
-        self.panelbox_container.content = self.panelbox
         self.view.width = self.pagewidth
         self.boxlist.width = int(self.mailbox_container.width)
+        self.master.build_panelbox()
         self.append_controls()
         return self.view
 

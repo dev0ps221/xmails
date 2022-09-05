@@ -10,7 +10,7 @@ credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
-    panelbox_container = Container()
+    panelbox_container = Container(bgcolor=colors.BLACK)
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
@@ -27,7 +27,11 @@ class XMAIL:
         self.refresh_view()
 
     def logout(self):
-        print('disconnecting ',self.logged_profile)
+        if self.logged_profile:
+            self.logged_profile.connection.server.close()
+        self.is_logged = 0
+        self.update_actual_view('/login')
+        self.refresh_view()
 
 
     def isin_login_view(self):
@@ -50,18 +54,31 @@ class XMAIL:
             self.view = self.views[self.actual_view]
 
     def switch_to(self,e):
-        view = e.control.text
-        print(view)
+        
+        view = e.control.text.lower()
+
+        if 'connexion' in view:
+            self.logout()
+        
+        if 'home' in view:
+            self.update_actual_view('/home')
+
+        if 'mailbox' in view:
+            self.update_actual_view('/mailboxes')
+
+        self.refresh_view()
+        
 
     def build_panelbox(self):
         self.panelbox_container.controls = []
-        self.panelbox_container.width = int(self.view.width*20/100)
+        self.panelbox_container.width = int(self.view.view.width*20/100)
+        self.panelbox_container.width = int(self.view.view.height*20/100)
         gotohome = ElevatedButton(text='Home',on_click=self.switch_to)
         gotomailboxes = ElevatedButton(text='Mailbox',on_click=self.switch_to)
         logout = ElevatedButton(text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
         paneloptions.controls = [gotohome,gotomailboxes,logout]
-        self.panelbox_container.controls = [paneloptions]
+        self.panelbox_container.content = paneloptions
     
     def update_panelbox(self):
         self.panelbox_container.update()
