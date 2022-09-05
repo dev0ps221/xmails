@@ -49,11 +49,16 @@ class XMAIL:
             self.actual_view = view
             self.view = self.views[self.actual_view]
 
+    def switch_to(self,e):
+        view = e.control.text
+        print(view)
+
     def build_panelbox(self):
         self.panelbox_container.controls = []
-        gotohome = ElevatedButton(text='Home')
-        gotomailboxes = ElevatedButton(text='Mailbox')
-        logout = ElevatedButton(text='Déconnexion')
+        self.panelbox_container.width = int(self.view.width*20/100)
+        gotohome = ElevatedButton(text='Home',on_click=self.switch_to)
+        gotomailboxes = ElevatedButton(text='Mailbox',on_click=self.switch_to)
+        logout = ElevatedButton(text='Déconnexion',on_click=self.switch_to)
         paneloptions = Column()
         paneloptions.controls = [gotohome,gotomailboxes,logout]
         self.panelbox_container.controls = [paneloptions]

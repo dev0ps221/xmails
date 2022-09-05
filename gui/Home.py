@@ -28,14 +28,14 @@ class Home:
     def update_controls(self):
         self.view.height   = self.pageheight
         self.viewbox.height= self.view.height
-        self.view.controls = [self.viewbox]
+        self.viewbox.controls = [self.view]
 
     def show(self):
-        self.reset_profile()
+        # self.reset_profile()
         # if self.profile:
         self.build_view()
-        # print(self.view.controls)
-        self.page.add(self.view)        
+        print(self.view.controls)
+        self.page.add(self.viewbox)        
 
     def build_view(self):    
         self.view.width = self.pagewidth
