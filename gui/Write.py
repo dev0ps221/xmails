@@ -49,7 +49,7 @@ class Write:
         self.sendmail_container.width= int(self.viewcontent.width*45/100)
         self.mail_label.width = self.sendmail_container.width 
         self.mail_label.content = self.mail_label_text
-        self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,self.do_send,self.add_attachment_input]
+        self.sendmail.controls = [self.mail_label,self.mail_target,self.mail_subject,self.mail_message,Row(controls=[self.do_send,self.add_attachment_input])]
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*40/100)
         self.mail_message.vertical_alignment = "top"
