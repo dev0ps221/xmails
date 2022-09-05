@@ -26,7 +26,7 @@ class XMAIL:
         self.logged_profile = profile
         self.update_actual_view('/mailboxes')
         print(profile)
-        self.actual_view.profile = profile
+        self.view.profile = profile
         self.refresh_view()
 
     def logout(self):
