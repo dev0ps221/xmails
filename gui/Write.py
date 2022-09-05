@@ -3,6 +3,11 @@ from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors
 
 class Write:
     view = Column()
+    sendmail_container = Container()
+    sendmail = Column()
+    mail_target = TextField(label='Destinataire')
+    mail_subject = TextField(label='Sujet')
+    mail_message = TextField(label='Message')
     def __init__(self,master):
         self.view = Row()
         self.viewbox = Container()
@@ -17,7 +22,11 @@ class Write:
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.viewcontent = Column()
 
-
+    def build_write_field(self):
+        self.mail_message = self.viewcontent
+        self.sendmail.controls [self.mail_target,self.mail_subject,self.mail_message]
+        self.sendmail_container.content = self.sendmail
+        self.mail_message.height = int(self.viewcontent.height*60/100)
     def reset_profile(self):
         self.profile = self.master.logged_profile
 
@@ -31,8 +40,9 @@ class Write:
         self.viewbox.height= self.view.height
         self.viewbox.content = self.view
         self.viewcontent.width= (self.view.width*80/100)
-
-        self.view.height   = self.pageheight
+        self.viewcontent.height= (self.view.height)
+        self.build_write_field()
+        self.viewcontent.controls = [self.sendmail_container]
 
     def show(self):
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))

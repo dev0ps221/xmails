@@ -6,11 +6,11 @@ class Profile:
     mailboxes = {}
     
     def send_mail(self,target,subject,data):
-        maildata = [
+        maildata = {
             'to':target,
             'subject':subject,
             'message':data
-        ]
+        }
         results = self.connection.send_mail(maildata)
     def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
         self.loginerr = None
@@ -65,6 +65,6 @@ class Profile:
     def server(self):
         return self.connection.server
 
-    def __init__(self,creds,host=None):
+    def __init__(self,creds,host=None,send_host=None):
         self.creds      = creds
-        self.connection = ConnectionManager(self.creds,host)   
+        self.connection = ConnectionManager(self.creds,host,send_host)   
