@@ -41,6 +41,10 @@ class Write:
         self.sendmail_container.content = self.sendmail
         self.mail_message.height = int(self.viewcontent.height*40/100)
         self.mail_message.vertical_alignment = "top"
+    
+    def build_objets_field(self):
+        
+    
     def reset_profile(self):
         self.profile = self.master.logged_profile
 
