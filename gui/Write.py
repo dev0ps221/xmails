@@ -5,7 +5,8 @@ class Write:
     view = Column()
     sendmail_container = Container()
     sendmail = Column()
-    mail_label = Text(value='ÉCRIRE UN MAIL',bgcolor=colors.LIGHT_BLUE)
+    mail_label = Container(bgcolor=colors.LIGHT_BLUE) 
+    mail_label_text = Text(value='ÉCRIRE UN MAIL')
     mail_target = TextField(label='Destinataire')
     mail_subject = TextField(label='Sujet')
     mail_message = TextField(label='Message',multiline=True,min_lines=15)
@@ -52,6 +53,7 @@ class Write:
         self.sendmail_container.width= int(self.viewcontent.width*45/100)
         self.mail_label.width = self.sendmail_container.width 
         self.build_write_field()
+        self.mail_label.controls = [self.mail_label_text]
         self.viewcontent.controls = [self.sendmail_container]
 
     def show(self):
