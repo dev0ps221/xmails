@@ -230,7 +230,7 @@ class MailBoxes:
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
         mailtitle = Text(value=mail.get("From"),size=12)
         mailtitle.width = int(self.mailbox_container.width*30/100)
-        maildate = Text(value=mail.get('Date'),size=10)
+        maildate = Text(value=mail.get('Date'),size=8)
         maildate.width = int(self.mailbox_container.width*30/100)
         
         try:
@@ -244,7 +244,6 @@ class MailBoxes:
         mailcontainer.controls.append(mailtitlecontainer)
         mailhookcontainer.content=mailhook
         mailcontainer.controls.append(mailhookcontainer)
-        mailcontainer.controls.append(maildate)
         
         def click(e):
             self.set_actual_message(idx)
@@ -252,6 +251,7 @@ class MailBoxes:
         viewbutton = ElevatedButton(on_click=click,text='CONSULTER')
         mailcontainer.controls.append(viewbutton)
         mailcontainer.controls.append(Divider())
+        mailcontainer.controls.append(maildate)
         mailcontainerbox.content = mailcontainer
         return mailcontainerbox
 
