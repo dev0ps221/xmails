@@ -34,7 +34,9 @@ class Home:
 
         self.view.height   = self.pageheight
 
-    def show(self):        
+    def show(self):       
+        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0]) 
         self.reset_profile()
         if self.profile:
             self.build_view()

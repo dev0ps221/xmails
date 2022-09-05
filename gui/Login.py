@@ -123,6 +123,8 @@ class Login:
 
 
     def show(self,*kwargs):
+        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
         self.page.clean()
         self.page.title = 'XMAIL - TEK TECH 2022 - LOGIN'
         self.build_view()

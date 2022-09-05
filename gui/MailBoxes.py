@@ -67,6 +67,8 @@ class MailBoxes:
             return self.set_mailboxes()
 
     def show(self):
+        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
         self.reset_profile()
         if self.profile:
             self.build_view()
@@ -94,7 +96,7 @@ class MailBoxes:
             datebox = self.actual_message_datebox
             bodybox = self.actual_message_bodybox 
             messagebox.height =  int(self.mailbox_container.height*85/100)
-            messagebox.width = int(self.mailbox_container.width*65/100)
+            messagebox.width = int(self.message_stuff.width*65/100)
             frombox.width = int(self.mailbox_container.width*65/100)
             frombox.height = int(self.mailbox_container.height*5/100)
             datebox.width = int(self.mailbox_container.width*65/100)
@@ -198,6 +200,7 @@ class MailBoxes:
         self.mailbox_container.width  = int(self.pagewidth*90/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
         self.message_stuff.height = int(self.mailbox_container.height*85/100)
+        self.message_stuff.width = int(self.mailbox_container.width)
         self.boxlist.width = int(self.mailbox_container.width)
         self.view.width = self.pagewidth
         self.view.height = self.pageheight
@@ -218,8 +221,8 @@ class MailBoxes:
     def generate_mail_hook(self,mail,idx):
         mailcontainer = Column()
         mailhookcontainer = Container()
-        mailhookcontainer.width=int(self.mailbox_container.width*30/100)
-        mailcontainer.width = int(self.mailbox_container.width*30/100)
+        mailhookcontainer.width=int(self.message_stuff.width*30/100)
+        mailcontainer.width = int(self.message_stuff.width*30/100)
 
         mailtitlecontainer = Container(bgcolor=colors.LIGHT_BLUE)
         mailtitle = Text(value=mail.get("From"),size=12)

@@ -40,6 +40,8 @@ class XMAIL:
         return self.actual_view == '/login'
 
     def  refresh_view(self):
+        self.view.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
+        self.view.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
         self.page.clean()
         self.view.show()
         self.refresh_page()
@@ -96,15 +98,19 @@ class XMAIL:
     def update_panelbox(self):
         self.panelbox_container.update()
 
-    def app_loop(self,page: Page):
-        self.page = page
+    def resize_view(self,e):
+        windowwidth,windowheight = int(e.data[0]),int(e.data[1])
         self.page.window_width = winwidth
         self.page.window_height = winheight
-        self.page.window_max_width = self.page.window_width
-        self.page.window_max_height = self.page.window_height
+        self.refresh_view() 
+
+    def app_loop(self,page: Page):
+        self.page = page
+        self.page.on_resize = self.resize_view
+        self.page.window_width = winwidth
+        self.page.window_height = winheight
         self.page.window_maximized = True
         self.page.vertical_alignment = "center"
-        self.page.on_resize : lambda _:self.page.update()
         self.LoginView = Login(self)
         self.HomeView = Home(self)
         self.WriteView = Home(self)
