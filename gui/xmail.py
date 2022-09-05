@@ -15,7 +15,7 @@ class XMAIL:
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
     is_logged  = 0
-    actual_view = '/login'
+    actual_view = '/home'
     views = None
     login_view = None
     logged_profile = None
@@ -49,6 +49,10 @@ class XMAIL:
             self.actual_view = view
             self.view = self.views[self.actual_view]
 
+    def update_panelbox(self):
+        self.panelbox_container.controls = []
+        
+        self.panelbox_container.update()
 
     def app_loop(self,page: Page):
         self.page = page

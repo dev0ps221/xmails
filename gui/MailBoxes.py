@@ -69,6 +69,8 @@ class MailBoxes:
         if self.profile:
             self.build_view()
         self.page.add(self.view)
+        self.master.update_panelbox()
+
         
     def set_actual_message(self,idx):
         if self.actual_mailbox and idx < len(self.actual_mailbox.mails):
