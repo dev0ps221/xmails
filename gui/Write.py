@@ -21,7 +21,7 @@ class Write:
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.viewcontent = Column()
-        self.do_send = ElevatedButton(value='Envoyer',on_click=self.send_mail)
+        self.do_send = ElevatedButton(text='Envoyer',on_click=self.send_mail)
 
     def send_mail(self,e):
         if self.profile:
