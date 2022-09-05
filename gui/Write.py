@@ -13,6 +13,10 @@ class Write:
 
     objets_container = Container()
     objets = Column()
+    objets_label = Container(bgcolor=colors.LIGHT_BLUE) 
+    objets_label_text = Text(value='ÉCRIRE UN MAIL')
+    objets_list_container = Container()
+    objets_list = Row()
     def __init__(self,master):
         self.view = Row()
         self.viewbox = Container()
