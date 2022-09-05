@@ -5,7 +5,7 @@ class Write:
     view = Column()
     sendmail_container = Container()
     sendmail = Column()
-    mail_label = Container(,bgcolor=colors.LIGHT_BLUE)
+    mail_label = Container(bgcolor=colors.LIGHT_BLUE)
     mail_label_text = TextField(label='ÉCRIRE UN MAIL')
     mail_target = TextField(label='Destinataire')
     mail_subject = TextField(label='Sujet')
