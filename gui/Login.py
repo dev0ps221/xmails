@@ -116,6 +116,7 @@ class Login:
             finally:
                 if profile.connection.is_logged():
                     self.page.clean()
+                    self.master.logged_profile = profile
                     self.login_success(profile)
                 else:
                     self.refresh_view()
