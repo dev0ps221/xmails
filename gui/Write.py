@@ -14,7 +14,7 @@ class Write:
     objets_container = Container()
     objets = Column()
     objets_label = Container(bgcolor=colors.LIGHT_BLUE) 
-    objets_label_text = Text(value='ÉCRIRE UN MAIL')
+    objets_label_text = Text(value='PIÈCES JOINTES')
     objets_list_container = Container()
     objets_list = Row()
     def __init__(self,master):
@@ -48,7 +48,9 @@ class Write:
     def build_objets_field(self):
         self.objets_list_container.width= int(self.viewcontent.width*55/100)
         self.objets_label.content = self.objets_label_text
-        self.objets_container.width
+        self.objets_list_container.content = objets_list
+        self.objets.controls = [self.objets_label,self.objets_list_container]
+        self.objets_container.content = self.objets
     
     def reset_profile(self):
         self.profile = self.master.logged_profile
@@ -67,7 +69,7 @@ class Write:
         self.viewcontent.width= int(self.view.width*80/100)
         self.viewcontent.height= self.view.height
         self.build_write_field()
-        self.viewcontent.controls = [self.sendmail_container]
+        self.viewcontent.controls = [self.sendmail_container,self.objets_container]
 
     def show(self):
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
