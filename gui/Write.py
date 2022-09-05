@@ -20,6 +20,7 @@ class Write:
     def __init__(self,master):
         self.view = Row()
         self.viewbox = Container()
+        self.viewcontent = Row()
         self.master = master
         self.page      = self.master.page
         self.profile   = self.master.logged_profile
@@ -29,7 +30,6 @@ class Write:
         self.logout = self.master.logout
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
-        self.viewcontent = Column()
         self.do_send = ElevatedButton(text='Envoyer',on_click=self.send_mail)
 
     def send_mail(self,e):
