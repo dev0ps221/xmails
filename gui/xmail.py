@@ -1,5 +1,5 @@
 import pyautogui
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image,border_radius
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image, border_radius
 from managers.credsmanager import CredsManager,CredsInstance
 from gui.Login import Login
 from gui.Home import Home
