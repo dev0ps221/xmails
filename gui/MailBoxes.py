@@ -67,6 +67,11 @@ class MailBoxes:
             return self.set_mailboxes()
 
     def show(self):
+        self.view.controls = []
+        self.viewlist.controls = []
+        self.messagebox = Column()
+        self.page.update()
+        self.page.clean()
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.reset_profile()

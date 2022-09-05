@@ -42,7 +42,6 @@ class XMAIL:
         self.view.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.view.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.page.clean()
-        self.view.clean()
         self.view.show()
         self.refresh_page()
 
