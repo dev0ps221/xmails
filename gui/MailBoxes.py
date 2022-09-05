@@ -67,8 +67,8 @@ class MailBoxes:
             return self.set_mailboxes()
 
     def show(self):
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.reset_profile()
         if self.profile:
             self.build_view()
@@ -236,7 +236,7 @@ class MailBoxes:
         except Exception as e:
             print(e)
             mailhook =  mail.get('Subject')
-        mailhook = Text(value=mailhooktext,size=10)
+        mailhook = Text(value=mailhooktext,color=colors.BLACK,size=10)
         mailhook.padding = 5
         mailtitlecontainer.content=mailtitle
         mailcontainer.controls.append(mailtitlecontainer)

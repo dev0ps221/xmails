@@ -13,8 +13,8 @@ class Write:
         self.refresh_view = self.master.refresh_view
         self.panelbox_container = self.master.panelbox_container
         self.logout = self.master.logout
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.viewcontent = Column()
 
 
@@ -35,8 +35,8 @@ class Write:
         self.view.height   = self.pageheight
 
     def show(self):
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.reset_profile()
         if self.profile:
             self.build_view()

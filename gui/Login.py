@@ -12,9 +12,9 @@ class Login:
     loginview = Column()
     profilesview = Column()
     loginerr = None
-    emaillabel = Text(value='Email')
+    emaillabel = Text(value='Email',color=colors.BLACK)
     emailInput = TextField(label='Email')
-    pwdlabel = Text(value='pwd')
+    pwdlabel = Text(value='pwd',color=colors.BLACK)
     pwdInput = TextField(label='pwd',password=True)
     login_profiles_select = Dropdown(
         label="PROFILES",
@@ -45,6 +45,8 @@ class Login:
         
 
     def loginbox(self):
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.email.horizontal_alignment ='center'
         self.emaillabel.width = int(self.pagewidth/2)
         self.emaillabel.alignment = alignment.center
@@ -123,8 +125,8 @@ class Login:
 
 
     def show(self,*kwargs):
-        self.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.page.clean()
         self.page.title = 'XMAIL - TEK TECH 2022 - LOGIN'
         self.build_view()
@@ -132,6 +134,8 @@ class Login:
         
     def build_view(self):
 
+        self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.view = Column()
         self.select_view.width = self.pagewidth/2
         self.select_box  = Dropdown(
@@ -164,6 +168,7 @@ class Login:
         if self.loginerr: 
             self.actual_view.controls.append(Text(value=f"{self.loginerr}"))
 
+        self.actual_view.width = self.pagewidth/2
         self.view.controls = [self.select_view,self.actual_view,self.login]
 
         return self.view

@@ -1,7 +1,6 @@
 import pyautogui
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image,border_radius
 from managers.credsmanager import CredsManager,CredsInstance
-
 from gui.Login import Login
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
@@ -40,8 +39,8 @@ class XMAIL:
         return self.actual_view == '/login'
 
     def  refresh_view(self):
-        self.view.pagewidth = int(self.page.__dict__['_Control__attrs']['windowwidth'][0])
-        self.view.pageheight = int(self.page.__dict__['_Control__attrs']['windowheight'][0])
+        self.view.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
+        self.view.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.page.clean()
         self.view.show()
         self.refresh_page()
@@ -99,17 +98,18 @@ class XMAIL:
         self.panelbox_container.update()
 
     def resize_view(self,e):
-        windowwidth,windowheight = int(e.data[0]),int(e.data[1])
-        self.page.window_width = winwidth
-        self.page.window_height = winheight
+        self.page.window_width = int(self.page.window_width)
+        self.page.window_height = int(self.page.window_height)
         self.refresh_view() 
+        self.page.update()
 
     def app_loop(self,page: Page):
         self.page = page
+        self.page.color = colors.BLACK
+        self.page.bgcolor = colors.BLUE_100
         self.page.on_resize = self.resize_view
         self.page.window_width = winwidth
         self.page.window_height = winheight
-        self.page.window_maximized = True
         self.page.vertical_alignment = "center"
         self.LoginView = Login(self)
         self.HomeView = Home(self)
