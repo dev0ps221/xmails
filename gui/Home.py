@@ -20,11 +20,15 @@ class Home:
     def reset_profile(self):
         self.profile = self.master.logged_profile
 
+    def update_view(self):
+        self.update_controls()
+        self.view.update()
+        self.viewbox.update()
 
     def update_controls(self):
         self.view.height   = self.pageheight
         self.viewbox.height= self.view.height
-        self.view.controls = 
+        self.view.controls = [self.viewbox]
 
     def show(self):
         self.reset_profile()
@@ -34,7 +38,7 @@ class Home:
 
     def build_view(self):    
         self.view.width = self.pagewidth
-        self.
-        self.page.controls = [self.panelbox_container,Divider(),self.view]
+        self.update_view()
+        self.view.controls = [self.panelbox_container,Divider(),self.view]
         return self.view
 
