@@ -10,7 +10,7 @@ credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
 
 class XMAIL:
-    panelbox_container = Container(bgcolor=colors.BLACK)
+    panelbox_container = Container(bgcolor=colors.LIGHT_BLUE)
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance

@@ -42,10 +42,12 @@ class MailBoxes:
         self.get_mailboxes()
 
     def set_mailboxes(self):
-        self.mailboxes = self.profile.get_mailboxes()
-        self.gotmailboxes = True
-        self.set_actual_mailbox()
-        return self.get_mailboxes()
+        if self.profile:
+            self.mailboxes = self.profile.get_mailboxes()
+            self.gotmailboxes = True
+            self.set_actual_mailbox()
+            return self.get_mailboxes()
+        else : return []
 
     def set_actual_mailbox(self):
         if len(self.mailboxes) == 0:
@@ -66,8 +68,8 @@ class MailBoxes:
 
     def show(self):
         self.reset_profile()
-        if self.profile:
-            self.build_view()
+        # if self.profile:
+        self.build_view()
         self.page.add(self.view)
         self.master.update_panelbox()
 
@@ -189,16 +191,18 @@ class MailBoxes:
 
     def build_view(self):
         self.reset_profile()
-        titlesusr = self.profile.creds.get_cred('user')
-        mailboxname = self.actual_mailbox.get_info('name')
-        self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
+        if self.profile:
+            titlesusr = self.profile.creds.get_cred('user')
+            mailboxname = self.actual_mailbox.get_info('name')
+            self.page.title = f'{titlesusr} - XMAIL - {mailboxname} - TEK TECH 2022 '
         self.view.controls = []    
         self.boxlist.height=int(self.pageheight*10/100)
         self.mailbox_container.width  = int(self.pagewidth*85/100)
         self.mailbox_container.height = int(self.pageheight*100/100)
         self.message_stuff.height = int(self.mailbox_container.height*85/100)
-        self.view.width = self.pagewidth
         self.boxlist.width = int(self.mailbox_container.width)
+        self.view.width = self.pagewidth
+        self.view.height = self.pagewidth
         self.master.build_panelbox()
         self.append_controls()
         return self.view
