@@ -52,9 +52,9 @@ class Write:
         self.viewcontent.height= self.view.height
         self.sendmail_container.width= int(self.viewcontent.width*45/100)
         self.mail_label.width = self.sendmail_container.width 
-        self.mail_label.controls = [self.mail_label_text]
+        self.mail_label.content = self.mail_label_text
         self.build_write_field()
-        self.viewcontent.content = self.sendmail_container
+        self.viewcontent.controls = self.sendmail_container
 
     def show(self):
         self.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
