@@ -42,6 +42,7 @@ class XMAIL:
         self.view.pagewidth = int(float(self.page.__dict__['_Control__attrs']['windowwidth'][0]))
         self.view.pageheight = int(float(self.page.__dict__['_Control__attrs']['windowheight'][0]))
         self.page.clean()
+        self.view.clean()
         self.view.show()
         self.refresh_page()
 
@@ -106,7 +107,7 @@ class XMAIL:
     def app_loop(self,page: Page):
         self.page = page
         self.page.color = colors.BLACK
-        self.page.bgcolor = colors.BLUE_100
+        self.page.bgcolor = colors.BLUE_200
         self.page.on_resize = self.resize_view
         self.page.window_width = winwidth
         self.page.window_height = winheight

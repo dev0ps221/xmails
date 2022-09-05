@@ -115,6 +115,7 @@ class Login:
                 self.loginerr = earr[1 if len(earr) > 1 else 0].replace('\'','') 
             finally:
                 if profile.connection.is_logged():
+                    self.page.clean()
                     self.login_success(profile)
                 else:
                     self.refresh_view()

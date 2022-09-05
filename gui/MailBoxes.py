@@ -14,7 +14,7 @@ class MailBoxes:
     panelbox = Column()
     actual_mailbox = None
     actual_message = None
-    messagebody = Container(bgcolor=colors.BLUE_GREY,padding=10)
+    messagebody = Container(bgcolor=colors.BLUE_100,padding=10)
 
     actual_message_frombox_container = Container(bgcolor=colors.LIGHT_BLUE,padding=2.5)
     actual_message_frombox = Text(size=12)
