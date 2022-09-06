@@ -21,8 +21,16 @@ class Write:
     objets_list = Row()
 
 
+    def sizeof(self,fn):
+        res = 0
+        try:
+            f = open(fn,'rb')
+            res = len(f.read().decode())
+        except Exception as e:
+            print(e)
+        return res
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append((f,filetype.guess(f.path),str(getsizeof(f.path))+'o')) for f in e.files]
+        [self.attachments.append((f,filetype.guess(f.path),str(self.sizeof(f.path))+'o')) for f in e.files]
         print(self.attachments)
         return self.attachments
 
