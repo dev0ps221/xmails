@@ -31,7 +31,7 @@ class Write:
         return res
 
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append(f,filetype.guess(f.path)) for f in e.files]
+        [self.attachments.append((f,filetype.guess(f.path))) for f in e.files]
         self.show_attachments()
         return self.attachments
 
@@ -44,6 +44,9 @@ class Write:
             objet_title = Text(value=attachment.name)
             objet_size = Text(value=f"{int(attachment.size/1000000)}Mb")
             objet_type = Text(value=filetype)
+            objet.controls = [objet_title,objet_type,objet_size]
+            objet_container.content = objet
+            self.objets_list.controls.append(objet_container)
 
     def __init__(self,master):
         self.view = Row()
