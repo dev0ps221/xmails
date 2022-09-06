@@ -32,7 +32,7 @@ class Write:
         self.master = master
         self.page      = self.master.page
         self.add_attachment_dialog = FilePicker(on_result=self.add_attachment)
-        self.add_attachment_input = Button(text='Lier un fichier',on_result=self.add_attachment_dialog.pick_files())
+        self.add_attachment_input = ElevatedButton(text='Lier un fichier',on_result=lambda _:self.add_attachment_dialog.pick_files())
         self.page.overlay.append(self.add_attachment_dialog)
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
