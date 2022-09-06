@@ -25,7 +25,7 @@ class Write:
         res = 0
         try:
             f = open(fn,'rb')
-            res = len(f.read().decode())
+            res = len(f.read())
         except Exception as e:
             print(e)
         return res
