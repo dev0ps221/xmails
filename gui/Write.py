@@ -82,6 +82,7 @@ class Write:
     
     def build_objets_field(self):
         self.objets_list_container.width= int(self.viewcontent.width*55/100)
+        self.objets_container.width = self.objets_list_container.width
         self.objets_label.width = self.objets_list_container.width
         self.objets_label.content = self.objets_label_text
         self.objets_list_container.content = self.objets_list
