@@ -27,11 +27,13 @@ class Write:
 
     def __init__(self,master):
         self.view = Row()
-        self.add_attachment_input = FilePicker(on_result=self.add_attachment)
         self.viewbox = Container()
         self.viewcontent = Row()
         self.master = master
         self.page      = self.master.page
+        self.add_attachment_dialog = FilePicker(on_result=self.add_attachment)
+        self.add_attachment_input = Button(text='Lier un fichier',on_result=self.add_attachment_dialog.pick_files())
+        self.page.overlay.append(self.add_attachment_dialog)
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
         self.refresh_view = self.master.refresh_view
