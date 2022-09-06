@@ -18,7 +18,7 @@ class Write:
     objets_label = Container(bgcolor=colors.LIGHT_BLUE) 
     objets_label_text = Text(value='PIÈCES JOINTES')
     objets_list_container = Container()
-    objets_list = Row()
+    objets_list = Row(wrap=True)
 
 
     def filedata(self,fn):
