@@ -1,7 +1,7 @@
 import quopri
 from html2text import html2text
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, border_radius
-
+from os import mkdir,path
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
@@ -108,6 +108,23 @@ class MailBoxes:
                     if part.get_content_subtype() == "text":
                         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
                         messagebodytext = "\n".join(messagebodytext)
+                    fileName = part.get_filename()        
+                    if bool(fileName):
+                        fileName = fileName.split('/')[-1]
+                        profile_path = path.join(self.master.cache_path,self.profile.creds.get_cred('user'))
+                        try :
+                            mkdir(profile_path)
+                        except Exception:
+                            pass
+                        filePath = path.join(profile_path, fileName)
+                        print(profile_path)
+                        print(filePath)
+                        print(not path.isfile(filePath))
+                        if not path.isfile(filePath) :
+                            fp = open(filePath, 'wb')
+                            fp.write(part.get_payload(decode=True))
+                            fp.close()            
+                        print(f'Downloaded {filePath}')
             else:
                 if self.actual_message.get_content_subtype() == "html":
                     messagebodytext = self.actual_message.get_payload(decode=True)
