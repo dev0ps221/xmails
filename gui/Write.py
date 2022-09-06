@@ -1,6 +1,7 @@
-import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, FilePicker, FilePickerResultEvent
+from sys import getsizeof
 import filetype
+import quopri
 class Write:
     view = Column()
     sendmail_container = Container()
@@ -21,7 +22,7 @@ class Write:
 
 
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append((f,filetype.guess(f.path))) for f in e.files]
+        [self.attachments.append((f,filetype.guess(f.path),getsizeof(f.path)+'o')) for f in e.files]
         print(self.attachments)
         return self.attachments
 
