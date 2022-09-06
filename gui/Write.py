@@ -1,4 +1,4 @@
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, FilePicker, FilePickerResultEvent
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, border_radius, dropdown, Divider, VerticalDivider, Container, FilePicker, FilePickerResultEvent
 from sys import getsizeof
 import filetype
 import quopri
@@ -38,8 +38,8 @@ class Write:
     def show_attachments(self):
         self.objets_list.controls = []
         for attachment,filetype in self.attachments:
-            objet_container = Container()
-            objet_container.width = int(self.objets_container.width*30/100)
+            objet_container = Container(padding=10,border_radius=border_radius.all(15))
+            objet_container.width = int(self.objets_container.width*32/100)
             objet = Column()
             objet_title = Text(value=attachment.name)
             objet_size = Text(value=f"{float(attachment.size/1000000)}Mb")
