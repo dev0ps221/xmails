@@ -134,7 +134,7 @@ class MailBoxes:
                         objet_container.width = int(self.objets_list.width*32/100)
                         objet = Column()
                         objet_title = Text(value=fileName)
-                        objet_size = Text(value=f"{float(filesize.size/1000000)}Mb")
+                        objet_size = Text(value=f"{float(filesize/1000000)}Mb")
                         objet_type = Text(value=filetype.mime if filetype else "format non reconnu")
                         objet.controls = [objet_title,objet_type,objet_size]
                         objet_container.content = objet
