@@ -3,7 +3,9 @@ import imaplib2 as imaplib
 imaplib.Untagged_status = imaplib.re.compile(br'\*[ ]{1,2}(?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?')
 IMAP4_SSL = imaplib.IMAP4_SSL
 import smtplib, ssl
+from email import encoders
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 
 
