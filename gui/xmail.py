@@ -33,6 +33,7 @@ class XMAIL:
 
     def __init__(self):
         self.start_handler()
+        atexit.register(self.exit_handler)
 
     def start_handler(self):
         rmtree(self.cache_path)
