@@ -2,6 +2,7 @@ import quopri
 from html2text import html2text
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, border_radius
 from os import mkdir,path
+from filetype import guess
 class MailBoxes:
     view = Row()
     mailbox_container = Column(alignment='start')
@@ -9,6 +10,7 @@ class MailBoxes:
     boxlist = Row(wrap=True)   
     messagebox = Column()
     viewlist = Column(scroll='adaptive')
+    objets_list = Row(wrap=True)   
     mailboxes = []
     gotmailboxes = False
     panelbox = Column()
@@ -120,11 +122,24 @@ class MailBoxes:
                         print(profile_path)
                         print(filePath)
                         print(not path.isfile(filePath))
+                        filesize = 'UNKNOWN'
                         if not path.isfile(filePath) :
                             fp = open(filePath, 'wb')
+                            filesize = len(part.get_payload(decode=True))
                             fp.write(part.get_payload(decode=True))
                             fp.close()            
-                        print(f'Downloaded {filePath}')
+                        self.objets_list.width = int(self.pagewidth*65/100)
+                        filetype = guess(filePath)
+                        objet_container = Container(padding=10,border_radius=border_radius.all(15))
+                        objet_container.width = int(self.objets_list.width*32/100)
+                        objet = Column()
+                        objet_title = Text(value=fileName)
+                        objet_size = Text(value=f"{float(filesize.size/1000000)}Mb")
+                        objet_type = Text(value=filetype.mime if filetype else "format non reconnu")
+                        objet.controls = [objet_title,objet_type,objet_size]
+                        objet_container.content = objet
+                        self.objets_list.controls.append(objet_container)
+
             else:
                 if self.actual_message.get_content_subtype() == "html":
                     messagebodytext = self.actual_message.get_payload(decode=True)
@@ -197,7 +212,7 @@ class MailBoxes:
             self.actual_message_tobox_container.content = self.actual_message_tobox
             self.actual_message_datebox_container.content = self.actual_message_datebox
             self.actual_message_frombox_container.content = self.actual_message_frombox
-            messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_datebox_container,self.actual_message_bodybox]
+            messagebox.controls = [self.actual_message_frombox_container,self.actual_message_tobox_container,self.actual_message_datebox_container,self.actual_message_bodybox,self.objets_list]
 
     def build_view(self):
         self.reset_profile()
