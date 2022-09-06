@@ -31,7 +31,8 @@ class Write:
         return res
 
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append((f,filetype.guess(f.path))) for f in e.files]
+        if e.files:
+            [self.attachments.append((f,filetype.guess(f.path))) for f in e.files]
         self.show_attachments()
         return self.attachments
 
