@@ -1,6 +1,6 @@
 import quopri
 from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, ListView, dropdown, Divider, VerticalDivider, Container, FilePicker, FilePickerResultEvent
-
+import filetype
 class Write:
     view = Column()
     sendmail_container = Container()
@@ -21,7 +21,7 @@ class Write:
 
 
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append(f) for f in e.files]
+        [self.attachments.append(f,filetype.guess(f.path)) for f in e.files]
         print(self.attachments)
         return self.attachments
 
@@ -30,8 +30,7 @@ class Write:
         self.viewbox = Container()
         self.viewcontent = Row()
         self.master = master
-        self.page      = self.master.page
-        help(FilePicker)
+        self.page      = self.master.page   
         self.add_attachment_dialog = FilePicker(on_result=self.add_attachment)
         self.add_attachment_input = ElevatedButton(text='Lier un fichier',on_click=lambda _:self.add_attachment_dialog.pick_files())
         self.page.overlay.append(self.add_attachment_dialog)
