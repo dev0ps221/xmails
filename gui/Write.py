@@ -42,8 +42,8 @@ class Write:
             objet_container.width = int(self.objets_container.width*30/100)
             objet = Column()
             objet_title = Text(value=attachment.name)
-            objet_size = Text(value=f"{int(attachment.size/1000000)}Mb")
-            objet_type = Text(value=filetype)
+            objet_size = Text(value=f"{float(attachment.size/1000000)}Mb")
+            objet_type = Text(value=filetype.mime)
             objet.controls = [objet_title,objet_type,objet_size]
             objet_container.content = objet
             self.objets_list.controls.append(objet_container)
