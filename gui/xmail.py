@@ -26,10 +26,20 @@ class XMAIL:
     logged_profile = None
     view = None
     script_path = path.abspath(__file__)
-    cache_path = path.join(script_path,'cache')
+    cache_path = path.join(script_path,'core/cache')
+
+
+    def __init__(self):
+        self.start_handler()
+
+    def start_handler(self):
+        rmdir(self.cache_path)
+        mkdir(self.cache_path)
+
+
     def exit_handler(self):
-        os.rmdir(self.rmdir(self.cache_path))
-        os.mkdir(self.mkdir(self.cache_path))
+        rmdir(self.cache_path)
+        mkdir(self.cache_path)
 
 
     def login_success(self,profile):
