@@ -116,11 +116,13 @@ class MailBoxes:
                         except Exception:
                             pass
                         filePath = path.join(profile_path, fileName)
+                        print(filePath)
+                        print(not path.isfile(filePath))
                         if not path.isfile(filePath) :
                             fp = open(filePath, 'wb')
                             fp.write(part.get_payload(decode=True))
                             fp.close()            
-                        print('Downloaded f"{fileName}"')
+                        print(f'Downloaded {fileName}')
             else:
                 if self.actual_message.get_content_subtype() == "html":
                     messagebodytext = self.actual_message.get_payload(decode=True)
