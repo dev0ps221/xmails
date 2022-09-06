@@ -38,9 +38,9 @@ class ConnectionManager:
 
 
             if attachments:
-                for attachment in attachments:
-                    # Open PDF file in binary mode
-                    with open(filename, "rb") as attachment:
+                for attachment,filetype in attachments:
+                    # Open file in binary mode
+                    with open(attachment.path, "rb") as attachment:
                         # Add file as application/octet-stream
                         # Email client can usually download this automatically as attachment
                         part = MIMEBase("application", "octet-stream")
@@ -52,12 +52,11 @@ class ConnectionManager:
                     # Add header as key/value pair to attachment part
                     part.add_header(
                         "Content-Disposition",
-                        f"attachment; filename= {filename}",
+                        f"attachment; filename= {attachment.name}",
                     )
 
                     # Add attachment to message and convert message to string
                     message.attach(part)
-                    text = message.as_string()
 
 
 
