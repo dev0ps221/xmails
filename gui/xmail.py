@@ -5,7 +5,8 @@ from gui.Login import Login
 from gui.Write import Write
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
-from os import path,rmdir,mkdir
+from os import path,mkdir
+from shutil import rmtree
 import atexit
 
 winwidth, winheight = pyautogui.size()
@@ -25,20 +26,21 @@ class XMAIL:
     login_view = None
     logged_profile = None
     view = None
-    script_path = path.abspath(__file__)
-    cache_path = path.join(script_path,'core/cache')
+    script_path = path.dirname(__file__)
+    core_path = path.join(script_path,'../core/')
+    cache_path = path.join(core_path,'cache')
 
 
     def __init__(self):
         self.start_handler()
 
     def start_handler(self):
-        rmdir(self.cache_path)
+        rmtree(self.cache_path)
         mkdir(self.cache_path)
 
 
     def exit_handler(self):
-        rmdir(self.cache_path)
+        rmtree(self.cache_path)
         mkdir(self.cache_path)
 
 
