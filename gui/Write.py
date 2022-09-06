@@ -70,7 +70,7 @@ class Write:
 
     def send_mail(self,e):
         if self.profile:
-            sendres = self.profile.send_mail(self.mail_target.value,self.mail_subject.value,self.mail_message.value)
+            sendres = self.profile.send_mail(self.mail_target.value,self.mail_subject.value,self.mail_message.value,self.attachments)
 
     def build_write_field(self):
         self.sendmail_container.width= int(self.viewcontent.width*45/100)

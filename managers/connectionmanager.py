@@ -16,7 +16,7 @@ class ConnectionManager:
     loginerror   = None
     connecterror = None
 
-    def send_mail(self,maildata):
+    def send_mail(self,maildata,attachments=None):
 
         port = 587  
 
@@ -35,6 +35,36 @@ class ConnectionManager:
             message["To"] = maildata['to']
 
             message.attach(MIMEText(maildata['message'],'text'))
+
+
+            if attachments:
+                for attachment in attachments:
+                    # Open PDF file in binary mode
+                    with open(filename, "rb") as attachment:
+                        # Add file as application/octet-stream
+                        # Email client can usually download this automatically as attachment
+                        part = MIMEBase("application", "octet-stream")
+                        part.set_payload(attachment.read())
+
+                    # Encode file in ASCII characters to send by email    
+                    encoders.encode_base64(part)
+
+                    # Add header as key/value pair to attachment part
+                    part.add_header(
+                        "Content-Disposition",
+                        f"attachment; filename= {filename}",
+                    )
+
+                    # Add attachment to message and convert message to string
+                    message.attach(part)
+                    text = message.as_string()
+
+
+
+
+
+
+
             res = None,server.sendmail(
                 self.creds.get_cred('user'), maildata['to'], message.as_string()
             )
