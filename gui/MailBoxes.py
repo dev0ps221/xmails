@@ -243,7 +243,7 @@ class MailBoxes:
         datebox.height = int(self.mailbox_container.height*5/100)
         tobox.width = int(self.mailbox_container.width*65/100)
         tobox.height = int(self.mailbox_container.height*5/100)
-        bodybox.height = int(self.mailbox_container.height*55/100)
+        bodybox.height = int(self.mailbox_container.height*35/100)
         bodybox.width = int(self.mailbox_container.width*65/100)
         self.master.build_panelbox()
         self.append_controls()
