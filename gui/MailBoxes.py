@@ -102,6 +102,7 @@ class MailBoxes:
             messagebodytext = ""
             messagebodyhtml = None
             if self.actual_message.is_multipart():
+                self.objets_list.controls = []
                 for part in self.actual_message.walk():
                     if part.get_content_subtype() == "html":
                         messagebodyhtml= [elem for elem in str(html2text(part.get_payload(decode=True).decode())).split("\n")]
