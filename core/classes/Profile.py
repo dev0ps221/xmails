@@ -5,13 +5,13 @@ class Profile:
     rmailboxes = None
     mailboxes = {}
     
-    def send_mail(self,target,subject,data):
+    def send_mail(self,target,subject,data,attachments=None):
         maildata = {
             'to':target,
             'subject':subject,
             'message':data
         }
-        results = self.connection.send_mail(maildata)
+        results = self.connection.send_mail(maildata,attachments)
         print(results)
         
     def login(self,login_success=lambda x:print('login success'),login_failed=lambda x:print('login failed '+x)):
