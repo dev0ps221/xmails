@@ -5,10 +5,13 @@ from gui.Login import Login
 from gui.Write import Write
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
+from os import path,rmdir,mkdir
+import atexit
 
 winwidth, winheight = pyautogui.size()
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()
+
 
 class XMAIL:
     panelbox_container = Container()
@@ -22,6 +25,13 @@ class XMAIL:
     login_view = None
     logged_profile = None
     view = None
+    script_path = path.abspath(__file__)
+    cache_path = path.join(script_path,'cache')
+    def exit_handler(self):
+        os.rmdir(self.rmdir(self.cache_path))
+        os.mkdir(self.mkdir(self.cache_path))
+
+
     def login_success(self,profile):
         self.is_logged = 1
         self.logged_profile = profile
