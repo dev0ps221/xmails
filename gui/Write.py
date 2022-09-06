@@ -43,7 +43,7 @@ class Write:
             objet = Column()
             objet_title = Text(value=attachment.name)
             objet_size = Text(value=f"{float(attachment.size/1000000)}Mb")
-            objet_type = Text(value=filetype.mime)
+            objet_type = Text(value=filetype.mime if filetype else "format non reconnu")
             objet.controls = [objet_title,objet_type,objet_size]
             objet_container.content = objet
             self.objets_list.controls.append(objet_container)
