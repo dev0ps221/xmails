@@ -21,18 +21,29 @@ class Write:
     objets_list = Row()
 
 
-    def sizeof(self,fn):
+    def filedata(self,fn):
         res = 0
         try:
             f = open(fn,'rb')
-            res = len(f.read())
+            res = f.read()
         except Exception as e:
             print(e)
         return res
+
     def add_attachment(self,e: FilePickerResultEvent):
-        [self.attachments.append((f,filetype.guess(f.path),str(self.sizeof(f.path))+'o')) for f in e.files]
-        print(self.attachments)
+        [self.attachments.append(f,filetype.guess(f.path)) for f in e.files]
+        self.show_attachments()
         return self.attachments
+
+    def show_attachments(self):
+        self.objets_list.controls = []
+        for attachment,filetype in self.attachments:
+            objet_container = Container()
+            objet_container.width = int(self.objets_container.width*30/100)
+            objet = Column()
+            objet_title = Text(value=attachment.name)
+            objet_size = Text(value=f"{int(attachment.size/1000000)}Mb")
+            objet_type = Text(value=filetype)
 
     def __init__(self,master):
         self.view = Row()
@@ -41,7 +52,7 @@ class Write:
         self.master = master
         self.page      = self.master.page   
         self.add_attachment_dialog = FilePicker(on_result=self.add_attachment)
-        self.add_attachment_input = ElevatedButton(text='Lier un fichier',on_click=lambda _:self.add_attachment_dialog.pick_files())
+        self.add_attachment_input = ElevatedButton(text='Lier des fichiers',on_click=lambda _:self.add_attachment_dialog.pick_files(allow_multiple=True))
         self.page.overlay.append(self.add_attachment_dialog)
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
