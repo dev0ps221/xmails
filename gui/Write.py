@@ -31,8 +31,9 @@ class Write:
         self.viewcontent = Row()
         self.master = master
         self.page      = self.master.page
+        help(FilePicker)
         self.add_attachment_dialog = FilePicker(on_result=self.add_attachment)
-        self.add_attachment_input = ElevatedButton(text='Lier un fichier',on_result=lambda _:self.add_attachment_dialog.pick_files())
+        self.add_attachment_input = ElevatedButton(text='Lier un fichier',on_click=lambda _:self.add_attachment_dialog.pick_files())
         self.page.overlay.append(self.add_attachment_dialog)
         self.profile   = self.master.logged_profile
         self.refresh_page = self.master.refresh_page
