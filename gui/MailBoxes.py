@@ -110,19 +110,21 @@ class MailBoxes:
                         messagebodytext = "\n".join(messagebodytext)
                     fileName = part.get_filename()        
                     if bool(fileName):
+                        fileName = fileName.split('/')[-1]
                         profile_path = path.join(self.master.cache_path,self.profile.creds.get_cred('user'))
                         try :
                             mkdir(profile_path)
                         except Exception:
                             pass
                         filePath = path.join(profile_path, fileName)
+                        print(profile_path)
                         print(filePath)
                         print(not path.isfile(filePath))
                         if not path.isfile(filePath) :
                             fp = open(filePath, 'wb')
                             fp.write(part.get_payload(decode=True))
                             fp.close()            
-                        print(f'Downloaded {fileName}')
+                        print(f'Downloaded {filePath}')
             else:
                 if self.actual_message.get_content_subtype() == "html":
                     messagebodytext = self.actual_message.get_payload(decode=True)
