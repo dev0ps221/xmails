@@ -47,6 +47,7 @@ class Write:
             objet.controls = [objet_title,objet_type,objet_size]
             objet_container.content = objet
             self.objets_list.controls.append(objet_container)
+        self.objets_list.update()
 
     def __init__(self,master):
         self.view = Row()
