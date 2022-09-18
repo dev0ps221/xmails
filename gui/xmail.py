@@ -5,10 +5,10 @@ from gui.Login import Login
 from gui.Write import Write
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
-from os import path,mkdir
+from os import path,mkdir,chdir
 from shutil import rmtree
 import atexit
-
+chdir('/'.join(__file__.split('/')[:-2]))
 winwidth, winheight = pyautogui.size()
 credsman = CredsManager()
 credsprofiles = credsman.get_creds_profiles()

@@ -33,7 +33,7 @@ class CredsInstance:
 
 class CredsManager:
     _s = None
-    credspath = getcwd()+"/craids/list" 
+    credspath = '/'.join(__file__.split('/')[:-2])+"/craids/list" 
     credsfiles = []
     credsprofiles = []
     credsinstances = {}
