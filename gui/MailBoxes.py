@@ -12,7 +12,7 @@ class MailBoxes:
     viewlistcontainer = Column()
     viewlistsearch = Row()
     viewlistsearchinput = TextField(label='chercher')
-    viewlistsearchbutton = ElevatedButton(text='recherche')
+    viewlistsearchbutton = ElevatedButton(text='recherche',bgcolor=colors.GREEN_200,color=colors.WHITE)
     viewlist = Column(scroll='adaptive')
     objets_list = Row(wrap=True)   
     mailboxes = []
@@ -199,7 +199,7 @@ class MailBoxes:
         viewlistcontainer = self.viewlistcontainer
         viewlist = self.viewlist
         viewlistsearch = self.viewlistsearch
-        self.viewlistsearchinput.width = int(self.mailbox_container.width*18/100)
+        self.viewlistsearchinput.width = int(self.mailbox_container.width*19/100)
         self.viewlistsearchbutton.width = int(self.mailbox_container.width*10/100)
         viewlistsearch.width = int(self.mailbox_container.width*30/100)
         viewlistsearch.height =  int(self.mailbox_container.height*5/100)
