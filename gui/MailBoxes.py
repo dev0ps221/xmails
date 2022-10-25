@@ -145,7 +145,7 @@ class MailBoxes:
                         objet_size = Text(value=f"{float(filesize/1000000)}Mb")
                         objet_type = Text(value=filetype.mime if filetype else "format non reconnu")
                         download_object = ElevatedButton(text="Télécharger")
-
+                        download_object.on_click = lambda x :self.master.download_attachment(filePath)
                         objet.controls = [objet_title,objet_type,objet_size,download_object]
                         objet_container.content = objet
                         self.objets_list.controls.append(objet_container)

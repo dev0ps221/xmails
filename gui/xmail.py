@@ -1,5 +1,6 @@
+from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, FilePicker, Dropdown, dropdown, Container, Image, border_radius
 import pyautogui
-from flet import app, TextField, Text, Column, Row, Page, ElevatedButton, colors, alignment, Dropdown, dropdown, Container, Image, border_radius
+from os.path import expanduser
 from managers.credsmanager import CredsManager,CredsInstance
 from gui.Login import Login
 from gui.Write import Write
@@ -17,6 +18,7 @@ credsprofiles = credsman.get_creds_profiles()
 class XMAIL:
     panelbox_container = Container()
     panelbox = Column()
+    filestuff = FilePicker()
     credsman = credsman
     credsprofiles = credsprofiles
     CredsInstance = CredsInstance
@@ -37,6 +39,13 @@ class XMAIL:
 
 
     def select_folder(self):
+        return self.filestuff.get_directory_path(dialog_title='Choisir une destination',initial_directory=expanduser("~"))
+    
+    def download_attachment(self,filePath):
+        print(self.select_folder(),filePath)
+
+    def on_select_download_folder(self,ev):
+        print(ev)
 
     def start_handler(self):
         rmtree(self.cache_path)
@@ -76,6 +85,7 @@ class XMAIL:
         self.refresh_page()
 
     def refresh_page(self):
+        self.page.add(self.filestuff)
         self.page.update()
 
     def view_exists(self,view):
