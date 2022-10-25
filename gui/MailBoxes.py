@@ -199,7 +199,7 @@ class MailBoxes:
         viewlistcontainer = self.viewlistcontainer
         viewlist = self.viewlist
         viewlistsearch = self.viewlistsearch
-        self.viewlistsearchinput.width = int(self.mailbox_container.width*20/100)
+        self.viewlistsearchinput.width = int(self.mailbox_container.width*18/100)
         self.viewlistsearchbutton.width = int(self.mailbox_container.width*10/100)
         viewlistsearch.width = int(self.mailbox_container.width*30/100)
         viewlistsearch.height =  int(self.mailbox_container.height*5/100)
