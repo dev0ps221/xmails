@@ -71,6 +71,8 @@ class MailBoxes:
 
     def show(self):
         self.view.controls = []
+        self.viewlistsearch.controls = [self.searchinput,self.searchbutton]
+        self.viewlistcontainer.controls = [self.viewlistsearch,self.viewlist]
         self.viewlist.controls = []
         self.messagebox = Column()
         self.page.update()
@@ -258,7 +260,7 @@ class MailBoxes:
         self.update_boxlist()
         self.update_viewlist()
         self.update_actualmsgbox()
-        viewlist = self.viewlist
+        viewlist = self.viewlistcontainers
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
