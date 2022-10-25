@@ -11,7 +11,8 @@ class MailBoxes:
     messagebox = Column()
     viewlistcontainer = Column()
     viewlistsearch = Row()
-    searchinput = TextField(label='rechercher')
+    searchinput = TextField(label='chercher')
+    searchbutton = ElevatedButton(text='recherche')
     viewlist = Column(scroll='adaptive')
     objets_list = Row(wrap=True)   
     mailboxes = []
