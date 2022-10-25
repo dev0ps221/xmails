@@ -117,7 +117,7 @@ class MailBoxes:
                     
                     if part.get_content_subtype() == "text":
                         messagebodytext = [elem for elem in filter(lambda line:'Content-' not in line,part.as_string().split("\n"))]
-                        messagebodytext = "\n".join(messagebodytext)
+                        messagebodytext = "\n".join(messagebodytext).decodestring(encoding='utf-8').decodestring(encoding='ascii')
                     fileName = part.get_filename()        
                     if bool(fileName):
                         fileName = fileName.split('/')[-1]
@@ -293,7 +293,7 @@ class MailBoxes:
         try:
             mailhooktext  = ''.join([chr(ord(c))  for c in mail.get('Subject').__str__()]).encode().decode('utf-8') 
         except Exception as e:
-            mailhooktext =  ''.join([chr(ord(c))  for c in mail.get('Subject').__str__()])
+            mailhooktext =  ''.join([chr(ord(c))  for c in mail.get('Subject').__str__()]).decodestring(encoding='utf-8').decodestring(encoding='ascii')
             print(e)
         mailhook = Text(value=mailhooktext,color=colors.BLACK,size=10)
         mailhook.padding = 5
