@@ -260,7 +260,7 @@ class MailBoxes:
         self.update_boxlist()
         self.update_viewlist()
         self.update_actualmsgbox()
-        viewlist = self.viewlistcontainers
+        viewlist = self.viewlistcontainer
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
