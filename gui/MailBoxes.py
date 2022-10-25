@@ -96,6 +96,7 @@ class MailBoxes:
             if match_:
                 self.actual_message = match_
 
+
     def update_message_box(self):
         messagebox = self.messagebox
         messagebody = self.messagebody
@@ -143,7 +144,9 @@ class MailBoxes:
                         objet_title = Text(value=fileName)
                         objet_size = Text(value=f"{float(filesize/1000000)}Mb")
                         objet_type = Text(value=filetype.mime if filetype else "format non reconnu")
-                        objet.controls = [objet_title,objet_type,objet_size]
+                        download_object = ElevatedButton(text="Télécharger")
+
+                        objet.controls = [objet_title,objet_type,objet_size,download_object]
                         objet_container.content = objet
                         self.objets_list.controls.append(objet_container)
 

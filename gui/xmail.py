@@ -35,6 +35,9 @@ class XMAIL:
         self.start_handler()
         atexit.register(self.exit_handler)
 
+
+    def select_folder(self):
+
     def start_handler(self):
         rmtree(self.cache_path)
         mkdir(self.cache_path)
