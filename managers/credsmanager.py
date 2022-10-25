@@ -44,7 +44,7 @@ class CredsManager:
         self.update_creds_stuff()
 
     def set_credspath(self):
-        self.credspath = getcwd()+"/craids/list"
+        self.credspath = '/'.join(__file__.split('/')[:-2])+"/craids/list"
         if not path.isdir(self.credspath):
             from os import mkdir
             mkdir(self.credspath)

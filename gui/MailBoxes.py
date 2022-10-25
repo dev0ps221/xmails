@@ -9,6 +9,9 @@ class MailBoxes:
     message_stuff = Row(alignment='start')
     boxlist = Row(wrap=True)   
     messagebox = Column()
+    viewlistcontainer = Column()
+    viewlistsearch = Row()
+    searchinput = TextField(label='rechercher')
     viewlist = Column(scroll='adaptive')
     objets_list = Row(wrap=True)   
     mailboxes = []

@@ -61,11 +61,6 @@ class ConnectionManager:
                     message.attach(part)
 
 
-
-
-
-
-
             res = None,server.sendmail(
                 self.creds.get_cred('user'), maildata['to'], message.as_string()
             )
