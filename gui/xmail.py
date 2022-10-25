@@ -6,7 +6,7 @@ from gui.Login import Login
 from gui.Write import Write
 from gui.Home import Home
 from gui.MailBoxes import MailBoxes
-from os import path,mkdir,chdir
+from os import path,mkdir,chdir,rename as mv
 from shutil import rmtree
 import atexit
 chdir('/'.join(__file__.split('/')[:-2]))
@@ -35,17 +35,22 @@ class XMAIL:
 
     def __init__(self):
         self.start_handler()
+        self.filestuff.on_result = self.on_select_download_folder
         atexit.register(self.exit_handler)
 
 
     def select_folder(self):
         return self.filestuff.get_directory_path(dialog_title='Choisir une destination',initial_directory=expanduser("~"))
     
-    def download_attachment(self,filePath):
-        print(self.select_folder(),filePath)
+    def download_attachment(self,filePath,fileName):
+        self.actual_download_target = filePath
+        self.actual_download_name = fileName
+        self.select_folder()
 
     def on_select_download_folder(self,ev):
-        print(ev)
+        if ev.path and self.actual_download_target and self.actual_download_name:
+            mv(self.actual_download_target,path.join(ev.path,self.actual_download_name))
+        actual_download_target = None
 
     def start_handler(self):
         rmtree(self.cache_path)
