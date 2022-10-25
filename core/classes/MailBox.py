@@ -21,6 +21,7 @@ class MailBox:
             self.mailcount_resp_code,self.mail_count = self.server.select(mailbox=self.selector)
             self.mail_count = self.mail_count[0].decode()
         if self.server.state == 'SELECTED':
+            print(self.server.search("utf-8","body seyba"))
             self.mailids_resp_code,self.mail_ids = self.server.search("utf-8","ALL")
         made = 0
         self.mails = {}

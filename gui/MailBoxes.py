@@ -11,8 +11,8 @@ class MailBoxes:
     messagebox = Column()
     viewlistcontainer = Column()
     viewlistsearch = Row()
-    searchinput = TextField(label='chercher')
-    searchbutton = ElevatedButton(text='recherche')
+    viewlistsearchinput = TextField(label='chercher')
+    viewlistsearchbutton = ElevatedButton(text='recherche',bgcolor=colors.GREEN_200,color=colors.WHITE)
     viewlist = Column(scroll='adaptive')
     objets_list = Row(wrap=True)   
     mailboxes = []
@@ -71,6 +71,8 @@ class MailBoxes:
 
     def show(self):
         self.view.controls = []
+        self.viewlistsearch.controls = [self.viewlistsearchinput,self.viewlistsearchbutton]
+        self.viewlistcontainer.controls = [self.viewlistsearch,self.viewlist]
         self.viewlist.controls = []
         self.messagebox = Column()
         self.page.update()
@@ -194,9 +196,17 @@ class MailBoxes:
             ix+=1
 
     def update_viewlist(self):
+        viewlistcontainer = self.viewlistcontainer
         viewlist = self.viewlist
+        viewlistsearch = self.viewlistsearch
+        self.viewlistsearchinput.width = int(self.mailbox_container.width*19/100)
+        self.viewlistsearchbutton.width = int(self.mailbox_container.width*10/100)
+        viewlistsearch.width = int(self.mailbox_container.width*30/100)
+        viewlistsearch.height =  int(self.mailbox_container.height*5/100)
         viewlist.width = int(self.mailbox_container.width*30/100)
-        viewlist.height =  int(self.mailbox_container.height*85/100)
+        viewlist.height =  int(self.mailbox_container.height*75/100)
+        viewlist.container = int(self.mailbox_container.width*30/100)
+        viewlistcontainer.height =  int(self.mailbox_container.height*85/100)
         if  self.actual_mailbox:
             self.actual_mailbox.get_mails()
             if not self.actual_message : self.set_actual_message(0)
@@ -258,7 +268,7 @@ class MailBoxes:
         self.update_boxlist()
         self.update_viewlist()
         self.update_actualmsgbox()
-        viewlist = self.viewlist
+        viewlist = self.viewlistcontainer
         messagebox = self.messagebox
         self.message_stuff.controls=[viewlist,messagebox]
         self.mailbox_container.controls=[self.boxlist,Divider(),self.message_stuff]    
