@@ -164,15 +164,17 @@ class MailBoxes:
             if self.actual_message.is_multipart():
                 self.process_multipart_message_updatestuff()
             else:
-                messagebodytext = "\n".join(self.actual_message.as_string().split("\n"))
+                messagebodytext = '\n'.join(self.actual_message.as_string().split("\n"))
             if messagebodyhtml:
                 messagebodytext = messagebodyhtml
             else:
-                messagebodytext = "\n".join(self.actual_message.as_string().split("\n"))
+                messagebodytext = '\n'.join(self.actual_message.as_string().split("\n"))
             
             if '\n\n' in messagebodytext :
-                messagebodytext = "\n\n".join(self.actual_message.as_string.split('\n\n')[1])
+                messagebodytext = "\n\n".join('\n'.join(self.actual_message.as_string().split('\n')).split('\n\n')[1])
             
+            messagebodytext=str(messagebodytext)
+            print(messagebodytext)
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
