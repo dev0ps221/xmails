@@ -14,6 +14,8 @@ class Write:
 
     attachments = []
     objets_container = Container()
+    add_objet_container = Container()
+    add_objet = Row()
     objets = Column()
     objets_label = Container(bgcolor=colors.LIGHT_BLUE) 
     objets_label_text = Text(value='PIÈCES JOINTES')

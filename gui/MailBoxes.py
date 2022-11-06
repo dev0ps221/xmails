@@ -96,11 +96,8 @@ class MailBoxes:
             if match_:
                 self.actual_message = match_
 
+    def process_multipart_message_updatestuff(self):
 
-    def update_message_box(self):
-        messagebox = self.messagebox
-        messagebody = self.messagebody
-        
         if self.actual_message:
             frombox = self.actual_message_frombox
             tobox = self.actual_message_tobox
@@ -150,13 +147,24 @@ class MailBoxes:
                         objet_container.content = objet
                         self.objets_list.controls.append(objet_container)
 
+    def update_message_box_messagebody(self):
+        messagebody = self.messagebody
+
+    def update_message_box(self):
+        messagebox = self.messagebox
+        messagebody = self.messagebody
+        
+        if self.actual_message:
+            frombox = self.actual_message_frombox
+            tobox = self.actual_message_tobox
+            datebox = self.actual_message_datebox
+            bodybox = self.actual_message_bodybox
+            messagebodytext = ""
+            messagebodyhtml = None
+            if self.actual_message.is_multipart():
+                self.process_multipart_message_updatestuff()
             else:
-                if self.actual_message.get_content_subtype() == "html":
-                    messagebodytext = self.actual_message.get_payload(decode=True)
-                    messagebodyhtml = str(html2text(messagebodytext.decode('utf-8')))
-                else:
-                    messagebodytext = self.actual_message.as_string().split("\n")
-                    messagebodytext = "\n".join(messagebodytext)
+                messagebodytext = "\n".join(self.actual_message.as_string().split("\n"))
             if messagebodyhtml:
                 messagebodytext = messagebodyhtml
             else:
