@@ -168,7 +168,11 @@ class MailBoxes:
             if messagebodyhtml:
                 messagebodytext = messagebodyhtml
             else:
-                messagebodytext=quopri.decodestring(messagebodytext).decode()
+                messagebodytext = "\n".join(self.actual_message.as_string().split("\n"))
+            
+            if(self.messagebodytext.match('\n\n')){
+                self.messagebodytext = "\n\n".join(self.messagebodytext.split('\n\n')[1])
+            }
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
