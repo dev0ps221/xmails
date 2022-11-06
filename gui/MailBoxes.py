@@ -109,7 +109,7 @@ class MailBoxes:
                 self.objets_list.controls = []
                 for part in self.actual_message.walk():
                     if part.get_content_subtype() == "html":
-                        messagebodyhtml= [elem for elem in str(html2text(part.get_payload(decode=True).decode())).split("\n")]
+                        messagebodyhtml= [str(elem) for elem in part.get_payload(decode=True)]
                         messagebodyhtml = "\n".join(messagebodyhtml) 
                     
                     if part.get_content_subtype() == "text":
@@ -170,11 +170,11 @@ class MailBoxes:
                 messagebodyhtml = '\n'.join(self.actual_message.as_string().split('         '))
                 messagebodytext = messagebodyhtml
             else:
-                messagebodytext = '\n'.join(self.actual_message)
+                messagebodytext = '\n'.join(self.actual_message.as_string().split('         '))
             
             
             messagebodytext=str(messagebodytext)
-            print(messagebodytext)
+            print(self.actual_message.get_body())
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
             frombox.value="From       : {}".format(self.actual_message.get("From"))
