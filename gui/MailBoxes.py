@@ -174,6 +174,7 @@ class MailBoxes:
             
             
             messagebodytext=str(messagebodytext)
+            help(self.actual_message)
             print(self.actual_message.get_body())
             partidx = None
             datebox.value="Date       : {}".format(self.actual_message.get("Date"))
